@@ -13,14 +13,36 @@ gem 'sqlite3'
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
+  gem "less-rails"
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
+  gem 'therubyracer', :platforms => :ruby
+
 
   gem 'uglifier', '>= 1.0.3'
 end
 
+
+group :production do
+  gem 'unicorn'
+  gem "pg"
+end
+
+gem 'haml-rails'
 gem 'jquery-rails'
+gem "twitter-bootstrap-rails"
+
+gem "resque"
+gem "resque-scheduler"
+gem "bluepill"
+
+gem 'paperclip'
+gem "will_paginate"
+
+gem 'devise'
+gem 'russian'
+
+gem 'nokogiri'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
