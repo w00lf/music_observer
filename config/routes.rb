@@ -1,4 +1,7 @@
 MusicObserver::Application.routes.draw do
+  resources :artists
+
+
   devise_for :users
 
   get "main/index"

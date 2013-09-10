@@ -1,0 +1,16 @@
+= form_tag :html => { :class => 'form-horizontal', multipart: true } do 
+  .control-group
+    = label_tag :name, nil, :class => 'control-label'
+    .controls
+      = text_field_tag :name, nil, :class => 'text_field'
+      %button
+        find
+  = hidden_field_tag :api_id
+  = hidden_field_tag :mbid
+  .control-group
+    = label_tag :track, false, :class => 'control-label'
+    .controls
+      = check_box_tag :track, :class => 'check_box'
+  .form-actions
+    = submit_tag nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), artists_path, :class => 'btn'
