@@ -1,6 +1,8 @@
 class ArtistsController < ApplicationController
   # GET /artists
   # GET /artists.json
+  @@api_provider = LastFmApi
+
   def index
     @artists = Artist.all
 
@@ -19,6 +21,18 @@ class ArtistsController < ApplicationController
       format.html # show.html.erb
       format.json { render json: @artist }
     end
+  end
+
+  def search
+    provider = @@api_provider.new
+    artists = provider.search_artist( params[:query] )
+    result = artists.collect { |artist| { name: artist["name"], 
+                                          mbid: artist["mbid"], 
+                                          url: artist["url"], 
+                                          listeners: artist["listeners"],
+                                          image: artist["image"].select{|n| n["size"] == "large" }[0]["#text"] } 
+                              }
+    render json: result
   end
 
   # GET /artists/new

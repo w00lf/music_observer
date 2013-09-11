@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(:version => 20130910140417) do
 
   create_table "artists", :force => true do |t|
     t.string   "name"
-    t.integer  "api_id"
     t.boolean  "track",              :default => false
     t.string   "mbid"
     t.datetime "created_at",                            :null => false

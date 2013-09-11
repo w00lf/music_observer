@@ -56,6 +56,7 @@ GEM
       railties (>= 3.2.6, < 5)
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    ejs (1.0.0)
     erubis (2.7.0)
     execjs (2.0.1)
     haml (4.0.3)
@@ -193,6 +194,7 @@ DEPENDENCIES
   bluepill
   coffee-rails (~> 3.2.1)
   devise
+  ejs
   haml-rails
   jquery-rails
   less-rails

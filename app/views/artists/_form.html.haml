@@ -3,14 +3,55 @@
     = label_tag :name, nil, :class => 'control-label'
     .controls
       = text_field_tag :name, nil, :class => 'text_field'
-      %button
+      %button#search_artist
         find
-  = hidden_field_tag :api_id
   = hidden_field_tag :mbid
+  = hidden_field_tag :image
   .control-group
     = label_tag :track, false, :class => 'control-label'
     .controls
       = check_box_tag :track, :class => 'check_box'
+  #artists_search_results
   .form-actions
     = submit_tag nil, :class => 'btn btn-primary'
     = link_to t('.cancel', :default => t("helpers.links.cancel")), artists_path, :class => 'btn'
+
+:javascript
+  $(function() {
+    $('#artists_search_results').hide();
+    $('#search_artist').click(function() {
+      $('#artists_search_results').show();
+      var query = $('#name').val();
+      $.getJSON('search?query=' + query, function(data){
+        var items = [];
+        $.each(data, function(key, val) {
+          var artist = JST['templates/artist']({
+            image : val.image,
+            name : val.name,
+            listeners : val.listeners,
+            mbid : val.mbid
+            }
+          );
+          items.push(artist);
+        });
+       
+        $('#artists_search_results').html($('<ul/>', {
+          'class': 'my-new-list',
+          html: items.join('')
+        }));
+      });
+      return false;
+    });
+
+    $(document.body).on('click', "#artists_search_results li", function(e){
+      var target = $(this);
+      target.parent('ul').addClass('gloom').find('li').removeClass('selected');
+      target.addClass('selected');
+      var name = target.find('.artist_name').text();
+      var mbid = target.find('.artist_mbid').text();
+      var image = target.find('.artist_image').attr('src');
+      $('#name').val(name);
+      $('#mbid').val(mbid);
+      $('#image').val(image);
+    });
+  });

@@ -13,7 +13,7 @@ class LastFmApi
 
 	def search_artist query
 		params = { method: 'artist.search', artist: query }
-		get_request(params)
+		get_request(params)['results']['artistmatches']['artist']
 	end
 
 	def get_events mbid

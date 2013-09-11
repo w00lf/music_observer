@@ -1,3 +1,23 @@
 // Place all the styles related to the Artists controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#artists_search_results {
+	height: 400px;
+	overflow-y: scroll;
+}
+#artists_search_results li {
+	padding: 20px 0;
+	list-style: none;
+	border-top: 1px solid black;
+	cursor: pointer;
+}
+#artists_search_results li tr, #artists_search_results li th {
+	width: 200px;
+}
+#artists_search_results .gloom li {
+	opacity: 0.2;
+}
+#artists_search_results li.selected {
+	opacity: 1;	
+}
