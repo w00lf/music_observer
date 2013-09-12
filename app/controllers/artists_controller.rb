@@ -23,16 +23,12 @@ class ArtistsController < ApplicationController
     end
   end
 
-  def search
+  def api_search
     provider = @@api_provider.new
     artists = provider.search_artist( params[:query] )
-    result = artists.collect { |artist| { name: artist["name"], 
-                                          mbid: artist["mbid"], 
-                                          url: artist["url"], 
-                                          listeners: artist["listeners"],
-                                          image: artist["image"].select{|n| n["size"] == "large" }[0]["#text"] } 
-                              }
-    render json: result
+    known_artists = Artist.find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
+    artists.select! {|artist| !known_artists.include?(artist[:mbid]) }
+    render json: artists
   end
 
   # GET /artists/new
@@ -54,14 +50,15 @@ class ArtistsController < ApplicationController
   # POST /artists
   # POST /artists.json
   def create
-    @artist = Artist.new(params[:artist])
+    @artist = Artist.new(name: params[:name], mbid: params[:mbid], track: (params[:track] || false))
+    @artist.photo = photo_from_url( params[:image] )
 
     respond_to do |format|
       if @artist.save
-        format.html { redirect_to @artist, notice: 'Artist was successfully created.' }
-        format.json { render json: @artist, status: :created, location: @artist }
+        format.html { render partial: 'main/notice', locals: { notice: 'Artist was successfully created.' } }
+        format.json { render json: @artist, status: :created }
       else
-        format.html { render action: "new" }
+        format.html { render partial: 'main/error', locals: { errors: @artist.errors } }
         format.json { render json: @artist.errors, status: :unprocessable_entity }
       end
     end
@@ -83,6 +80,20 @@ class ArtistsController < ApplicationController
     end
   end
 
+  def track
+    @artist = Artist.find(params[:id])
+    respond_to do |format|
+      if @artist.update_attribute(:track, params[:track])
+        format.html { redirect_to artists_path, notice: 'Artist was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to artists_path, notice: 'Errors.' }
+        format.json { render json: @artist.errors, status: :unprocessable_entity }
+      end
+    end
+
+  end
+
   # DELETE /artists/1
   # DELETE /artists/1.json
   def destroy
@@ -93,5 +104,22 @@ class ArtistsController < ApplicationController
       format.html { redirect_to artists_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def photo_from_url(url)
+    extname = File.extname(url)
+    basename = File.basename(url, extname)
+
+    file = Tempfile.new([basename, extname])
+    file.binmode
+
+    open(URI.parse(url)) do |data|  
+      file.write data.read
+    end
+
+    file.rewind
+    file
   end
 end

@@ -21,3 +21,10 @@
 #artists_search_results li.selected {
 	opacity: 1;	
 }
+#artists_search_results .loading {
+	background: url("loading.gif") no-repeat 400px 200px;
+	opacity: 0.1;
+}
+#submit_artists {
+	display: none;
+}

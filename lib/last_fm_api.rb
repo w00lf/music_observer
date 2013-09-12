@@ -13,7 +13,15 @@ class LastFmApi
 
 	def search_artist query
 		params = { method: 'artist.search', artist: query }
-		get_request(params)['results']['artistmatches']['artist']
+		artists = get_request(params)['results']['artistmatches']['artist'].select {|artist| !artist['mbid'].blank? }
+		result = artists.collect {|artist| {
+					name: artist["name"], 
+	              	mbid: artist["mbid"], 
+	              	url: artist["url"], 
+	              	listeners: artist["listeners"],
+	              	image: artist["image"].select{|n| n["size"] == "large" }[0]["#text"]  
+              	}
+			}
 	end
 
 	def get_events mbid

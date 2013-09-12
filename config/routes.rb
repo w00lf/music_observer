@@ -1,7 +1,11 @@
 MusicObserver::Application.routes.draw do
   resources :artists do
     collection do
-      get 'search'
+      get 'api_search'
+    end
+
+    member do
+      put 'track'
     end
   end
 

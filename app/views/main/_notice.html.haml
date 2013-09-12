@@ -1,0 +1,6 @@
+- if !notice.blank?
+  .alert.alert-info
+    %a.close{ 'data-dismiss' => "alert"}
+      = "×"
+    %span
+      = raw notice

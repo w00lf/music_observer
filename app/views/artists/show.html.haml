@@ -7,10 +7,6 @@
   %br
   = @artist.name
 %p
-  %strong= model_class.human_attribute_name(:api_id) + ':'
-  %br
-  = @artist.api_id
-%p
   %strong= model_class.human_attribute_name(:track) + ':'
   %br
   = @artist.track
@@ -21,19 +17,7 @@
 %p
   %strong= model_class.human_attribute_name(:photo_file_name) + ':'
   %br
-  = @artist.photo_file_name
-%p
-  %strong= model_class.human_attribute_name(:photo_content_type) + ':'
-  %br
-  = @artist.photo_content_type
-%p
-  %strong= model_class.human_attribute_name(:photo_file_size) + ':'
-  %br
-  = @artist.photo_file_size
-%p
-  %strong= model_class.human_attribute_name(:photo_updated_at) + ':'
-  %br
-  = @artist.photo_updated_at
+  = @artist.photo.url
 
 .form-actions
   = link_to t('.back', :default => t("helpers.links.back")), artists_path, :class => 'btn'

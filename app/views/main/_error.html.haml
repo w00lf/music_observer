@@ -1,0 +1,11 @@
+- if !errors.blank?
+  .alert.alert-error
+    %a.close{ 'data-dismiss' => "alert"}
+      = "×"
+    %span
+      %h5
+        Cannot save artists:
+      %ul
+      - errors.full_messages.each do |error|
+        %li
+          = error
