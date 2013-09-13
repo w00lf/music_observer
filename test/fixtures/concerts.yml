@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  title: MyString
+  description: MyText
+  api_link: MyString
+  country: MyString
+  sity: MyString
+  street: MyString
+  artist_id: 1
+  start_date: 2013-09-13
+
+two:
+  title: MyString
+  description: MyText
+  api_link: MyString
+  country: MyString
+  sity: MyString
+  street: MyString
+  artist_id: 1
+  start_date: 2013-09-13

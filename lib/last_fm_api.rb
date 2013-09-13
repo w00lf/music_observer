@@ -13,19 +13,38 @@ class LastFmApi
 
 	def search_artist query
 		params = { method: 'artist.search', artist: query }
-		artists = get_request(params)['results']['artistmatches']['artist'].select {|artist| !artist['mbid'].blank? }
-		result = artists.collect {|artist| {
+		artists = get_request(params)['results']['artistmatches']
+		unless artists['artist'].nil?
+			artists['artist'].select {|artist| !artist['mbid'].blank? }.collect {|artist| {
 					name: artist["name"], 
 	              	mbid: artist["mbid"], 
 	              	url: artist["url"], 
 	              	listeners: artist["listeners"],
 	              	image: artist["image"].select{|n| n["size"] == "large" }[0]["#text"]  
-              	}
+	          	}
 			}
+		end
 	end
 
-	def get_events mbid
-		params = { method: 'artist.getevents', mbid: mbid }
-		get_request(params)
+	def get_concerts artist, lat_range, long_range
+		params = { method: 'artist.getevents', mbid: artist.mbid }
+		result = get_request(params)["events"]
+		unless result["event"].blank?
+			result["event"] = [result["event"]] if result["event"].class == Hash
+			result["event"].select {|concert|
+				 	(lat_range).include?(concert["venue"]["location"]["geo:point"]["geo:lat"].to_i) &&
+				 	(long_range).include?(concert["venue"]["location"]["geo:point"]["geo:long"].to_i) 
+				}.collect {|concert| {
+					title: concert['title'],
+					description: concert["description"],
+					api_link: concert["url"],
+					country: concert["venue"]['location']['country'],
+					sity: concert["venue"]['location']['sity'],
+					street: concert["venue"]['location']['street'],
+					start_date: concert["startDate"],
+					api_id: concert["id"].to_i
+				}
+			}
+		end
 	end
 end

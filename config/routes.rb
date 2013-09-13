@@ -1,4 +1,7 @@
 MusicObserver::Application.routes.draw do
+  resources :concerts
+
+
   resources :artists do
     collection do
       get 'api_search'

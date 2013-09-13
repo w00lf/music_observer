@@ -1,0 +1,30 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @concert.title
+%p
+  %b Description:
+  = @concert.description
+%p
+  %b Api link:
+  = @concert.api_link
+%p
+  %b Country:
+  = @concert.country
+%p
+  %b Sity:
+  = @concert.sity
+%p
+  %b Street:
+  = @concert.street
+%p
+  %b Artist:
+  = @concert.artist_id
+%p
+  %b Start date:
+  = @concert.start_date
+
+= link_to 'Edit', edit_concert_path(@concert)
+\|
+= link_to 'Back', concerts_path
