@@ -18,7 +18,7 @@
   %tbody
     - @concerts.each do |concert|
       %tr
-        %td= link_to concert.id, concert_path(concert)
+        %td= link_to concert.id, concert_path(concert), class: 'external'
         %td= concert.title
         %td= concert.description
         %td= concert.api_link

@@ -36,6 +36,9 @@ GEM
       daemons (~> 1.1.4)
       i18n (>= 0.5.0)
       state_machine (~> 1.1)
+    bson (1.9.0)
+    bson_ext (1.9.0)
+      bson (~> 1.9.0)
     builder (3.0.4)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -85,6 +88,12 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25)
+    mongo (1.9.0)
+      bson (~> 1.9.0)
+    mongo_mapper (0.12.0)
+      activemodel (~> 3.0)
+      activesupport (~> 3.0)
+      plucky (~> 0.5.2)
     mono_logger (1.1.0)
     multi_json (1.8.0)
     orm_adapter (0.4.0)
@@ -95,6 +104,8 @@ GEM
       cocaine (~> 0.5.0)
       mime-types
     pg (0.16.0)
+    plucky (0.5.2)
+      mongo (~> 1.5)
     polyglot (0.3.3)
     rack (1.4.5)
     rack-cache (1.2)
@@ -192,12 +203,15 @@ PLATFORMS
 
 DEPENDENCIES
   bluepill
+  bson_ext
   coffee-rails (~> 3.2.1)
   devise
   ejs
   haml-rails
   jquery-rails
   less-rails
+  mongo
+  mongo_mapper
   paperclip
   pg
   rails (= 3.2.12)

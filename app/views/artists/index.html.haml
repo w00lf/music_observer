@@ -4,10 +4,10 @@
 
 
 = link_to t('.new', :default => t("helpers.links.new")), new_artist_path, :class => 'btn btn-primary'
-%table.table.table-striped
+%table.table.table-striped#artist_table
   %thead
     %tr
-      %th= model_class.human_attribute_name(:id)
+      %th= model_class.human_attribute_name(:status)
       %th= model_class.human_attribute_name(:name)
       %th= model_class.human_attribute_name(:track)
       %th= model_class.human_attribute_name(:mbid)
@@ -17,7 +17,10 @@
   %tbody
     - @artists.each do |artist|
       %tr
-        %td= link_to artist.id, artist_path(artist)
+        - html_class = artist.track ? "label-success" : "label-default"
+        %td 
+          %span{class: "label #{html_class}"}
+            = artist.track ? 'Tracked' : 'Dont tracked'
         %td= artist.name
         %td= get_track_button(artist.track, artist.id)
         %td= artist.mbid

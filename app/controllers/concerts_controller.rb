@@ -1,4 +1,6 @@
 class ConcertsController < ApplicationController
+  layout 'no_sidebar'
+  
   # GET /concerts
   # GET /concerts.json
   def index

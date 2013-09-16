@@ -1,2 +1,15 @@
 %h1 Main#index
-%p Find me in app/views/main/index.html.haml
+- @shedule.each do |date, concert_list|
+  %div
+    %h3
+      = date
+    - concert_list.each do |concert|
+      %div
+        = image_tag concert.photo.url
+        = link_to concert.title, concert.api_link, class: 'external '
+        = truncate( strip_tags( concert.description ), length: 200, separator: " " )
+        = concert.country
+        = concert.sity
+        = concert.street
+        = link_to concert.artist.name, artist_path(concert.artist)
+        = concert.start_date

@@ -13,5 +13,6 @@ class CreateConcerts < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_attachment :concerts, :photo
   end
 end

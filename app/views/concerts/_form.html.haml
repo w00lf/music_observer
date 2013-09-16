@@ -1,34 +1,40 @@
-= form_for @concert do |f|
-  - if @concert.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@concert.errors.count, "error")} prohibited this concert from being saved:"
-      %ul
-        - @concert.errors.full_messages.each do |msg|
-          %li= msg
-
-  .field
-    = f.label :title
-    = f.text_field :title
-  .field
-    = f.label :description
-    = f.text_area :description
-  .field
-    = f.label :api_link
-    = f.text_field :api_link
-  .field
-    = f.label :country
-    = f.text_field :country
-  .field
-    = f.label :sity
-    = f.text_field :sity
-  .field
-    = f.label :street
-    = f.text_field :street
-  .field
-    = f.label :artist_id
-    = f.number_field :artist_id
-  .field
-    = f.label :start_date
-    = f.date_select :start_date
-  .actions
-    = f.submit 'Save'
+= form_for @concert, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label :title, :class => 'control-label'
+    .controls
+      = f.text_field :title, :class => 'text_field'
+  .control-group
+    = f.label :description, :class => 'control-label'
+    .controls
+      = f.text_area :description, :class => 'text_area'
+  .control-group
+    = f.label :api_link, :class => 'control-label'
+    .controls
+      = f.text_field :api_link, :class => 'text_field'
+  .control-group
+    = f.label :country, :class => 'control-label'
+    .controls
+      = f.text_field :country, :class => 'text_field'
+  .control-group
+    = f.label :sity, :class => 'control-label'
+    .controls
+      = f.text_field :sity, :class => 'text_field'
+  .control-group
+    = f.label :street, :class => 'control-label'
+    .controls
+      = f.text_field :street, :class => 'text_field'
+  .control-group
+    = f.label :artist_id, :class => 'control-label'
+    .controls
+      = f.number_field :artist_id, :class => 'number_field'
+  .control-group
+    = f.label :start_date, :class => 'control-label'
+    .controls
+      = f.datetime_select :start_date, :class => 'datetime_select'
+  .control-group
+    = f.label :api_id, :class => 'control-label'
+    .controls
+      = f.number_field :api_id, :class => 'number_field'
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), concerts_path, :class => 'btn'

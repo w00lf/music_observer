@@ -42,6 +42,10 @@ gem "will_paginate"
 gem 'devise'
 gem 'russian'
 
+gem "mongo"
+gem 'bson_ext'
+gem 'mongo_mapper'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

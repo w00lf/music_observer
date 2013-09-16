@@ -10,3 +10,22 @@
 #container {
   	margin-top: 55px;
   }
+a {
+	color: #0481C0;
+}
+a:visited {
+	color: #056FC2;
+}
+a.external {
+	color: #05A7F8;
+}
+a.external:after {
+	content: " \f14c";
+	font-family: FontAwesome;
+}
+a.external:visited {
+	color: #0B9BE2;	
+}
+.table img {
+	max-width: none;
+}

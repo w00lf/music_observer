@@ -20,7 +20,7 @@ class LastFmApi
 	              	mbid: artist["mbid"], 
 	              	url: artist["url"], 
 	              	listeners: artist["listeners"],
-	              	image: artist["image"].select{|n| n["size"] == "large" }[0]["#text"]  
+	              	image: get_image(artist["image"])
 	          	}
 			}
 		end
@@ -35,16 +35,26 @@ class LastFmApi
 				 	(lat_range).include?(concert["venue"]["location"]["geo:point"]["geo:lat"].to_i) &&
 				 	(long_range).include?(concert["venue"]["location"]["geo:point"]["geo:long"].to_i) 
 				}.collect {|concert| {
-					title: concert['title'],
-					description: concert["description"],
-					api_link: concert["url"],
-					country: concert["venue"]['location']['country'],
-					sity: concert["venue"]['location']['sity'],
-					street: concert["venue"]['location']['street'],
-					start_date: concert["startDate"],
-					api_id: concert["id"].to_i
+					data: {
+						title: concert['title'],
+						description: concert["description"],
+						api_link: concert["url"],
+						country: concert["venue"]['location']['country'],
+						sity: concert["venue"]['location']['sity'],
+						street: concert["venue"]['location']['street'],
+						start_date: concert["startDate"],
+						api_id: concert["id"].to_i
+					},
+					photo: get_image(concert["image"])
 				}
 			}
+		end
+	end
+
+	def get_image image_hash
+		if image_hash.length > 0
+			larg = image_hash.select {|n| n["size"] == "large" }
+			return larg.first["#text"] if larg.length > 0
 		end
 	end
 end

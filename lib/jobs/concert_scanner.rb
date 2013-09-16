@@ -7,8 +7,11 @@ class ConcertScanner
 	    	concerts = @api.get_concerts(artist, LOCATION_LAT, LOCATION_LON)
 	    	unless concerts.blank?
 	    		concerts.each {|concert|
-	    			if Concert.find_by_api_id(concert[:api_id]).blank?
-	    				n = Concert.create(concert.merge({ artist: artist }))
+	    			if Concert.find_by_api_id(concert[:data][:api_id]).blank?
+	    				p concert
+	    				n = Concert.create(concert[:data].merge({ artist: artist }))
+	    				n.photo = Concert.photo_from_url(concert[:photo])
+	    				n.save()
 		    			p "created concert: ", n	
 	    			end
 		    	}

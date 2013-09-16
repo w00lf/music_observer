@@ -1,4 +1,6 @@
 class ArtistsController < ApplicationController
+  layout 'no_sidebar'
+  
   # GET /artists
   # GET /artists.json
   @@api_provider = LastFmApi
@@ -51,7 +53,7 @@ class ArtistsController < ApplicationController
   # POST /artists.json
   def create
     @artist = Artist.new(name: params[:name], mbid: params[:mbid], track: (params[:track] || false))
-    @artist.photo = photo_from_url( params[:image] )
+    @artist.photo = Artist.photo_from_url( params[:image] )
 
     respond_to do |format|
       if @artist.save
@@ -104,22 +106,5 @@ class ArtistsController < ApplicationController
       format.html { redirect_to artists_url }
       format.json { head :no_content }
     end
-  end
-
-  private
-
-  def photo_from_url(url)
-    extname = File.extname(url)
-    basename = File.basename(url, extname)
-
-    file = Tempfile.new([basename, extname])
-    file.binmode
-
-    open(URI.parse(url)) do |data|  
-      file.write data.read
-    end
-
-    file.rewind
-    file
   end
 end

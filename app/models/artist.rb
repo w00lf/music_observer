@@ -7,4 +7,6 @@ class Artist < ActiveRecord::Base
   has_many :concerts
 
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
+
+  extend ApplicationHelper
 end
