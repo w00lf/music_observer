@@ -1,22 +1,26 @@
 class ConcertScanner
-	 @queue = :scheduled_tasks
+	include ScheduledTasksLogger
+	@queue = :scheduled_tasks
 
-	 def self.perform
-	    @api = LastFmApi.new
-	    Artist.where(:track => true).find_each {|artist|
+	def self.perform
+		logger do
+			result = []
+	    @api = LastFmApi
+	    Artist.where(:track => true).find_each do |artist|
 	    	concerts = @api.get_concerts(artist, LOCATION_LAT, LOCATION_LON)
 	    	unless concerts.blank?
-	    		concerts.each {|concert|
+	    		concerts.each do |concert|
 	    			if Concert.find_by_api_id(concert[:data][:api_id]).blank?
-	    				p concert
-	    				n = Concert.create(concert[:data].merge({ artist: artist }))
-	    				n.photo = Concert.photo_from_url(concert[:photo])
-	    				n.save()
-		    			p "created concert: ", n	
+	    				result.push(Concert.create(concert[:data].merge({ artist: artist })))
+	    				result.last.photo = Concert.photo_from_url(concert[:photo])
+	    				result.last.save()
+		    			info "created concert: #{result.last.id}"
 	    			end
-		    	}
+		    	end
 		    	sleep 0.5	
 	    	end
-	    }
-	 end
+	    end
+	    UserMailer.concert_notification(result).deliver
+		end
+	end
 end

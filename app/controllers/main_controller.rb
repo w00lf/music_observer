@@ -4,13 +4,17 @@ class MainController < ApplicationController
   	prev = ''
   	@shedule = {}
   	concerts.each do |con|
-  		if prev == con.start_date.strftime("%e %B %Y")
+  		if prev == get_formated_date(con.start_date)
   			@shedule[prev].push(con)
   		else
-  			@shedule[con.start_date.strftime("%e %B %Y")] = [con]
+  			@shedule[get_formated_date(con.start_date)] = [con]
   		end
-  		prev = con.start_date.strftime("%e %B %Y")
+  		prev = get_formated_date(con.start_date)
   	end
   	render stream: true
+  end
+
+  def get_formated_date date
+    I18n.localize(date, :format => "%e %B %Y")
   end
 end

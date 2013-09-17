@@ -17,7 +17,7 @@ $ ->
     setLoading()
     $("#artists_search_results").show()
     query = $("#name").val()
-    $.getJSON "api_search?query=" + query, (data) ->
+    $.getJSON("api_search?query=" + query, (data) ->
       items = []
       $.each data, (key, val) ->
         artist = JST["templates/artist"](
@@ -32,6 +32,12 @@ $ ->
         class: "my-new-list"
         html: items.join("")
       )
+      unsetLoading()
+    ).fail (data)->
+      if (data.status == 404)
+        $("#artists_search_results").html("Noting found by request")
+      else
+        $("#artists_search_results").html("Unexpected server error" + data.statusText)
       unsetLoading()
     false
 

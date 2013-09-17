@@ -1,0 +1,31 @@
+%h1
+  = "#{I18n.localize(Time.now, :format => :long)} Найдено #{@concerts.length} концертов:" 
+%table
+  %tr
+    %th
+      Изображение
+    %th
+      Название
+    %th
+      Место проведения
+  - @concerts.each do |concert|
+    %tr
+      %td{:collspan => 3}
+        %h3
+          = I18n.localize(concert.start_date, :format => :long)
+    %tr
+      %td= image_tag attachments[concert.id.to_s].url
+      %td
+        %p
+          = link_to concert.title, concert.api_link
+        %p
+          = link_to concert.artist.name, artist_url(concert.artist)
+      %td
+        %p
+          = concert.country
+        %p
+          = concert.sity
+        %p
+          = concert.street
+
+

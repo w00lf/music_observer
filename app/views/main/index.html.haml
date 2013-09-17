@@ -1,15 +1,21 @@
-%h1 Main#index
+%h1 Последние актуальные коцерты
 - @shedule.each do |date, concert_list|
   %div
     %h3
       = date
     - concert_list.each do |concert|
-      %div
-        = image_tag concert.photo.url
-        = link_to concert.title, concert.api_link, class: 'external '
-        = truncate( strip_tags( concert.description ), length: 200, separator: " " )
-        = concert.country
-        = concert.sity
-        = concert.street
-        = link_to concert.artist.name, artist_path(concert.artist)
-        = concert.start_date
+      %ul.concert_entry
+        %li
+          = image_tag concert.photo.url
+        %li
+          = link_to concert.title, concert.api_link, class: 'external '
+          %br
+          = link_to concert.artist.name, artist_path(concert.artist)
+        %li
+          = concert.country
+          %br
+          = concert.sity
+          %br
+          = concert.street
+       
+      .clear
