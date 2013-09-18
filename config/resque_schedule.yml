@@ -1,0 +1,10 @@
+every_two_minute_job:
+  cron: "*/1 * * * *"
+  class: SimpleTask
+  description: “every two minute job”
+  queue: simple
+scanner_scanner:
+  cron: "*/1 * * * *"
+  class: ConcertScanner
+  description: “Scannes for favorite artist concerts”
+  queue: scheduled_tasks

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  cron: MyString
+  name: MyString
+  queue: MyString
+  description: MyText
+  job_class: MyString
+  args: MyString
+
+two:
+  cron: MyString
+  name: MyString
+  queue: MyString
+  description: MyText
+  job_class: MyString
+  args: MyString

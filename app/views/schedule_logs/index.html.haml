@@ -1,0 +1,8 @@
+%ul{ class: "nav nav-pills" }  
+  - @job_classes.each do |job|
+    %li
+      = link_to job, schedule_logs_path(:job_class => job)
+
+- @items.each do |item|
+  %div
+    = h "[ #{item.status.upcase}: #{item.created_at.strftime('%H:%M:%S %d-%m-%Y')} ] #{item.content}"

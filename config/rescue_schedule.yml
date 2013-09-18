@@ -1,5 +1,0 @@
-every_two_minute_job:
-  cron: "*/1 * * * *"
-  class: SimpleTask
-  description: “every two minute job”
-  queue: simple
