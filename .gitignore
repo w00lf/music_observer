@@ -13,6 +13,8 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+/config/database.yml
 /config/protected.yml
+/config/environments/production.rb
 /public/system/
 .DS_store
