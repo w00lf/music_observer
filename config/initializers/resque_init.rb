@@ -1,3 +1,5 @@
+=begin
+#hidded resque
 require 'resque'
 require 'resque_scheduler'
 require 'resque/scheduler'      
@@ -8,3 +10,4 @@ resque_config = URI.parse(yml_data[rails_env])
 Resque.redis = Redis.new(:host => resque_config.host, :port => resque_config.port)
 Resque.schedule = YAML.load_file("#{Rails.root}/config/resque_schedule.yml")
 Dir["#{Rails.root}/lib/jobs/*.rb"].each { |file| require file }
+=end
