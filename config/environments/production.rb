@@ -64,4 +64,13 @@ MusicObserver::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+  MONGODB_HOST = '127.0.0.1'
+  MONGODB_PORT = 27017
+  MONGODB_BASE = 'music_observer'
+  MONGODB_USER = 'mongodb'
+  MONGODB_PASS = 'mongodb'
+
+  SCHEDULED_TASKS_PID = "/Users/guest/work/music_observer/tmp/pids/resque.pid"
+  SCHEDULER_PID = "/usr/local/www/music_observer/tmp/pids/resque_scheduler.pid"
 end

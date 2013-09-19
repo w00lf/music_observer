@@ -3,13 +3,13 @@ class ScheduleLog
   include MongoMapper::Document
   validate :right_status
 
-  key :job_name,     String
+  key :job_class,     String
   key :status,       String
   key :content,      String
   timestamps!
 
   def self.get_logs task, status, start_date, end_date 
-    query = where(:job_name => task).sort(:_id.desc)
+    query = where(:job_class => task).sort(:_id.desc)
     query = query.where(:status => status) unless status.blank?
     query = query.where(:created_at => { '$gt' => Time.parse(start_date), '$lt' => Time.parse(end_date) }) unless start_date.blank? || end_date.blank?
     query

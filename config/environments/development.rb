@@ -43,4 +43,7 @@ MusicObserver::Application.configure do
   MONGODB_BASE = 'music_observer'
   MONGODB_USER = 'mongodb'
   MONGODB_PASS = 'mongodb'
+
+  SCHEDULED_TASKS_PID = "/Users/guest/work/music_observer/tmp/pids/resque.pid"
+  SCHEDULER_PID = "/usr/local/www/music_observer/tmp/pids/resque_scheduler.pid"
 end

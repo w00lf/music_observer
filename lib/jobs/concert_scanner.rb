@@ -20,7 +20,7 @@ class ConcertScanner
 		    	sleep 0.5	
 	    	end
 	    end
-	    UserMailer.concert_notification(result).deliver
+	    UserMailer.concert_notification(result).deliver unless result.blank?
 		end
 	end
 end

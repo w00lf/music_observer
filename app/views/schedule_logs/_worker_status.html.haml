@@ -1,0 +1,41 @@
+%p
+  %ul
+    %li
+      %i.icon-wrench
+        Resque worker:
+    - if get_worker_pid 
+      %span.label.label-success
+        ON
+    -else
+      %span.label.label-important
+        OFF
+    %li
+      %i.icon-time
+        Resque scheduler:
+    - if get_scheduler_pid 
+      %span.label.label-success
+        ON
+    - else
+      %span.label.label-important
+        OFF
+%p
+  %p        
+    %i.icon-ok
+      Processed:
+    %span.badge
+      = worker.processed
+  %p
+    %i.icon-remove
+      Failed:
+    %span.badge.badge-important
+      = worker.failed
+  %p
+    %i.icon-road
+      Working:
+    %span.label.label-info
+      = "#{worker_processing} (#{worker_run_at})"
+
+- unless last_failed.blank?
+  %p
+    Last failed task: 
+    %b= last_failed

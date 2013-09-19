@@ -4,7 +4,7 @@ class ConcertsController < ApplicationController
   # GET /concerts
   # GET /concerts.json
   def index
-    @concerts = Concert.all
+    @concerts = Concert.paginate(page: params[:page], per_page: params[:per_page] || 10)
 
     respond_to do |format|
       format.html # index.html.erb

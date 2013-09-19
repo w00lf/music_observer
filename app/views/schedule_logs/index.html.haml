@@ -1,8 +1,13 @@
 %ul{ class: "nav nav-pills" }  
   - @job_classes.each do |job|
-    %li
+    - html = (params[:job_class] == job) ? 'active' : ''
+    %li{class: "#{html}" }
       = link_to job, schedule_logs_path(:job_class => job)
-
-- @items.each do |item|
-  %div
-    = h "[ #{item.status.upcase}: #{item.created_at.strftime('%H:%M:%S %d-%m-%Y')} ] #{item.content}"
+- if @items.length > 0
+  - @items.each do |item|
+    %div
+      = h "[ #{item.status.upcase}: #{item.created_at.strftime('%H:%M:%S %d-%m-%Y')} ] #{item.content}"
+  = will_paginate @items
+- else 
+  %h3
+    No entries found
