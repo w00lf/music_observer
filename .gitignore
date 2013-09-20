@@ -15,6 +15,8 @@
 /tmp
 /config/database.yml
 /config/protected.yml
-/config/environments/production.rb
 /public/system/
+initial_release
+/public/assets/
+restart
 .DS_store
