@@ -17,7 +17,6 @@ class LastFmApi
 				params = { method: 'artist.search', artist: query }
 				query = get_request(params)
 				if query['results']['opensearch:totalResults'].to_i > 0
-					raise Exception
 					artists = query['results']['artistmatches']
 					unless artists['artist'].nil?
 						result = artists['artist'].select {|artist| !artist['mbid'].blank? }.collect {|artist| 
