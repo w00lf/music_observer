@@ -27,14 +27,9 @@ class ArtistsController < ApplicationController
 
   def api_search
     artists = @@api_provider.search_artist( params[:query] )
-    unless artists.blank?
-      known_artists = Artist.find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
-      artists.select! {|artist| !known_artists.include?(artist[:mbid]) }
-      render json: artists  
-    else
-      render nothing: true, status: 404
-    end
-    
+    known_artists = Artist.find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
+    artists.select! {|artist| !known_artists.include?(artist[:mbid]) }
+    render json: artists      
   end
 
   # GET /artists/new

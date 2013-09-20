@@ -1,21 +1,25 @@
 %h1 Последние актуальные коцерты
-- @shedule.each do |date, concert_list|
-  %div
-    %h3
-      = date
-    - concert_list.each do |concert|
-      %ul.concert_entry
-        %li
-          = image_tag concert.photo.url
-        %li
-          = link_to concert.title, concert.api_link, class: 'external '
-          %br
-          = link_to concert.artist.name, artist_path(concert.artist)
-        %li
-          = concert.country
-          %br
-          = concert.sity
-          %br
-          = concert.street
-       
-      .clear
+- if @shedule.length > 0
+  - @shedule.each do |date, concert_list|
+    %div
+      %h3
+        = date
+      - concert_list.each do |concert|
+        %ul.concert_entry
+          %li
+            = image_tag concert.photo.url
+          %li
+            = link_to concert.title, concert.api_link, class: 'external '
+            %br
+            = link_to concert.artist.name, artist_path(concert.artist)
+          %li
+            = concert.country
+            %br
+            = concert.sity
+            %br
+            = concert.street
+         
+        .clear
+- else
+  %h3
+    No actual concerts found

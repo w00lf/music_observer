@@ -14,10 +14,32 @@
 
 
   %body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %a.btn.btn-navbar(data-target=".nav-collapse" data-toggle="collapse")
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          %a.brand(href="/") MusicObserver
+          .container.nav-collapse
+            %ul.nav
+              - get_top_menu_items().each do |title, link|
+                %li= link_to title, link
+            - if user_signed_in?
+              = link_to(destroy_user_session_path, {:method => :delete, :id=> 'log_out'}) do
+                %i.icon-arrow-right
+                = t("log_out")
+
     #container.container
+
       .row
         .span9
           = bootstrap_flash
           = yield
+        .span3
+          .well.sidebar-nav
+            %h3 Statisitcs
+    
       %footer
         %p &copy; Company 2013

@@ -1,4 +1,5 @@
 class MainController < ApplicationController
+  layout 'side_bar'
   def index
   	concerts = Concert.actual_concerts(params[:date_interval])
   	prev = ''
