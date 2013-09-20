@@ -1,7 +1,7 @@
 namespace :schedule do
   desc "load jobs schedule from config/resque_schedule.yml"
   task :init => :environment do
-    schedule = YAML.load_file(File.join(RAILS_ROOT, 'config/resque_schedule.yml'))
+    schedule = YAML.load_file(File.join(Rails.root, 'config/resque_schedule.yml'))
     schedule.each do |name, job|
       next if ScheduledTask.find_by_name(name)
       ScheduledTask.create(

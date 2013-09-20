@@ -65,11 +65,11 @@ MusicObserver::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  MONGODB_HOST = '127.0.0.1'
+  MONGODB_HOST = 'mongodb0.locum.ru'
   MONGODB_PORT = 27017
-  MONGODB_BASE = 'music_observer'
-  MONGODB_USER = 'mongodb'
-  MONGODB_PASS = 'mongodb'
+  MONGODB_BASE = 'w00lf_music47'
+  MONGODB_USER = 'w00lf_music47'
+  MONGODB_PASS = 'hd;w@34Kd'
 
   SCHEDULED_TASKS_PID = "/Users/guest/work/music_observer/tmp/pids/resque.pid"
   SCHEDULER_PID = "/usr/local/www/music_observer/tmp/pids/resque_scheduler.pid"
