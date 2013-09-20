@@ -75,6 +75,9 @@ GEM
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-ui-rails (4.0.4)
+      jquery-rails
+      railties (>= 3.1.0)
     json (1.8.0)
     kgio (2.8.0)
     less (2.2.1)
@@ -185,6 +188,7 @@ DEPENDENCIES
   ejs
   haml-rails
   jquery-rails
+  jquery-ui-rails
   less-rails
   mongo
   mongo_mapper
