@@ -63,6 +63,18 @@ class LastFmApi
 			result
 		end
 
+		def check_callback controller
+			unless controller.params[:token].blank?
+				controller.session[:music_return_token] = controller.params[:token]
+	    	controller.session[:music_return_token_created] = Time.now
+	    end
+		end
+
+		def autenticate_redirect
+			'http://google.com'
+		end
+
+		private
 		def get_image image_hash
 			if image_hash.length > 0
 				larg = image_hash.select {|n| n["size"] == "large" }

@@ -1,11 +1,14 @@
 class Concert < ActiveRecord::Base
   attr_accessible :api_link, :artist, :country, :description, :sity, :start_date, :street, :title, :api_id
   validates :api_link, :start_date, :title, :artist, :api_id, :presence => true
+  has_and_belongs_to_many :users
   belongs_to :artist
 
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
   
   extend ApplicationHelper
+
+  scope :user_concerts, lambda {|user| where(user_id: user.id) }  
   scope :actual_concerts, lambda {|interval_string|  
   	interval = get_interval(interval_string)
   	order('start_date').where(['start_date BETWEEN ? AND ?', interval[0], interval[1]])

@@ -3,10 +3,9 @@ class ArtistsController < ApplicationController
   
   # GET /artists
   # GET /artists.json
-  @@api_provider = LastFmApi
 
   def index
-    @artists = Artist.paginate(page: params[:page], per_page: params[:per_page] || 10)
+    @artists = Artist.user_artists(current_user).paginate(page: params[:page], per_page: params[:per_page] || 10)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -17,7 +16,7 @@ class ArtistsController < ApplicationController
   # GET /artists/1
   # GET /artists/1.json
   def show
-    @artist = Artist.find(params[:id])
+    @artist = Artist.user_artists(current_user).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -27,7 +26,7 @@ class ArtistsController < ApplicationController
 
   def api_search
     artists = @@api_provider.search_artist( params[:query] )
-    known_artists = Artist.find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
+    known_artists = Artist.user_artists(current_user).find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
     artists.select! {|artist| !known_artists.include?(artist[:mbid]) }
     render json: artists      
   end
@@ -51,7 +50,9 @@ class ArtistsController < ApplicationController
   # POST /artists
   # POST /artists.json
   def create
-    @artist = Artist.new(name: params[:name], mbid: params[:mbid], track: (params[:track] || false))
+    @artist = current_user.artists.build(name: params[:name], 
+                          mbid: params[:mbid], 
+                          track: (params[:track] || false))
     @artist.photo = Artist.photo_from_url( params[:image] )
 
     respond_to do |format|
@@ -68,7 +69,7 @@ class ArtistsController < ApplicationController
   # PUT /artists/1
   # PUT /artists/1.json
   def update
-    @artist = Artist.find(params[:id])
+    @artist = Artist.user_artists(current_user).find(params[:id])
 
     respond_to do |format|
       if @artist.update_attributes(params[:artist])
@@ -82,7 +83,7 @@ class ArtistsController < ApplicationController
   end
 
   def track
-    @artist = Artist.find(params[:id])
+    @artist = Artist.user_artists(current_user).find(params[:id])
     respond_to do |format|
       if @artist.update_attribute(:track, params[:track])
         format.html { redirect_to artists_path, notice: 'Artist was successfully updated.' }
@@ -98,7 +99,7 @@ class ArtistsController < ApplicationController
   # DELETE /artists/1
   # DELETE /artists/1.json
   def destroy
-    @artist = Artist.find(params[:id])
+    @artist = Artist.user_artists(current_user).find(params[:id])
     @artist.destroy
 
     respond_to do |format|

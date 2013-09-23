@@ -16,6 +16,8 @@ MusicObserver::Application.routes.draw do
   devise_for :users
 
   get "main/index"
+  get "main/api_autenticate"
+  
   resources :schedule_logs, only: [:index]
 
   # The priority is based upon order of creation:

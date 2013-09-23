@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130918125917) do
+ActiveRecord::Schema.define(:version => 20130923140901) do
 
   create_table "artists", :force => true do |t|
     t.string   "name"
@@ -23,6 +23,12 @@ ActiveRecord::Schema.define(:version => 20130918125917) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.integer  "user_id"
+  end
+
+  create_table "artists_users", :force => true do |t|
+    t.integer "artist_id"
+    t.integer "user_id"
   end
 
   create_table "concerts", :force => true do |t|
@@ -35,12 +41,19 @@ ActiveRecord::Schema.define(:version => 20130918125917) do
     t.integer  "artist_id"
     t.datetime "start_date"
     t.integer  "api_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.boolean  "is_showed",          :default => true
+    t.integer  "user_id"
+  end
+
+  create_table "concerts_users", :force => true do |t|
+    t.integer "concert_id"
+    t.integer "user_id"
   end
 
   create_table "scheduled_tasks", :force => true do |t|
