@@ -5,7 +5,7 @@ class ArtistsController < ApplicationController
   # GET /artists.json
 
   def index
-    @artists = Artist.user_artists(current_user).paginate(page: params[:page], per_page: params[:per_page] || 10)
+    @artists = current_user.artists.paginate(page: params[:page], per_page: params[:per_page] || 10)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,7 +16,7 @@ class ArtistsController < ApplicationController
   # GET /artists/1
   # GET /artists/1.json
   def show
-    @artist = Artist.user_artists(current_user).find(params[:id])
+    @artist = current_user.artists.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,7 +26,7 @@ class ArtistsController < ApplicationController
 
   def api_search
     artists = @@api_provider.search_artist( params[:query] )
-    known_artists = Artist.user_artists(current_user).find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
+    known_artists = current_user.artists.find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
     artists.select! {|artist| !known_artists.include?(artist[:mbid]) }
     render json: artists      
   end
@@ -50,42 +50,27 @@ class ArtistsController < ApplicationController
   # POST /artists
   # POST /artists.json
   def create
-    @artist = current_user.artists.build(name: params[:name], 
-                          mbid: params[:mbid], 
-                          track: (params[:track] || false))
-    @artist.photo = Artist.photo_from_url( params[:image] )
-
-    respond_to do |format|
-      if @artist.save
-        format.html { render partial: 'main/notice', locals: { notice: 'Artist was successfully created.' } }
-        format.json { render json: @artist, status: :created }
-      else
-        format.html { render partial: 'main/error', locals: { errors: @artist.errors } }
-        format.json { render json: @artist.errors, status: :unprocessable_entity }
-      end
+    @artist = Artist.find_by_mbid(params[:mbid])
+    if @artist.nil?
+      @artist = Artist.create(name: params[:name], 
+                    mbid: params[:mbid])
+      @artist.photo = Artist.photo_from_url( params[:image] )
     end
-  end
 
-  # PUT /artists/1
-  # PUT /artists/1.json
-  def update
-    @artist = Artist.user_artists(current_user).find(params[:id])
+    @artist.artist_user_entries.create(track: params[:track], user: current_user)
+    @artist.save()  
 
     respond_to do |format|
-      if @artist.update_attributes(params[:artist])
-        format.html { redirect_to @artist, notice: 'Artist was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @artist.errors, status: :unprocessable_entity }
-      end
+      format.html { render partial: 'main/notice', locals: { notice: 'Artist was successfully created.' } }
+      format.json { render json: @artist, status: :created }
     end
   end
 
   def track
-    @artist = Artist.user_artists(current_user).find(params[:id])
+    @artist = current_user.artists.find(params[:id])
+
     respond_to do |format|
-      if @artist.update_attribute(:track, params[:track])
+      if @artist.artist_user_entries.find_by_user_id(current_user.id).update_attribute(:track, params[:track])
         format.html { redirect_to artists_path, notice: 'Artist was successfully updated.' }
         format.json { head :no_content }
       else
@@ -94,17 +79,5 @@ class ArtistsController < ApplicationController
       end
     end
 
-  end
-
-  # DELETE /artists/1
-  # DELETE /artists/1.json
-  def destroy
-    @artist = Artist.user_artists(current_user).find(params[:id])
-    @artist.destroy
-
-    respond_to do |format|
-      format.html { redirect_to artists_url }
-      format.json { head :no_content }
-    end
   end
 end

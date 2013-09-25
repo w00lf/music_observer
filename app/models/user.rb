@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
-  has_and_belongs_to_many :artists
-  has_and_belongs_to_many :concerts
+  has_many :artist_user_entries, dependent: :destroy
+  has_many :concert_user_entries
+  has_many :artists, through: :artist_user_entries 
+  has_many :concerts, through: :concert_user_entries 
 end

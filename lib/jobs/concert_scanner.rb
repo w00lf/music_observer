@@ -6,7 +6,7 @@ class ConcertScanner
 		logger do
 			result = []
 	    @api = LastFmApi
-	    Artist.where(:track => true).find_each do |artist|
+	    Artist.find_each do |artist|
 	    	concerts = @api.get_concerts(artist, LOCATION_LAT, LOCATION_LON)
 	    	unless concerts.blank?
 	    		concerts.each do |concert|
@@ -20,7 +20,14 @@ class ConcertScanner
 		    	sleep 0.5	
 	    	end
 	    end
-	    UserMailer.concert_notification(result).deliver unless result.blank?
+	    User.find_each do |user|
+	    	result.each do |concert|
+	    		if user.artists.include?(concert.artist)
+	    			user.concerts << concert
+	    		end
+	    	end
+    	end
+	    #UserMailer.concert_notification(result).deliver unless result.blank?
 		end
 	end
 end

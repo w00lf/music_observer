@@ -11,24 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130923140901) do
+ActiveRecord::Schema.define(:version => 20130924131052) do
+
+  create_table "artist_user_entries", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "artist_id"
+    t.boolean  "track",      :default => false, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
 
   create_table "artists", :force => true do |t|
     t.string   "name"
-    t.boolean  "track",              :default => false
     t.string   "mbid"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
-    t.integer  "user_id"
   end
 
-  create_table "artists_users", :force => true do |t|
-    t.integer "artist_id"
+  create_table "concert_user_entries", :force => true do |t|
+    t.integer "concert_id"
     t.integer "user_id"
+    t.boolean "is_show",    :default => true, :null => false
   end
 
   create_table "concerts", :force => true do |t|
@@ -41,19 +48,12 @@ ActiveRecord::Schema.define(:version => 20130923140901) do
     t.integer  "artist_id"
     t.datetime "start_date"
     t.integer  "api_id"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
-    t.boolean  "is_showed",          :default => true
-    t.integer  "user_id"
-  end
-
-  create_table "concerts_users", :force => true do |t|
-    t.integer "concert_id"
-    t.integer "user_id"
   end
 
   create_table "scheduled_tasks", :force => true do |t|
