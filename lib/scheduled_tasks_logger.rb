@@ -21,7 +21,7 @@ module ScheduledTasksLogger
       rescue Exception => e
         error "Task aborted:"
         error "In: #{e.class.to_s}, #{e.message}"
-        error "Backtrace: #{e.backtrace}"
+        error "Backtrace: #{e.backtrace.join('<br>')}"
         #TODO test compatible with resque error-handler
         raise e
       end

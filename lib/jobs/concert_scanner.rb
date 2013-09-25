@@ -11,7 +11,7 @@ class ConcertScanner
 	    	unless concerts.blank?
 	    		concerts.each do |concert|
 	    			if Concert.find_by_api_id(concert[:data][:api_id]).blank?
-	    				result.push(Concert.create(concert[:data].merge({ artist: artist })))
+	    				result.push(artist.concerts.create(concert[:data]))
 	    				result.last.photo = Concert.photo_from_url(concert[:photo])
 	    				result.last.save()
 		    			info "created concert: #{result.last.id}"
@@ -21,13 +21,15 @@ class ConcertScanner
 	    	end
 	    end
 	    User.find_each do |user|
+	    	new_concerts = []
 	    	result.each do |concert|
 	    		if user.artists.include?(concert.artist)
 	    			user.concerts << concert
+	    			new_concerts << concert
 	    		end
 	    	end
+	    	UserMailer.concert_notification(new_concerts, user).deliver if new_concerts.length > 0 && user.notification
     	end
-	    #UserMailer.concert_notification(result).deliver unless result.blank?
 		end
 	end
 end

@@ -32,3 +32,12 @@ a.external:visited {
 .clear {
 	clear: both;
 }
+.truncated {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 50px;
+}
+.long {
+	cursor: pointer;
+}

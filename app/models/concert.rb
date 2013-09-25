@@ -1,8 +1,7 @@
 class Concert < ActiveRecord::Base
   attr_accessible :api_link, :artist, :country, :description, :sity, :start_date, :street, :title, :api_id
   validates :api_link, :start_date, :title, :artist, :api_id, :presence => true
-
-  belongs_to :concert_user_entries
+  has_many :concert_user_entries, dependent: :destroy
   belongs_to :artist
 
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"

@@ -19,13 +19,14 @@ class LastFmApi
 				if query['results']['opensearch:totalResults'].to_i > 0
 					artists = query['results']['artistmatches']
 					unless artists['artist'].nil?
-						result = artists['artist'].select {|artist| !artist['mbid'].blank? }.collect {|artist| {
+						result = artists['artist'].select {|artist| !artist['mbid'].blank? }.collect {|artist| 
+							{
 								name: artist["name"], 
-				              	mbid: artist["mbid"], 
-				              	url: artist["url"], 
-				              	listeners: artist["listeners"],
-				              	image: get_image(artist["image"])
-				          	}
+              	mbid: artist["mbid"], 
+              	url: artist["url"], 
+              	listeners: artist["listeners"],
+              	image: get_image(artist["image"])
+          		}
 						}
 					end	
 				end
@@ -62,6 +63,18 @@ class LastFmApi
 			result
 		end
 
+		def check_callback controller
+			unless controller.params[:token].blank?
+				controller.session[:music_return_token] = controller.params[:token]
+	    	controller.session[:music_return_token_created] = Time.now
+	    end
+		end
+
+		def autenticate_redirect
+			'http://google.com'
+		end
+
+		private
 		def get_image image_hash
 			if image_hash.length > 0
 				larg = image_hash.select {|n| n["size"] == "large" }

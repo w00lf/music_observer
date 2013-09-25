@@ -1,4 +1,5 @@
 class MainController < ApplicationController
+  layout 'side_bar'
   def index
     @@api_provider.check_callback( self )
   	concerts = current_user.concerts.is_show.actual_concerts(params[:date_interval])
@@ -14,6 +15,12 @@ class MainController < ApplicationController
   	end
   	render stream: true
   end
+
+  def api_autenticate
+    redirect_to @@api_provider.autenticate_redirect
+  end
+
+  private
 
   def get_formated_date date
     I18n.localize(date, :format => "%e %B %Y")

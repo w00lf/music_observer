@@ -19,25 +19,25 @@ $ ->
     query = $("#name").val()
     $.getJSON("api_search?query=" + query, (data) ->
       items = []
-      $.each data, (key, val) ->
-        artist = JST["templates/artist"](
-          image: val.image
-          name: val.name
-          listeners: val.listeners
-          mbid: val.mbid
-        )
-        items.push artist
+      if data.length > 0
+        $.each data, (key, val) ->
+          artist = JST["templates/artist"](
+            image: val.image
+            name: val.name
+            listeners: val.listeners
+            mbid: val.mbid
+          )
+          items.push artist
 
-      $("#artists_search_results").html $("<ul/>",
-        class: "my-new-list"
-        html: items.join("")
-      )
-      unsetLoading()
-    ).fail (data)->
-      if (data.status == 404)
-        $("#artists_search_results").html("Noting found by request")
+        $("#artists_search_results").html $("<ul/>",
+          class: "my-new-list"
+          html: items.join("")
+        )
       else
-        $("#artists_search_results").html("Unexpected server error" + data.statusText)
+        $("#artists_search_results").html("Nothing found by request")
+      unsetLoading()
+    ).fail (data)->      
+      $("#artists_search_results").html("Unexpected server error" + data.statusText)
       unsetLoading()
     false
 

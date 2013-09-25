@@ -15,6 +15,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem "less-rails"
   gem "ejs"
+  gem 'jquery-ui-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer', :platforms => :ruby
@@ -32,8 +33,8 @@ gem 'haml-rails'
 gem 'jquery-rails'
 gem "twitter-bootstrap-rails"
 
-gem "resque"
-gem "resque-scheduler"
+# gem "resque"
+# gem "resque-scheduler"
 gem "bluepill"
 
 gem 'paperclip'

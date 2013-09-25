@@ -1,12 +1,19 @@
+= form_tag schedule_logs_path, id: 'logs_form', method: :get do
+  = hidden_field_tag :job_class, params[:job_class] 
+  = text_field_tag 'date_from'
+  = text_field_tag 'date_to'
+  = submit_tag
 %ul{ class: "nav nav-pills" }  
   - @job_classes.each do |job|
-    - html = (params[:job_class] == job) ? 'active' : ''
+    - html = (params[:job_class] == job) ? 'active' : '' 
     %li{class: "#{html}" }
       = link_to job, schedule_logs_path(:job_class => job)
 - if @items.length > 0
   - @items.each do |item|
-    %div
-      = h "[ #{item.status.upcase}: #{item.created_at.strftime('%H:%M:%S %d-%m-%Y')} ] #{item.content}"
+    - html = item.status == 'error' ? 'alert alert-error' : ''
+    - html += ' long truncated' if !item.content.nil? && item.content.length > 200
+    %div{ class: "#{html}" }
+      = h(raw "[ #{item.status.upcase}: #{item.created_at.strftime('%H:%M:%S %d-%m-%Y')} ] #{item.content}")
   = will_paginate @items
 - else 
   %h3
