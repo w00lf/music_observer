@@ -1,6 +1,7 @@
 class MainController < ApplicationController
   def index
-  	concerts = Concert.actual_concerts(params[:date_interval])
+    @@api_provider.check_callback( self )
+  	concerts = current_user.concerts.is_show.actual_concerts(params[:date_interval])
   	prev = ''
   	@shedule = {}
   	concerts.each do |con|

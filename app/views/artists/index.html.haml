@@ -17,12 +17,12 @@
   %tbody
     - @artists.each do |artist|
       %tr
-        - html_class = artist.track ? "label-success" : "label-default"
+        - html_class = artist.artist_user_entries.find_by_user_id(current_user.id).track ? "label-success" : "label-default"
         %td 
           %span{class: "label #{html_class}"}
-            = artist.track ? 'Tracked' : 'Dont tracked'
+            = artist.artist_user_entries.find_by_user_id(current_user.id).track ? 'Tracked' : 'Dont tracked'
         %td= artist.name
-        %td= get_track_button(artist.track, artist.id)
+        %td= get_track_button(artist.artist_user_entries.find_by_user_id(current_user.id).track, artist.id)
         %td= artist.mbid
         %td= image_tag artist.photo.url
         %td=l artist.created_at
