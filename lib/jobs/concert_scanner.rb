@@ -21,13 +21,15 @@ class ConcertScanner
 	    	end
 	    end
 	    User.find_each do |user|
+	    	new_concerts = []
 	    	result.each do |concert|
 	    		if user.artists.include?(concert.artist)
 	    			user.concerts << concert
+	    			new_concerts << concert
 	    		end
 	    	end
+	    	UserMailer.concert_notification(new_concerts, user).deliver if new_concerts.length > 0 && user.notification
     	end
-	    #UserMailer.concert_notification(result).deliver unless result.blank?
 		end
 	end
 end

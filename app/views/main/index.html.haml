@@ -18,8 +18,12 @@
             = concert.sity
             %br
             = concert.street
+          %li
+            = link_to hide_concert_path(concert.id), :method => :put do 
+              %button{ type:  "button", class: "close", :'aria-hidden'=> "true"}
+                &times;
          
         .clear
 - else
   %h3
-    No actual concerts found
+    Не найдено концертов для ваших артистов

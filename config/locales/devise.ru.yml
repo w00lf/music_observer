@@ -1,8 +1,7 @@
+# Русский перевод для https://github.com/plataformatec/devise/tree/v1.4.2
+# Другие переводы на https://github.com/plataformatec/devise/wiki/I18n
+ 
 ru:
-  concert_notfctn_subj: "Найдены новые концерты, группы: %{groups}!"
-  entry_created: Запись успешно создана
-  entry_updated: Запись успешно обновлена
-  entry_hided: Запись спрятана
   errors:
     messages:
       expired: "устарела. Пожалуйста, запросите новую"
@@ -14,7 +13,7 @@ ru:
         few: "%{resource}: сохранение не удалось из-за %{count} ошибок"
         many: "%{resource}: сохранение не удалось из-за %{count} ошибок"
         other: "%{resource}: сохранение не удалось из-за %{count} ошибки"
-        
+ 
   devise:
     failure:
       already_authenticated: "Вы уже вошли в систему."

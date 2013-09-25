@@ -1,6 +1,9 @@
 MusicObserver::Application.routes.draw do
-  resources :concerts
-
+  resources :concerts do
+    member do
+      put 'hide'
+    end
+  end
 
   resources :artists do
     collection do

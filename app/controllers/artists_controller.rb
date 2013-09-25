@@ -57,11 +57,12 @@ class ArtistsController < ApplicationController
       @artist.photo = Artist.photo_from_url( params[:image] )
     end
 
-    @artist.artist_user_entries.create(track: params[:track], user: current_user)
+    @artist.artist_user_entries.create(track: params[:track] || false, user: current_user)
+    toggle_user_concerts()    
     @artist.save()  
 
     respond_to do |format|
-      format.html { render partial: 'main/notice', locals: { notice: 'Artist was successfully created.' } }
+      format.html { render partial: 'main/notice', locals: { notice: t(:entry_created) } }
       format.json { render json: @artist, status: :created }
     end
   end
@@ -71,13 +72,32 @@ class ArtistsController < ApplicationController
 
     respond_to do |format|
       if @artist.artist_user_entries.find_by_user_id(current_user.id).update_attribute(:track, params[:track])
-        format.html { redirect_to artists_path, notice: 'Artist was successfully updated.' }
+        toggle_user_concerts()
+        format.html { redirect_to artists_path, notice: t(:entry_updated) }
         format.json { head :no_content }
       else
         format.html { redirect_to artists_path, notice: 'Errors.' }
         format.json { render json: @artist.errors, status: :unprocessable_entity }
       end
     end
+  end
 
+  private
+
+  def toggle_user_concerts
+    if @artist.artist_user_entries.where(user_id: current_user)[0].track
+      @artist.concerts.each do |concert|
+        if current_user.concerts.include?(concert)
+          current_user.concert_user_entries.where(concert_id: concert).update_all(is_show: true)
+        else
+          current_user.concert_user_entries.create(concert: concert) 
+        end
+      end
+      current_user.concert_user_entries
+    else
+      @artist.concerts.each do |concert|
+        current_user.concert_user_entries.where(concert_id: concert).update_all(is_show: false)
+      end
+    end
   end
 end
