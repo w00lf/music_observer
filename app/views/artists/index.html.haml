@@ -3,7 +3,8 @@
   %h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
 
 
-= link_to t('.new', :default => t("helpers.links.new")), new_artist_path, :class => 'btn btn-primary'
+= link_to t('.create', :default => t("helpers.links.new")), new_artist_path, :class => 'btn btn-primary'
+= link_to t('add_from_library'), api_library_artists_path, :class => 'btn btn-primary'
 %table.table.table-striped#artist_table
   %thead
     %tr

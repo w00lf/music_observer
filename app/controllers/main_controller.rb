@@ -1,7 +1,6 @@
 class MainController < ApplicationController
   layout 'side_bar'
   def index
-    @@api_provider.check_callback( self )
   	concerts = current_user.concerts.is_show.actual_concerts(params[:date_interval])
   	prev = ''
   	@shedule = {}

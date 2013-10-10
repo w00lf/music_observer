@@ -16,7 +16,6 @@ group :assets do
   gem "less-rails"
   gem "ejs"
   gem 'jquery-ui-rails'
-
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer', :platforms => :ruby
 
@@ -27,6 +26,14 @@ end
 group :production do
   gem 'unicorn'
   gem "pg"
+end
+
+group :development do
+  gem 'meta_request'
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem 'pry', '0.9.12.2'
+  gem 'pry-rails', '0.3.2'
 end
 
 gem 'haml-rails'

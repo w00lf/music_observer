@@ -19,15 +19,7 @@ class LastFmApi
 				if query['results']['opensearch:totalResults'].to_i > 0
 					artists = query['results']['artistmatches']
 					unless artists['artist'].nil?
-						result = artists['artist'].select {|artist| !artist['mbid'].blank? }.collect {|artist| 
-							{
-								name: artist["name"], 
-              	mbid: artist["mbid"], 
-              	url: artist["url"], 
-              	listeners: artist["listeners"],
-              	image: get_image(artist["image"])
-          		}
-						}
+						result = format_artists_result(artists['artist'])
 					end	
 				end
 			end
@@ -63,18 +55,46 @@ class LastFmApi
 			result
 		end
 
-		def check_callback controller
+		def check_callback(controller)
 			unless controller.params[:token].blank?
 				controller.session[:music_return_token] = controller.params[:token]
 	    	controller.session[:music_return_token_created] = Time.now
 	    end
 		end
 
+		def check_login(controller)
+			return true if check_token(controller.session[:music_return_token], controller.session[:music_return_token_created])
+		end
+
 		def autenticate_redirect
-			'http://google.com'
+			'http://www.last.fm/api/auth/?api_key=xxx&cb=http://example.com'
+		end
+
+		def retrive_artists(name, page, limit)
+			artists = []
+			logger do
+				params = { method: 'user.gettopartists', user: name, page: page, limit: limit }
+				artists = format_artists_result(get_request(params)["topartists"]["artist"])
+			end
+			artists
 		end
 
 		private
+		def format_artists_result(artists)
+			artists.select {|artist| !artist['mbid'].blank? }.collect {|artist| 
+				{
+					name: artist["name"], 
+        	mbid: artist["mbid"], 
+        	url: artist["url"], 
+        	listeners: artist["listeners"],
+        	image: get_image(artist["image"])
+    		}
+			}
+		end
+
+		def check_token token, created
+			!token.blank? && created < 59.minutes.ago
+		end
 		def get_image image_hash
 			if image_hash.length > 0
 				larg = image_hash.select {|n| n["size"] == "large" }
