@@ -70,4 +70,11 @@ $ ->
     $("#response").html(data)
     $("#name").val('')
 
+  $("#api_library")
+  .bind "ajax:success", (event, data, status, xhr)->
+    $("#response").show()
+    $("#response").html(data)
+
+  $('#add_library_button').click ->
+    $('#api_library').toggle()
 

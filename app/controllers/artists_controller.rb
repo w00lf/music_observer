@@ -32,10 +32,12 @@ class ArtistsController < ApplicationController
   end
 
   def api_library
-    @artists = @@api_provider.retrive_artists(params[:api_id], params[:page], params[:per_page])
-    @artists.each {
-      create_artist(params)   
-    }
+    if @@api_provider.check_user(params[:api_id])
+      @@api_provider.delay.parse_library(params[:api_id], current_user)
+      render partial: 'main/notice', locals: { notice: t(:started_parsing) } 
+    else
+      render partial: 'main/notice', locals: { error: t(:error_api_user_not_found, user: params[:api_id]) } 
+    end
   end
 
   # GET /artists/new
@@ -57,7 +59,8 @@ class ArtistsController < ApplicationController
   # POST /artists
   # POST /artists.json
   def create
-    create_artist(params)  
+    @artist = Artist.create_artist(params, current_user)  
+    toggle_user_concerts()
 
     respond_to do |format|
       format.html { render partial: 'main/notice', locals: { notice: t(:entry_created) } }
@@ -81,19 +84,6 @@ class ArtistsController < ApplicationController
   end
 
   private
-
-  def create_artist(prop)
-    @artist = Artist.find_by_mbid(prop[:mbid])
-    if @artist.nil?
-      @artist = Artist.create(name: prop[:name], 
-                    mbid: prop[:mbid])
-      @artist.photo = Artist.photo_from_url( prop[:image] )
-    end
-    @artist.artist_user_entries.create(track: prop[:track] || false, user: current_user)
-    toggle_user_concerts()    
-    @artist.save()
-    @artist
-  end
 
   def toggle_user_concerts
     if @artist.artist_user_entries.where(user_id: current_user)[0].track
