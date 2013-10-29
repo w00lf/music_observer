@@ -57,6 +57,8 @@ gem 'mongoid'
 gem "will_paginate_mongoid"
 gem 'bson_ext'
 
+gem 'acts-as-taggable-on'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

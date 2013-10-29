@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130925074648) do
+ActiveRecord::Schema.define(:version => 20131029120614) do
 
   create_table "artist_user_entries", :force => true do |t|
     t.integer  "user_id"
@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(:version => 20130925074648) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
-
 
   create_table "artists", :force => true do |t|
     t.string   "name"
@@ -31,6 +30,9 @@ ActiveRecord::Schema.define(:version => 20130925074648) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.datetime "year_from"
+    t.datetime "year_to"
+    t.integer  "listeners"
   end
 
   create_table "concert_user_entries", :force => true do |t|

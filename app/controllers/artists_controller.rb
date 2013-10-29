@@ -36,7 +36,7 @@ class ArtistsController < ApplicationController
       @@api_provider.delay.parse_library(params[:api_id], current_user)
       render partial: 'main/notice', locals: { notice: t(:started_parsing) } 
     else
-      render partial: 'main/notice', locals: { error: t(:error_api_user_not_found, user: params[:api_id]) } 
+      render partial: 'main/error', locals: { description: t(:error_api), error: t(:error_api_user_not_found, user: params[:api_id]) } 
     end
   end
 

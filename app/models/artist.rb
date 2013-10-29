@@ -1,6 +1,7 @@
 class Artist < ActiveRecord::Base
   attr_accessible :mbid, :name, :track
   attr_accessible :photo
+  acts_as_taggable
 
   validates :name, :mbid, presence: true
   validates :name, :mbid, uniqueness: true
@@ -14,11 +15,12 @@ class Artist < ActiveRecord::Base
     artist = self.find_by_mbid(prop[:mbid])
     if artist.nil?
       artist = self.create(name: prop[:name], 
-                    mbid: prop[:mbid])
+                    mbid: prop[:mbid],
+                    listeners: prop[:listeners])
       artist.photo = self.photo_from_url( prop[:image] )
       artist.save()
     end
-    artist.artist_user_entries.create(track: prop[:track] || false, user: user) unless user.artist_user_entries.find_by_artist_id(Artist.last)     
+    artist.artist_user_entries.create(track: prop[:track] || false, user: user) unless user.artists.find_by_id(artist)     
     artist
   end
 

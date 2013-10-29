@@ -2,6 +2,7 @@ class LastFmApi
 	include ScheduledTasksLogger
 
 	@@params = { api_key: LASTFM_KEY, format: 'json' }	
+	MAX_LIBRARY=5000
 
 	class << self
 		def get_request params
@@ -69,22 +70,27 @@ class LastFmApi
 		def retrive_artists(name, page, limit)
 			artists = []
 			params = { method: 'user.gettopartists', user: name, page: page, limit: limit }
-			artists = format_artists_result(get_request(params)["topartists"]["artist"])
+			response = get_request(params)
+			return if response["topartists"]["@attr"]["totalPages"].to_i < page
+			artists = format_artists_result(response["topartists"]["artist"])
 			artists
 		end
 
 		def parse_library(name, user)
 			page = 1
 			limit = 50
+			counter = 0 
 			logger do
 				until((artists = retrive_artists(name, page, limit)).blank?) do
 					artists.each do |art|
 						res = Artist.create_artist(art, user)
+						(warn "max library parse size reached, user :#{user.id}, lastfm user: #{name}"; return) if counter > MAX_LIBRARY
 						if res.errors.blank?
-							info "created entry: #{res.name}, for user: #{user.id}"
+							info "created entry: #{res.name}, for user: #{user.id}, lastfm user: #{name}"
 						else
-							warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{res.errors.full_messages}"
+							warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{res.errors.full_messages}, when parsing lastfm user: #{name}"
 						end
+						counter += 1
 					end
 					page += 1
 				end
