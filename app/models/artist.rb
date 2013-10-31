@@ -1,10 +1,12 @@
 class Artist < ActiveRecord::Base
-  attr_accessible :mbid, :name, :track
+  attr_accessible :mbid, :name, :track, :listeners
   attr_accessible :photo
   acts_as_taggable
 
   validates :name, :mbid, presence: true
   validates :name, :mbid, uniqueness: true
+
+  default_scope order(:created_at)
 
   has_many :concerts
   has_many :artist_user_entries, dependent: :destroy
@@ -22,6 +24,12 @@ class Artist < ActiveRecord::Base
     end
     artist.artist_user_entries.create(track: prop[:track] || false, user: user) unless user.artists.find_by_id(artist)     
     artist
+  end
+
+  def self.filter from, to
+    to = to.blank? ?  Time.now : Time.parse(to)
+    from = from.blank? ?  minimum(:created_at) : Time.parse(from)
+    where(['artists.created_at BETWEEN ? AND ?', from, to])
   end
 
   extend ApplicationHelper

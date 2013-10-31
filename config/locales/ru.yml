@@ -1,4 +1,5 @@
 ru:
+  clear: Очистить
   add_from_library: 'Добавить из библиотеки lastfm'
   concert_notfctn_subj: "Найдены новые концерты, группы: %{groups}!"
   entry_created: Запись успешно создана
@@ -9,6 +10,22 @@ ru:
   error_api: 'Ошибка LastFm:'
   parsing_message: 'Процесс перенесет записи из вашей библиотеки на наш сайт, продолжить?'
   add: 'Добавить'
+  filter: "Фильтровать"
+  search: 'Искать'
+  per_page: 'Записей на страницу:'
+  date_from: 'Дата после'
+  date_to: "Дата до"
+  schedule_logs:
+    filter:
+      status: Статус
+      date_range: Дата записи
+  artists:
+    index:
+      empty: 'Нет созданных артистов в вашей библиотеке'
+    search:
+      search: 'Поиск по артистам'
+      filter_from: "Добавленный с"
+      filter_to: "По"
   errors:
     messages:
       expired: "устарела. Пожалуйста, запросите новую"
@@ -23,6 +40,9 @@ ru:
   activerecord:
     models:
       artist: Артист
+    attributes:
+      artist:
+        name: "Имя/название группы/исполнителя"
   devise:
     failure:
       already_authenticated: "Вы уже вошли в систему."

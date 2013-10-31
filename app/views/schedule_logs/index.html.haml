@@ -1,8 +1,5 @@
-= form_tag schedule_logs_path, id: 'logs_form', method: :get do
-  = hidden_field_tag :job_class, params[:job_class] 
-  = text_field_tag 'date_from'
-  = text_field_tag 'date_to'
-  = submit_tag
+= render partial: 'filter'
+
 %ul{ class: "nav nav-pills" }  
   - @job_classes.each do |job|
     - html = (params[:job_class] == job) ? 'active' : '' 

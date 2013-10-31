@@ -5,8 +5,14 @@ class ArtistsController < ApplicationController
   # GET /artists.json
 
   def index
-    @artists = current_user.artists.paginate(page: params[:page], per_page: params[:per_page] || 10)
-
+    if !params[:search].blank?
+      @artists = current_user.artists.search(params[:search])
+    elsif params[:date_from] || params[:date_to]
+      @artists = current_user.artists.filter(params[:date_from], params[:date_to])
+    else
+      @artists = current_user.artists
+    end
+    @artists = @artists.paginate(page: params[:page], per_page: params[:per_page] || 10) 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @artists }
@@ -69,11 +75,11 @@ class ArtistsController < ApplicationController
   end
 
   def track
-    @artist = current_user.artists.find(params[:id])
+    @artist_entry = current_user.artist_user_entries.find_by_artist_id(params[:id])
 
     respond_to do |format|
-      if @artist.artist_user_entries.find_by_user_id(current_user.id).update_attribute(:track, params[:track])
-        toggle_user_concerts()
+      if @artist_entry.update_attribute(:track, params[:track])
+        #toggle_user_concerts()
         format.html { redirect_to artists_path, notice: t(:entry_updated) }
         format.json { head :no_content }
       else

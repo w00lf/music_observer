@@ -77,4 +77,3 @@ $ ->
 
   $('#add_library_button').click ->
     $('#api_library').toggle()
-

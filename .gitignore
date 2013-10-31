@@ -19,5 +19,6 @@
 /public/system/
 initial_release
 /public/assets/
+/test/
 restart
 .DS_store
