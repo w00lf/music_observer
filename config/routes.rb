@@ -9,6 +9,7 @@ MusicObserver::Application.routes.draw do
     collection do
       get 'api_search'
       post 'api_library'
+      put 'pack_track'
     end
 
     member do

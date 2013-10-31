@@ -9,5 +9,7 @@
     = text_field_tag 'search', params[:search], placeholder: Artist.human_attribute_name(:name)
     = text_field_tag 'date_from', params[:date_from], placeholder: t(:date_from)
     = text_field_tag 'date_to',params[:date_to], placeholder: t(:date_to)
+    = t(:per_page)
+    = select_tag :per_page, options_for_select((25..200).step(25), selected: params[:per_page])
     = submit_tag t(:search)
   

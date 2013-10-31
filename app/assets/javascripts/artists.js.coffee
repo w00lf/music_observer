@@ -77,3 +77,24 @@ $ ->
 
   $('#add_library_button').click ->
     $('#api_library').toggle()
+
+  $('.select_all').click ->
+    if ($(this).hasClass('allChecked'))
+      $('#artist_table tr input:checkbox').prop('checked', false);
+      $(this).removeClass('allChecked')
+    else
+      $('#artist_table tr input:checkbox').prop('checked', true);
+      $(this).addClass('allChecked')
+
+  $('#pack_track, #pack_track_none').click ->
+    if $('#artist_table tr input:checkbox:checked').length > 0
+      if (this.id == 'pack_track_none')
+        $('#pack_track_form input[name=track]').val('false')
+      $('#artist_table tr input:checkbox:checked').each ->
+        $('#pack_track_form').append( $('<input>', { value: this.id, type: 'hidden', name: 'artists[]' }) )
+      $('#pack_track_form').submit()
+    else
+      alert('Вы не выбрали ни одного исполнителя!')
+    
+
+

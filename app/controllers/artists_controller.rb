@@ -57,11 +57,6 @@ class ArtistsController < ApplicationController
     end
   end
 
-  # GET /artists/1/edit
-  def edit
-    @artist = Artist.find(params[:id])
-  end
-
   # POST /artists
   # POST /artists.json
   def create
@@ -74,17 +69,46 @@ class ArtistsController < ApplicationController
     end
   end
 
+  def destroy
+    @artist_entry = current_user.artist_user_entries.find_by_artist_id(params[:id])
+    respond_to do |format|
+      if @artist_entry.destroy()
+        format.html { redirect_to :back, notice: t(:entry_destroied) }
+        format.json { render json: @artist, status: :created }  
+      else
+        format.html { redirect_to :back, error: @artist.errors.full_messages }
+        format.json { render json: @artist.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def track
     @artist_entry = current_user.artist_user_entries.find_by_artist_id(params[:id])
 
     respond_to do |format|
       if @artist_entry.update_attribute(:track, params[:track])
         #toggle_user_concerts()
-        format.html { redirect_to artists_path, notice: t(:entry_updated) }
+        format.html { redirect_to :back, notice: t(:entry_updated) }
         format.json { head :no_content }
       else
-        format.html { redirect_to artists_path, notice: 'Errors.' }
+        format.html { redirect_to :back, error: @artist.errors.full_messages }
         format.json { render json: @artist.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def pack_track  
+    @artist_entries = current_user.artist_user_entries
+    @artist_entries = @artist_entries.where(:id => params[:artists]) unless params[:artists].blank?
+  
+    respond_to do |format|
+      if @artist_entries.update_all(track: params[:track] || true)
+        #toggle_user_concerts()
+        format.html { redirect_to :back, notice: t(:entry_updated) }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to :back, error: @artist_entries.errors.full_messages }
+        format.json { render json: @artist_entries.errors, status: :unprocessable_entity }
       end
     end
   end

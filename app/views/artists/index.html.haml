@@ -20,6 +20,9 @@
     %h5
       = t('.empty')
 - else
+  = link_to pack_track_artists_path(), :method => :put, confirm: t('.track_confirm') do 
+    %button.btn{ type: 'button' }
+      = t('.track_all_library')
   %table.table.table-striped#artist_table
     %thead
       %tr
@@ -32,6 +35,15 @@
         %th= t'.actions', :default => t("helpers.actions")
         %th
           track
+          %button.btn.select_all{ type: 'button' }
+            %i.icon-arrow-down{ title: t(:check_all) }
+          %br
+          = form_tag pack_track_artists_path(), id: 'pack_track_form', :method => :put do
+            = hidden_field_tag :track, true
+          %button.btn{ type: 'button', id: 'pack_track', title: t('.track_all_page_title') }
+            = t('.track_all_button')
+          %button.btn{ type: 'button', id: 'pack_track_none', title: t('.none_track_all_page_title') }
+            = t('.track_none_button')
     %tbody
       = render partial: "artist", collection: @artists
   = will_paginate @artists
