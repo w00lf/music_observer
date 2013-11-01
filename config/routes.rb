@@ -1,4 +1,6 @@
 MusicObserver::Application.routes.draw do
+  get "api_authenticate/request"
+
   resources :concerts do
     member do
       put 'hide'

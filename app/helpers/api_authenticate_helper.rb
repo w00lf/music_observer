@@ -1,0 +1,2 @@
+module ApiAuthenticateHelper
+end

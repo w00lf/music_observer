@@ -38,12 +38,19 @@ class ArtistsController < ApplicationController
   end
 
   def api_library
-    if @@api_provider.check_user(params[:api_id])
-      @@api_provider.delay.parse_library(params[:api_id], current_user)
-      render partial: 'main/notice', locals: { notice: t(:started_parsing) } 
-    else
-      render partial: 'main/error', locals: { description: t(:error_api), error: t(:error_api_user_not_found, user: params[:api_id]) } 
+    user = ''
+    unless params[:api_id].blank? && !@@api_provider.check_user(params[:api_id])
+      user = params[:api_id]
+    else 
+      unless user = @@api_provider_aut.get_username(session)
+        session[:return_to] = request.url
+        session[:request_url] = request.url
+        redirect_to '/api_authenticate/request'
+      end
     end
+    parsing_started()
+    parsing_failed()
+    @@api_provider.delay.parse_library(user, current_user)
   end
 
   # GET /artists/new
@@ -114,6 +121,15 @@ class ArtistsController < ApplicationController
   end
 
   private
+
+  def parsing_started
+    render partial: 'main/notice', locals: { notice: t(:started_parsing) } 
+  end
+
+  def parsing_failed
+    render partial: 'main/error', locals: { description: t(:error_api), error: t(:error_api_user_not_found, user: params[:api_id]) } 
+  end
+
 
   def toggle_user_concerts
     if @artist.artist_user_entries.where(user_id: current_user)[0].track

@@ -15,10 +15,6 @@ class MainController < ApplicationController
   	render stream: true
   end
 
-  def api_autenticate
-    redirect_to @@api_provider.autenticate_redirect
-  end
-
   private
 
   def get_formated_date date

@@ -6,7 +6,7 @@ class ScheduleLogsController < ApplicationController
     status = params[:status]
     start_date, end_date = params[:date_from], params[:date_to]
     @job_classes = ScheduledTask.pluck(:job_class)
-    @job_classes << 'LastFmApi'
+    @job_classes.push(@@api_provider,@@api_provider_aut)
     if params[:job_class].blank?
       @items = ScheduleLog.paginate(page: params[:page], per_page: params[:per_page])
     else

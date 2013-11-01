@@ -2,7 +2,7 @@
 
 %ul{ class: "nav nav-pills" }  
   - @job_classes.each do |job|
-    - html = (params[:job_class] == job) ? 'active' : '' 
+    - html = (params[:job_class] == job.to_s) ? 'active' : '' 
     %li{class: "#{html}" }
       = link_to job, schedule_logs_path(:job_class => job)
 - if @items.length > 0
