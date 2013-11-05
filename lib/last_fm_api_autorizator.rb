@@ -1,13 +1,16 @@
 class LastFmApiAutorizator < LastFmApi
   @@session_key = ''
   @@lastfm_user = ''
+  @@signature = ''
+
   class << self
     def check_callback(session, params)
       unless (token = params[:token]).blank?
         if fetch_session(token)
           session[:auth] = {}
-          session[:auth][:api_sig] = @@session_key 
+          session[:auth][:session_key] = @@session_key 
           session[:auth][:username] = @@lastfm_user
+          session[:auth][:api_sig] = @@lastfm_user
         end
       end
     end
@@ -15,8 +18,8 @@ class LastFmApiAutorizator < LastFmApi
     def fetch_session token
       responce = {}
       logger do
-        signature = Digest::MD5.hexdigest("api_key#{LASTFM_KEY}methodauth.getSessiontoken#{token}#{LASTFM_SECRET}")
-        params = { token: token, api_key: LASTFM_KEY, api_sig: signature, method: 'auth.getSession' }
+        @@signature = Digest::MD5.hexdigest("api_key#{LASTFM_KEY}methodauth.getSessiontoken#{token}#{LASTFM_SECRET}")
+        params = { token: token, api_key: LASTFM_KEY, api_sig: @@signature, method: 'auth.getSession' }
         debug "processing fetch session for token: #{token}"
         responce = get_request(params)
 
@@ -36,7 +39,7 @@ class LastFmApiAutorizator < LastFmApi
     end
 
     def need_auth?(session)
-      session[:auth].blank? || session[:auth][:api_sig].blank?
+      session[:auth].blank? || session[:auth][:session_key].blank?
     end
 
     def autenticate_redirect

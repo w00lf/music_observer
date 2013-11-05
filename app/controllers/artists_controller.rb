@@ -37,20 +37,18 @@ class ArtistsController < ApplicationController
     render json: artists      
   end
 
-  def api_library
+  def api_library # TODO finish this method throu ajax
     user = ''
-    unless params[:api_id].blank? && !@@api_provider.check_user(params[:api_id])
+    if !params[:api_id].blank?
+      return parsing_failed() unless @@api_provider.check_user(params[:api_id])
       user = params[:api_id]
     else 
-      unless user = @@api_provider_aut.get_username(session)
-        session[:return_to] = request.url
-        session[:request_url] = request.url
-        redirect_to '/api_authenticate/request'
+      if (user = @@api_provider_aut.get_username(session)).nil?
+        return api_auth()
       end
     end
-    parsing_started()
-    parsing_failed()
     @@api_provider.delay.parse_library(user, current_user)
+    parsing_started()
   end
 
   # GET /artists/new
@@ -106,10 +104,10 @@ class ArtistsController < ApplicationController
 
   def pack_track  
     @artist_entries = current_user.artist_user_entries
-    @artist_entries = @artist_entries.where(:id => params[:artists]) unless params[:artists].blank?
-  
+    @artist_entries = @artist_entries.where(:artist_id => params[:artists]) unless params[:artists].blank?
+    session[:artist_entries] = @artist_entries.inspect
     respond_to do |format|
-      if @artist_entries.update_all(track: params[:track] || true)
+      if @artist_entries.update_all(track: (params[:track] || true))
         #toggle_user_concerts()
         format.html { redirect_to :back, notice: t(:entry_updated) }
         format.json { head :no_content }
@@ -123,11 +121,15 @@ class ArtistsController < ApplicationController
   private
 
   def parsing_started
-    render partial: 'main/notice', locals: { notice: t(:started_parsing) } 
+    flash[:notice] = t(:started_parsing) 
+    redirect_to(:back)
+    # render partial: 'main/notice', locals: { notice: t(:started_parsing) } 
   end
 
   def parsing_failed
-    render partial: 'main/error', locals: { description: t(:error_api), error: t(:error_api_user_not_found, user: params[:api_id]) } 
+    flash[:error] = t(:error_api_user_not_found, user: params[:api_id])
+    redirect_to :back
+    # render partial: 'main/error', locals: { description: t(:error_api), error: t(:error_api_user_not_found, user: params[:api_id]) } 
   end
 
 

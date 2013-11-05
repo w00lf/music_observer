@@ -34,6 +34,7 @@ group :development do
   gem "binding_of_caller"
   gem 'pry', '0.9.12.2'
   gem 'pry-rails', '0.3.2'
+  gem "rack-insight"
 end
 
 gem 'haml-rails'

@@ -1,5 +1,6 @@
 MusicObserver::Application.routes.draw do
-  get "api_authenticate/request"
+  get "api_session/outside_request"
+  get "api_session/return_callback"
 
   resources :concerts do
     member do

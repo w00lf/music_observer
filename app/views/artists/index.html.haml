@@ -6,10 +6,11 @@
 = link_to t('.create', :default => t("helpers.links.new")), new_artist_path, :class => 'btn btn-primary'
 = link_to t(:add_from_library), '#', :class => 'btn btn-primary', id: 'add_library_button'
 
-= form_tag api_library_artists_path, method: :post, id: 'api_library', :remote => true do
+= form_tag api_library_artists_path, method: :post, id: 'api_library' do
   = label_tag 'api_id', 'Lastfm user login:'
   = text_field_tag 'api_id', nil
-  = submit_tag t(:add), :confirm => t(:parsing_message)
+  = submit_tag t(:add), :confirm => t('.parsing_message')
+  = link_to_or_authorize(@api_authorized, submit_tag(t('.add_from_own_library'), :confirm => t('.parsing_message'), id: 'add_from_own_library'))
 
 %div#response
 - if params[:search] || @artists.count > 1

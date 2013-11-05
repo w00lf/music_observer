@@ -75,6 +75,11 @@ $ ->
     $("#response").show()
     $("#response").html(data)
 
+  $('#add_from_own_library').click (e)->
+    e.preventDefault()
+    $("#api_id").val('')
+    $("#api_library").submit()
+
   $('#add_library_button').click ->
     $('#api_library').toggle()
 

@@ -22,3 +22,4 @@ initial_release
 /test/
 restart
 .DS_store
+*.sqlite

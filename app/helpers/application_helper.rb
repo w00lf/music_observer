@@ -23,38 +23,12 @@ module ApplicationHelper
     	}
     end
 
-    def get_pid(pid_file)
-        File.read(pid_file) rescue nil
+    def api_auth
+       url_for(controller: 'api_session', action: 'outside_request', return_url: request.url ) 
     end
 
-    def get_worker_pid
-        get_pid(SCHEDULED_TASKS_PID)
-    end
-
-    def get_scheduler_pid
-        get_pid(SCHEDULER_PID)
-    end
-    def worker
-        Resque::Worker.all.select { |worker| worker.id.match(/scheduled_tasks/) }.first
-    end
-
-    def worker_processing     
-        if worker && worker.processing.present?
-          worker.processing['payload']['class']
-        else
-          "Waiting for a job"
-        end
-    end
-
-    def worker_run_at
-        if worker && worker.processing.present?
-          worker.processing['run_at']
-        else
-          '--:--'
-        end
-    end
-
-    def last_failed
-        Resque::Failure.all(-1)["payload"]["class"]
+    def link_to_or_authorize api_authorized, target_tag
+        return target_tag if api_authorized
+        link_to(t('.add_from_own_library'), api_auth, confirm: t('.authorize_api'))
     end
 end
