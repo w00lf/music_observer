@@ -9,7 +9,8 @@ class Artist < ActiveRecord::Base
   default_scope order(:created_at)
 
   has_many :concerts
-  has_many :artist_user_entries, dependent: :destroy
+  has_many :artist_users, dependent: :destroy
+  has_many :libraries, :through => :artist_users, :source => :link, :source_type => 'Library'
   
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
 

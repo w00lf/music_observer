@@ -11,14 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131029120614) do
+ActiveRecord::Schema.define(:version => 20131106082335) do
 
-  create_table "artist_user_entries", :force => true do |t|
+  create_table "artist_users", :force => true do |t|
     t.integer  "user_id"
     t.integer  "artist_id"
-    t.boolean  "track",      :default => false, :null => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.integer  "link_id"
+    t.string   "link_type"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "artists", :force => true do |t|
@@ -57,6 +58,14 @@ ActiveRecord::Schema.define(:version => 20131029120614) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+  end
+
+  create_table "libraries", :force => true do |t|
+    t.boolean  "track",      :default => false, :null => false
+    t.integer  "listened",   :default => 0,     :null => false
+    t.boolean  "show",       :default => true,  :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "scheduled_tasks", :force => true do |t|
