@@ -14,12 +14,14 @@
 ActiveRecord::Schema.define(:version => 20131106082335) do
 
   create_table "artist_users", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "artist_id"
-    t.integer  "link_id"
-    t.string   "link_type"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "user_id",                       :null => false
+    t.integer  "artist_id",                     :null => false
+    t.string   "type"
+    t.boolean  "track",      :default => false, :null => false
+    t.boolean  "show",       :default => false, :null => false
+    t.integer  "listeners",  :default => 0
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "artists", :force => true do |t|

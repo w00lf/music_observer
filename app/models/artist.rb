@@ -1,6 +1,5 @@
 class Artist < ActiveRecord::Base
-  attr_accessible :mbid, :name, :track, :listeners
-  attr_accessible :photo
+  attr_accessible :mbid, :name, :track, :listeners, :photo
   acts_as_taggable
 
   validates :name, :mbid, presence: true
@@ -9,8 +8,12 @@ class Artist < ActiveRecord::Base
   default_scope order(:created_at)
 
   has_many :concerts
-  has_many :artist_users, dependent: :destroy
-  has_many :libraries, :through => :artist_users, :source => :link, :source_type => 'Library'
+  has_many :favorites, dependent: :destroy
+  has_many :recommendations, dependent: :destroy
+  # has_many :libraries, :through => :artist_users, :source => :link, :source_type => 'Library'
+
+  has_many :users_favorites,  through: :favorites, source: :artist, conditions: { artist_users: { type: "Favorite" } }, :uniq => true
+  has_many :users_recommendations, through: :recommendations, source: :artist, conditions: { artist_users: { type: "Recommendation" } }, :uniq => true
   
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
 
@@ -31,6 +34,10 @@ class Artist < ActiveRecord::Base
     to = to.blank? ?  Time.now : Time.parse(to)
     from = from.blank? ?  minimum(:created_at) : Time.parse(from)
     where(['artists.created_at BETWEEN ? AND ?', from, to])
+  end
+
+  def toggle_library_entry user, visibl
+    artist_users.find_by_user_id(user).link.update_attribute(:track, visibl)
   end
 
   extend ApplicationHelper

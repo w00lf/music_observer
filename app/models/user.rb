@@ -8,17 +8,12 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
   
-  has_many :artist_users, dependent: :destroy
   has_many :concert_user_entries, dependent: :destroy
-  has_many :artists, through: :artist_users, :conditions => '"artist_users"."link_type" = \'Library\'' do 
-    def tracked
-      joins(:libraries).where(['libraries.track = ?', true])
-    end
+  has_many :favorites, dependent: :destroy
+  has_many :recommendations, dependent: :destroy
 
-    def visible
-      joins(:libraries).where(['libraries.show = ?', true])
-    end
-  end
+  has_many :artists_favorites, through: :favorites, source: :artist, conditions: { artist_users: { type: "Favorite" } }, :uniq => true
+  has_many :artists_recommendations, through: :recommendations, source: :artist, conditions: { artist_users: { type: "Recommendation" } }, :uniq => true
   # has_many :libraries, :through => :artist_users, :source => :link, :source_type => 'Library'
   # has_many :libraries, conditions: { artist_users: { link_type: "Library" } }, class_name: 'Library'
   has_many :concerts, through: :concert_user_entries 
