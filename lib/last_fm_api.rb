@@ -72,7 +72,7 @@ class LastFmApi
 			logger do
 				until((artists = retrive_artists(name, page, limit)).blank?) do
 					artists.each do |art|
-						res = Artist.create_artist(art, user)
+						res = Artist.create_favorite(art, user)
 						(warn "max library parse size reached, user :#{user.id}, lastfm user: #{name}"; return) if counter > MAX_LIBRARY
 						if res.errors.blank?
 							info "created entry: #{res.name}, for user: #{user.id}, lastfm user: #{name}"

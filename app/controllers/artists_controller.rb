@@ -6,11 +6,11 @@ class ArtistsController < ApplicationController
 
   def index
     if !params[:search].blank?
-      @artists = current_user.artists.search(params[:search])
+      @artists = current_user.artists_favorites.search(params[:search])
     elsif params[:date_from] || params[:date_to]
-      @artists = current_user.artists.filter(params[:date_from], params[:date_to])
+      @artists = current_user.artists_favorites.filter(params[:date_from], params[:date_to])
     else
-      @artists = current_user.artists
+      @artists = current_user.artists_favorites
     end
     @artists = @artists.paginate(page: params[:page], per_page: params[:per_page] || 10) 
     respond_to do |format|
@@ -22,7 +22,7 @@ class ArtistsController < ApplicationController
   # GET /artists/1
   # GET /artists/1.json
   def show
-    @artist = current_user.artists.find(params[:id])
+    @artist = current_user.artists_favorites.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -32,7 +32,7 @@ class ArtistsController < ApplicationController
 
   def api_search
     artists = @@api_provider.search_artist( params[:query] )
-    known_artists = current_user.artists.find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
+    known_artists = current_user.artists_favorites.find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
     artists.select! {|artist| !known_artists.include?(artist[:mbid]) }
     render json: artists      
   end
@@ -65,7 +65,7 @@ class ArtistsController < ApplicationController
   # POST /artists
   # POST /artists.json
   def create
-    @artist = Artist.create_artist(params, current_user)  
+    @artist = Artist.create_favorite(params, current_user)  
     toggle_user_concerts()
 
     respond_to do |format|
@@ -75,45 +75,45 @@ class ArtistsController < ApplicationController
   end
 
   def destroy
-    @artist_entry = current_user.artist_user_entries.find_by_artist_id(params[:id])
+    @favorite = current_user.favorites.find_by_artist_id(params[:id])
     respond_to do |format|
-      if @artist_entry.destroy()
+      if @favorite.destroy()
         format.html { redirect_to :back, notice: t(:entry_destroied) }
-        format.json { render json: @artist, status: :created }  
+        format.json { render json: @favorite, status: :created }  
       else
-        format.html { redirect_to :back, error: @artist.errors.full_messages }
-        format.json { render json: @artist.errors, status: :unprocessable_entity }
+        format.html { redirect_to :back, error: @favorite.errors.full_messages }
+        format.json { render json: @favorite.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def track
-    @artist_entry = current_user.artist_user_entries.find_by_artist_id(params[:id])
+    @favorite = current_user.favorites.find_by_artist_id(params[:id])
 
     respond_to do |format|
-      if @artist_entry.update_attribute(:track, params[:track])
+      if @favorite.update_attribute(:track, params[:track])
         #toggle_user_concerts()
         format.html { redirect_to :back, notice: t(:entry_updated) }
         format.json { head :no_content }
       else
-        format.html { redirect_to :back, error: @artist.errors.full_messages }
-        format.json { render json: @artist.errors, status: :unprocessable_entity }
+        format.html { redirect_to :back, error: @favorite.errors.full_messages }
+        format.json { render json: @favorite.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def pack_track  
-    @artist_entries = current_user.artist_user_entries
-    @artist_entries = @artist_entries.where(:artist_id => params[:artists]) unless params[:artists].blank?
-    session[:artist_entries] = @artist_entries.inspect
+    @favorites = current_user.favorites
+    @favorites = @favorites.where(:artist_id => params[:artists]) unless params[:artists].blank?
+    
     respond_to do |format|
-      if @artist_entries.update_all(track: (params[:track] || true))
+      if @favorites.update_all(track: (params[:track] || true))
         #toggle_user_concerts()
         format.html { redirect_to :back, notice: t(:entry_updated) }
         format.json { head :no_content }
       else
-        format.html { redirect_to :back, error: @artist_entries.errors.full_messages }
-        format.json { render json: @artist_entries.errors, status: :unprocessable_entity }
+        format.html { redirect_to :back, error: @favorites.errors.full_messages }
+        format.json { render json: @favorites.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -134,7 +134,7 @@ class ArtistsController < ApplicationController
 
 
   def toggle_user_concerts
-    if @artist.artist_user_entries.where(user_id: current_user)[0].track
+    if @artist.favorites.where(user_id: current_user)[0].track
       @artist.concerts.each do |concert|
         if current_user.concerts.include?(concert)
           current_user.concert_user_entries.where(concert_id: concert).update_all(is_show: true)

@@ -1,4 +1,5 @@
 class Artist < ActiveRecord::Base
+  extend ApplicationHelper
   attr_accessible :mbid, :name, :track, :listeners, :photo
   acts_as_taggable
 
@@ -12,33 +13,29 @@ class Artist < ActiveRecord::Base
   has_many :recommendations, dependent: :destroy
   # has_many :libraries, :through => :artist_users, :source => :link, :source_type => 'Library'
 
-  has_many :users_favorites,  through: :favorites, source: :artist, conditions: { artist_users: { type: "Favorite" } }, :uniq => true
-  has_many :users_recommendations, through: :recommendations, source: :artist, conditions: { artist_users: { type: "Recommendation" } }, :uniq => true
+  has_many :users_favorites,  through: :favorites, source: :user, conditions: { artist_users: { type: "Favorite" } }, :uniq => true
+  has_many :users_recommendations, through: :recommendations, source: :user, conditions: { artist_users: { type: "Recommendation" } }, :uniq => true
   
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
 
-  def self.create_artist(prop, user)
-    artist = self.find_by_mbid(prop[:mbid])
-    if artist.nil?
-      artist = self.create(name: prop[:name], 
-                    mbid: prop[:mbid],
-                    listeners: prop[:listeners])
-      artist.photo = self.photo_from_url( prop[:image] )
-      artist.save()
+  class << self
+    def create_favorite prop, user
+      artist = find_or_create(prop)
+      Favorite.find_or_create_by_user_id_and_artist_id(artist_id: artist.id, user_id: user.id, track: prop[:track] || false)
+      artist
     end
-    artist.artist_user_entries.create(track: prop[:track] || false, user: user) unless user.artists.find_by_id(artist)     
-    artist
-  end
 
-  def self.filter from, to
-    to = to.blank? ?  Time.now : Time.parse(to)
-    from = from.blank? ?  minimum(:created_at) : Time.parse(from)
-    where(['artists.created_at BETWEEN ? AND ?', from, to])
-  end
+    def find_or_create prop
+      artist = find_or_create_by_mbid(prop[:mbid], name: prop[:name], mbid: prop[:mbid],listeners: prop[:listeners] || 0)
+      (artist.photo = photo_from_url(prop[:image]); artist.save()) unless artist.photo.exists?
+      artist
+    end
 
-  def toggle_library_entry user, visibl
-    artist_users.find_by_user_id(user).link.update_attribute(:track, visibl)
+    # ERROR wrong filter, need filter by artists_users
+    def filter from, to 
+      to = to.blank? ?  Time.now : Time.parse(to)
+      from = from.blank? ?  minimum(:created_at) : Time.parse(from)
+      where(['artists.created_at BETWEEN ? AND ?', from, to])
+    end
   end
-
-  extend ApplicationHelper
 end
