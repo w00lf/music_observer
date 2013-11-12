@@ -1,5 +1,6 @@
 class MainController < ApplicationController
   layout 'side_bar'
+  caches_action :index
   def index
   	concerts = current_user.concerts.is_show.actual_concerts(params[:date_interval])
   	prev = ''

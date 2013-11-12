@@ -2,9 +2,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :authenticate_user!, :check_api_login
 
-  @@api_provider = LastFmApi
-  @@api_provider_aut = LastFmApiAutorizator
-
   def api_auth
     session[:return_url] = request.url
     redirect_to '/api_session/outside_request'
@@ -19,6 +16,8 @@ class ApplicationController < ActionController::Base
   end
 
   def check_api_login
-    @api_authorized = !@@api_provider_aut.need_auth?(session)   
+    @api_provider = LastFmApi.new
+    @api_provider_aut = LastFmApiAutorizator.new(session)
+    @api_authorized = !@api_provider_aut.need_auth?()   
   end
 end

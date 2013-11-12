@@ -4,6 +4,8 @@ class ArtistsController < ApplicationController
   # GET /artists
   # GET /artists.json
 
+  # caches_action :index, :cache_path => Proc.new { |c| c.params }
+
   def index
     if !params[:search].blank?
       @artists = current_user.artists_favorites.search(params[:search])
@@ -31,7 +33,7 @@ class ArtistsController < ApplicationController
   end
 
   def api_search
-    artists = @@api_provider.search_artist( params[:query] )
+    artists = @api_provider.search_artist( params[:query] )
     known_artists = current_user.artists_favorites.find_all_by_mbid(artists.collect {|n| n[:mbid] }).map(&:mbid)
     artists.select! {|artist| !known_artists.include?(artist[:mbid]) }
     render json: artists      
@@ -40,14 +42,14 @@ class ArtistsController < ApplicationController
   def api_library # TODO finish this method throu ajax
     user = ''
     if !params[:api_id].blank?
-      return parsing_failed() unless @@api_provider.check_user(params[:api_id])
+      return parsing_failed() unless @api_provider.check_user(params[:api_id])
       user = params[:api_id]
     else 
-      if (user = @@api_provider_aut.get_username(session)).nil?
+      if (user = @api_provider_aut.get_username()).nil?
         return api_auth()
       end
     end
-    @@api_provider.delay.parse_library(user, current_user)
+    @api_provider.delay.parse_library(user, current_user)
     parsing_started()
   end
 

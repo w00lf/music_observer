@@ -43,7 +43,7 @@ gem "twitter-bootstrap-rails"
 
 # gem "resque"
 # gem "resque-scheduler"
-gem "bluepill"
+# gem "bluepill"
 
 gem 'delayed_job_mongoid'
 
