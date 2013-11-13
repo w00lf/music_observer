@@ -51,10 +51,6 @@ class LastFmApi
 		result
 	end
 
-	def check_login controller
-		return true if check_token(controller.session[:music_return_token], controller.session[:music_return_token_created])
-	end
-
 	def retrive_artists name, page, limit
 		params = { 	
 			method: 'user.gettopartists', 
@@ -79,7 +75,9 @@ class LastFmApi
 	def request_and_format params, root
 		response = get_request(params)
 		debug response.inspect
+		debug "page number is: #{params[:page]}"
 		return if response[root]["@attr"]["totalPages"].to_i < params[:page]
+		debug "making formating for: #{response[root]["artist"]}"
 		format_artists_result(response[root]["artist"])
 	end
 
@@ -108,28 +106,35 @@ class LastFmApi
 		page = 1
 		limit = 50
 		counter = 0
+		debug "fooo for test"
 		api_sig = authenticater.make_signature(	'api_key' => LASTFM_KEY,
 																						'limit' => 50,
 																						'method' => 'user.getRecommendedArtists',
-																						'page' => 1,
+																						'page' => page,
 																						'sk' => authenticater.get_session_key()
 																						)	
 		username_to_parse = authenticater.get_username()
 		session_key = authenticater.get_session_key()
 		logger do
-			until((artists = retrive_recommended_artists(name, page, limit, api_sig, session_key)).blank?) do
-				# TODO finish creation of artists recomendations
-				# artists.each do |art|
-				# 	res = Artist.create_favorite(art, user)
-				# 	(warn "max library parse size reached, user :#{user.id}, lastfm user: #{name}"; return) if counter > MAX_LIBRARY
-				# 	if res.errors.blank?
-				# 		info "created entry: #{res.name}, for user: #{user.id}, lastfm user: #{name}"
-				# 	else
-				# 		warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{res.errors.full_messages}, when parsing lastfm user: #{name}"
-				# 	end
-				# 	counter += 1
-				# end
+			until((artists = retrive_recommended_artists(page, limit, api_sig, session_key)).blank?) do
+				debug artists
+				artists.each do |art|
+					res = Artist.create_recommended(art, user)
+					(warn "max library parse size reached, user :#{user.id}, lastfm user: #{username_to_parse}"; return) if counter > MAX_LIBRARY
+					if res.errors.blank?
+						info "created entry: #{res.name}, for user: #{user.id}, lastfm user: #{username_to_parse}"
+					else
+						warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{res.errors.full_messages}, when parsing recomendations for lastfm user: #{username_to_parse}"
+					end
+					counter += 1
+				end
 				page += 1
+				api_sig = authenticater.make_signature(	'api_key' => LASTFM_KEY,
+																						'limit' => 50,
+																						'method' => 'user.getRecommendedArtists',
+																						'page' => page,
+																						'sk' => authenticater.get_session_key()
+																						)	
 			end
 		end
 	end

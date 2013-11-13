@@ -1,19 +1,19 @@
 class LastFmApiAutorizator < LastFmApi
 
   def initialize session
-    @session = session
+    @session = session[:auth]
     @session_key = ''
     @lastfm_user = ''
     @signature = ''
   end
 
-  def check_callback params
+  def check_callback params # TODO change method, add session object, @session is no more a session object
     unless (token = params[:token]).blank?
       if fetch_session(token)
-        @session[:auth] = {}
-        @session[:auth][:session_key] = @session_key 
-        @session[:auth][:username] = @lastfm_user
-        @session[:auth][:api_sig] = @signature
+        @session = {}
+        @session[:session_key] = @session_key 
+        @session[:username] = @lastfm_user
+        @session[:api_sig] = @signature
       end
     end
   end
@@ -44,15 +44,15 @@ class LastFmApiAutorizator < LastFmApi
   end
 
   def get_username
-    @session[:auth][:username] unless @session[:auth].blank?
+    @session[:username] unless @session.blank?
   end
 
   def get_session_key
-    @session[:auth][:session_key] unless @session[:auth].blank?
+    @session[:session_key] unless @session.blank?
   end
 
   def need_auth?
-    @session[:auth].blank? || @session[:auth][:session_key].blank?
+    @session.blank? || @session[:session_key].blank?
   end
 
   def autenticate_redirect

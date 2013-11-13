@@ -25,6 +25,12 @@ class Artist < ActiveRecord::Base
       artist
     end
 
+    def create_recommended prop, user
+      artist = find_or_create(prop)
+      Recommendation.find_or_create_by_user_id_and_artist_id(artist_id: artist.id, user_id: user.id)
+      artist
+    end
+
     def find_or_create prop
       artist = find_or_create_by_mbid(prop[:mbid], name: prop[:name], mbid: prop[:mbid],listeners: prop[:listeners] || 0)
       (artist.photo = photo_from_url(prop[:image]); artist.save()) unless artist.photo.exists?
