@@ -5,7 +5,7 @@ class CreateArtistUsers < ActiveRecord::Migration
       t.integer :artist_id, null: false
       t.string  :type
       t.boolean :track, default: false
-      t.boolean :show, default: false
+      t.boolean :show, default: true
       t.integer :listeners, default: 0
 
       t.timestamps

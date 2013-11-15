@@ -7,6 +7,7 @@ ru:
   entry_hided: Запись спрятана
   entry_destroied: Запись удалена
   started_parsing: 'Запущен процесс переноса вашей библиотеки, это может занять нескольких секунд или минут, исполнители будут появляться по мере переноса'
+  refused: Вы отказались от записи
   error_api_user_not_found: 'Не найдено такого пользователя: "%{user}"'
   error_api: 'Ошибка LastFm:'
   add: 'Добавить'
@@ -16,6 +17,7 @@ ru:
   date_from: 'Дата после'
   date_to: "Дата до"
   check_all: "Выбрать всех"
+  none: Нет
   schedule_logs:
     filter:
       status: Статус
@@ -36,6 +38,9 @@ ru:
       search: 'Поиск по артистам'
       filter_from: "Добавленный с"
       filter_to: "По"
+  recommendations:
+    recommendation:
+      destroy: Отказаться
   errors:
     messages:
       expired: "устарела. Пожалуйста, запросите новую"
@@ -49,10 +54,28 @@ ru:
         other: "%{resource}: сохранение не удалось из-за %{count} ошибки"
   activerecord:
     models:
-      artist: Артист
+      favorite:
+        one: Избранный артист
+        many: Избранные артисты
+      artist: 
+        one: Артист
+        many: Артисты
+      concert:
+        one: Концерт
+        many: Концерты 
+      recommendation: 
+        one: Рекомендация
+        many: Рекомендации 
+      schedule_log:
+        one: Лог
+        many: Логи
     attributes:
       artist:
         name: "Имя/название группы/исполнителя"
+        created_at: Добавден в библиотеку
+        year_from: Год образования
+        year_to: Год распада
+        listeners: Слушатели на LastFm
   devise:
     failure:
       already_authenticated: "Вы уже вошли в систему."

@@ -1,6 +1,6 @@
 class Artist < ActiveRecord::Base
   extend ApplicationHelper
-  attr_accessible :mbid, :name, :track, :listeners, :photo
+  attr_accessible :mbid, :name, :track, :listeners, :photo, :year_from, :year_to
   acts_as_taggable
 
   validates :name, :mbid, presence: true
@@ -17,6 +17,12 @@ class Artist < ActiveRecord::Base
   has_many :users_recommendations, through: :recommendations, source: :user, conditions: { artist_users: { type: "Recommendation" } }, :uniq => true
   
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
+
+  scope :date_range, lambda {|year_from, year_to|
+    year_from = year_from.blank? ? 1000.years.ago : year_from
+    year_to = year_to.blank? ? Time.now : year_to
+    where(['year_from > ? AND (year_to < ? OR year_to IS ?)', year_from, year_to, nil])
+  }
 
   class << self
     def create_favorite prop, user

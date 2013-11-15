@@ -73,6 +73,7 @@ class LastFmApi
 	end
 
 	def request_and_format params, root
+		debug "making request with parameters #{params}"
 		response = get_request(params)
 		debug response.inspect
 		debug "page number is: #{params[:page]}"

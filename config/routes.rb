@@ -1,6 +1,10 @@
 MusicObserver::Application.routes.draw do
+
   get "api_session/outside_request"
   get "api_session/return_callback"
+
+
+  resources :recommendations, only: [:index, :destroy] 
 
   resources :concerts do
     member do

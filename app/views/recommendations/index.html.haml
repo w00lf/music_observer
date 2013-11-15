@@ -1,0 +1,31 @@
+%h1= model_page_title(@recommendations.first)
+
+/ = form_tag api_library_artists_path, method: :post, id: 'api_library' do
+/   = label_tag 'api_id', 'Lastfm user login:'
+/   = text_field_tag 'api_id', nil
+/   = submit_tag t(:add), :confirm => t('.parsing_message')
+/   = link_to_or_authorize(@api_authorized, submit_tag(t('.add_from_own_library'), :confirm => t('.parsing_message'), id: 'add_from_own_library'))
+
+/ %div#response
+/ - if params[:search] || @artists.count > 1
+/   = render partial: 'search'
+
+- if @recommendations.blank?
+  .lead
+    %h5
+      = t('.empty')
+- else
+  %table.table.table-striped#artist_table
+    %thead
+      %tr
+        %th= Artist.human_attribute_name(:photo)
+        %th= Artist.human_attribute_name(:name)
+        %th= Artist.human_attribute_name(:year_from)
+        %th= Artist.human_attribute_name(:year_to)
+        %th= Artist.human_attribute_name(:listeners)
+        %th= Artist.human_attribute_name(:created_at)
+        %th
+    %tbody
+      = render partial: "recommendation", collection: @recommendations
+  = will_paginate @artists
+         

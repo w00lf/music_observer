@@ -7,9 +7,8 @@ class ArtistsController < ApplicationController
   # caches_action :index, :cache_path => Proc.new { |c| c.params }
 
   def index
-    Delayed::Worker.destroy_failed_jobs = false
     # @api_provider.delay.parse_library('foo', current_user)
-    @api_provider.delay.parse_recomendations(current_user, @api_provider_aut)
+    # @api_provider.delay.parse_recomendations(current_user, @api_provider_aut)
     if !params[:search].blank?
       @artists = current_user.artists_favorites.search(params[:search])
     elsif params[:date_from] || params[:date_to]

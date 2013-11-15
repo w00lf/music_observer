@@ -17,9 +17,10 @@ module ApplicationHelper
 
     def get_top_menu_items
     	{
-    		"Artists" =>  artists_path, 
-    		"Concerts" => concerts_path,
-            "Statistics" => schedule_logs_path
+    		Favorite.model_name.human(:count => 1000) =>  artists_path, 
+    		Concert.model_name.human(:count => 1000) => concerts_path,
+            Recommendation.model_name.human(:count => 1000) => recommendations_path,
+            ScheduleLog.model_name.human(:count => 1000) => schedule_logs_path
     	}
     end
 
@@ -30,5 +31,9 @@ module ApplicationHelper
     def link_to_or_authorize api_authorized, target_tag
         return target_tag if api_authorized
         link_to(t('.add_from_own_library'), api_auth, confirm: t('.authorize_api'))
+    end
+
+    def model_page_title(entry)
+        t('.title', :default => entry.class.model_name.human(count: 1000).titleize)
     end
 end

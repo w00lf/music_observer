@@ -6,7 +6,7 @@ class ApiSessionController < ApplicationController
   end
 
   def return_callback
-    @api_provider_aut.check_callback(params)
+    @api_provider_aut.check_callback(params, session)
     redirect_last_requested_url()
   end
 end

@@ -7,13 +7,13 @@ class LastFmApiAutorizator < LastFmApi
     @signature = ''
   end
 
-  def check_callback params # TODO change method, add session object, @session is no more a session object
+  def check_callback params, session # TODO change method, add session object, @session is no more a session object
     unless (token = params[:token]).blank?
       if fetch_session(token)
-        @session = {}
-        @session[:session_key] = @session_key 
-        @session[:username] = @lastfm_user
-        @session[:api_sig] = @signature
+        session[:auth] = {}
+        session[:auth][:session_key] = @session_key 
+        session[:auth][:username] = @lastfm_user
+        session[:auth][:api_sig] = @signature
       end
     end
   end
