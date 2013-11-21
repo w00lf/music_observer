@@ -1,4 +1,5 @@
 ru:
+  all: Все
   clear: Очистить
   add_from_library: 'Добавить из библиотеки lastfm'
   concert_notfctn_subj: "Найдены новые концерты, группы: %{groups}!"
@@ -6,8 +7,9 @@ ru:
   entry_updated: Запись успешно обновлена
   entry_hided: Запись спрятана
   entry_destroied: Запись удалена
+  empty_entries: Не найдено записей
   started_parsing: 'Запущен процесс переноса вашей библиотеки, это может занять нескольких секунд или минут, исполнители будут появляться по мере переноса'
-  refused: Вы отказались от записи
+  refused: 'Вы отказались от записи "%{name}"'
   error_api_user_not_found: 'Не найдено такого пользователя: "%{user}"'
   error_api: 'Ошибка LastFm:'
   add: 'Добавить'
@@ -18,6 +20,7 @@ ru:
   date_to: "Дата до"
   check_all: "Выбрать всех"
   none: Нет
+  removing: Удаляю...
   schedule_logs:
     filter:
       status: Статус
@@ -41,6 +44,11 @@ ru:
   recommendations:
     recommendation:
       destroy: Отказаться
+    filter:
+      filter: 'Фильтрация рекомендаций'
+      year_from: "Год создания пойзже:"
+      year_to: "Год распада раньше:"
+      listens_count: 'Слушателей больше чем: '
   errors:
     messages:
       expired: "устарела. Пожалуйста, запросите новую"

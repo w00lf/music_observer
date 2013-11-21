@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= super && User.includes(:concert_user_entries, :concerts).find(@current_user.id)
+    @current_user ||= super && User.includes(:concert_user_entries, :artists_recommendations).find(@current_user.id)
   end
 
   def check_api_login

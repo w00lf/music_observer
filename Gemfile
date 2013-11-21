@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -57,6 +57,7 @@ gem "mongo"
 gem 'mongoid'
 gem "will_paginate_mongoid"
 gem 'bson_ext'
+gem 'enumerize'
 
 gem 'acts-as-taggable-on'
 gem 'texticle', "2.0", :require => 'texticle/rails'

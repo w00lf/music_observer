@@ -1,11 +1,11 @@
 class ConcertScanner
 	include ScheduledTasksLogger
-	@queue = :scheduled_tasks
+	# @queue = :scheduled_tasks
 
-	def self.perform
+	def perform
 		logger do
 			result = []
-	    @api = LastFmApi
+	    @api = LastFmApi.new
 	    Artist.find_each do |artist|
 	    	concerts = @api.get_concerts(artist, LOCATION_LAT, LOCATION_LON)
 	    	unless concerts.blank?
@@ -23,7 +23,7 @@ class ConcertScanner
 	    User.find_each do |user|
 	    	new_concerts = []
 	    	result.each do |concert|
-	    		if user.artists.include?(concert.artist)
+	    		if user.artists_favorites.include?(concert.artist)
 	    			user.concerts << concert
 	    			new_concerts << concert
 	    		end

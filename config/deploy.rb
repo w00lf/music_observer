@@ -5,20 +5,20 @@
 # set :repository - Установить расположение вашего репозитория
 # У вас должна быть настроена авторизация ssh по сертификатам
 
-set :application, "aaa"
-set :repository,  "ssh://hosting_your_login_@_your_server_.locum.ru/home/hosting_your_login_/_your_project_.git"
+set :application, "musicobserver"
+set :repository,  "https://github.com/w00lf/music_observer.git"
 
-dpath = "/home/hosting_your_login/projects/_your_project_"
+dpath = "/home/hosting_w00lf/projects/musicobserver"
 
-set :user, "hosting_your_login"
+set :user, "hosting_w00lf"
 set :use_sudo, false
 set :deploy_to, dpath
 
 set :scm, :git
 
-role :web, "_your_server_.locum.ru"                          # Your HTTP server, Apache/etc
-role :app, "_your_server_.locum.ru"                          # This may be the same as your `Web` server
-role :db,  "_your_server_.locum.ru", :primary => true # This is where Rails migrations will run
+role :web, "neon.locum.ru"                          # Your HTTP server, Apache/etc
+role :app, "neon.locum.ru"                          # This may be the same as your `Web` server
+role :db,  "neon.locum.ru", :primary => true # This is where Rails migrations will run
 
 after "deploy:update_code", :copy_database_config
 
@@ -28,8 +28,8 @@ task :copy_database_config, roles => :app do
 end
 
 set :unicorn_rails, "/var/lib/gems/1.8/bin/unicorn_rails"
-set :unicorn_conf, "/etc/unicorn/_your_project_._your_login_.rb"
-set :unicorn_pid, "/var/run/unicorn/_your_project_._your_login_.pid"
+set :unicorn_conf, "/etc/unicorn/musicobserver.w00lf.rb"
+set :unicorn_pid, "/var/run/unicorn/musicobserver.w00lf.pid"
 
 # - for unicorn - #
 namespace :deploy do

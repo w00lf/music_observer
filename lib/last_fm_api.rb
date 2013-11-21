@@ -5,10 +5,15 @@ class LastFmApi
 	@@params = { api_key: LASTFM_KEY, format: 'json' }	
 
 	def get_request params
-		uri = URI('http://' + LASTFM_HOST + LASTFM_API_VER)
-		uri.query = URI.encode_www_form(@@params.merge!(params))
-		res = Net::HTTP.get_response(uri)
-		JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
+			uri = URI('http://' + LASTFM_HOST + LASTFM_API_VER)
+			uri.query = URI.encode_www_form(@@params.merge!(params))
+			res = ''
+			6.times do
+				res = Net::HTTP.get_response(uri) rescue (error('Cannot connect to last fm api'); nil)
+				break unless res.nil?
+				sleep 5
+			end
+			JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
 	end
 
 	def search_artist query
@@ -22,6 +27,19 @@ class LastFmApi
 			end	
 		end
 		result
+	end
+
+	def get_artist_info mbid, lang
+		params = { method: 'artist.getInfo', mbid: mbid, lang: lang }
+		query = get_request(params)
+		(error(query); return) unless query["error"].nil?
+		artist = query["artist"]
+		bio = format_bio(artist)
+		{ 
+			listeners: artist["stats"]["listeners"],
+			tags: format_tags(artist),
+			api_link: artist["url"]
+		}.merge(bio)
 	end
 
 	def get_concerts artist, lat_range, long_range
@@ -156,6 +174,34 @@ class LastFmApi
       	image: get_image(artist["image"])
   		}
 		}
+	end
+
+	def format_bio(artist) # TODO refactor method
+		begin
+			formation = artist["bio"]["formationlist"]["formation"]
+			year_from = formation["yearfrom"] if formation.is_a?(Hash)
+			year_from = formation.first["yearfrom"].blank? ? nil : Time.new(formation.first["yearfrom"]) if formation.is_a?(Array)
+			
+			year_to = formation["year_to"] if formation.is_a?(Hash)
+			year_to = formation.first["year_to"].blank? ? nil : Time.new(formation.first["year_to"]) if formation.is_a?(Array)
+			{ 
+				year_from: year_from,
+				year_to: year_to,
+				description: artist["bio"]["content"]
+			}
+		rescue
+			error("Error while formating biography for artist, artist parameters: #{artist.inspect}")
+			{}
+		end
+	end
+
+	def format_tags(artist)
+		begin
+			artist["tags"]["tag"].map{|n| { "name" => n["name"].slice(0, 85), "api_link" => n["url"] } }
+		rescue
+			error("Error while formating tags for artist, artist parameters: #{artist.inspect}")
+			[]
+		end
 	end
 	
 	def get_image image_hash

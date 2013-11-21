@@ -1,5 +1,6 @@
+- model_class = Artist
 .page-header
-  %h1=model_page_title(@artists.first)
+  %h1=model_page_title(Artist)
 
 
 = link_to t('.create', :default => t("helpers.links.new")), new_artist_path, :class => 'btn btn-primary'

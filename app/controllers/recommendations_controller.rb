@@ -2,14 +2,12 @@ class RecommendationsController < ApplicationController
   layout 'no_sidebar'
   def index
     @recommendations = current_user.recommendations.publick
-    if !params[:search].blank?
-      @recommendations = @recommendations.search(params[:search])
-    elsif params[:year_from] || params[:year_to]
-      @recommendations = current_user.artists_recommendations.date_range(params[:year_from], params[:year_to])
-    else
-      @artists = current_user.recommendations
-    end
-    @artists = @artists.paginate(page: params[:page], per_page: params[:per_page] || 10) 
+    @recommendations = @recommendations.artists_more_than_listens(params[:listens_count].to_i) unless params[:listens_count].blank?
+    @recommendations = @recommendations.artists_date_range(params[:year_from], params[:year_to]) unless params[:year_from].blank? && params[:year_to].blank?
+    @recommendations = @recommendations.artists_tagged_with(params[:tag]) unless params[:tag].blank?
+    @recommendations = @recommendations.order("#{params[:sort]} #{params[:asc].blank? ? 'desc' : 'asc'}") unless params[:sort].blank?
+    @recommendations = @recommendations.paginate(page: params[:page], per_page: (params[:per_page] || 25)) 
+    @top_tags = Tag.top_recommended(current_user)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @artists }
@@ -21,10 +19,10 @@ class RecommendationsController < ApplicationController
     respond_to do |format|
       if @recommendation.destroy()
         format.html { redirect_to :back, notice: t(:entry_destroied) }
-        format.js { render(partial: 'main/notice', locals: { notice: t(:refused) }) } # TODO finish ajax response
+        format.json { render json: { message: t(:refused, name: @recommendation.artist.name)}  } # TODO finish ajax response
       else
         format.html { redirect_to :back, error: @recommendation.errors.full_messages }
-        format.js { render partial: 'main/error', locals: { description: t(:error), error: t(:error) }, status: :unprocessable_entity }
+        format.json { render json: { error: @recommendation.errors.full_messages }, status: :unprocessable_entity }
       end
     end
   end

@@ -33,7 +33,7 @@ module ApplicationHelper
         link_to(t('.add_from_own_library'), api_auth, confirm: t('.authorize_api'))
     end
 
-    def model_page_title(entry)
-        t('.title', :default => entry.class.model_name.human(count: 1000).titleize)
+    def model_page_title(entry_class)
+        t('.title', :default => entry_class.model_name.human(count: 1000).titleize)
     end
 end

@@ -13,25 +13,23 @@ module ScheduledTasksLogger
   end
 
   def logger(&b)
-    info "Task started"
+    info("Task started", "job_started")
     begin
       real = Benchmark.realtime { yield } if block_given?
     rescue Exception => e
       error "Task aborted:"
       error "In: #{e.class.to_s}, #{e.message}"
       error "Backtrace: #{e.backtrace.join('<br>')}"
-      #TODO test compatible with resque error-handler
       raise e
     end
-    info "Task completed, elapsed time: #{real.round(5)} s" if real
+    info("Task completed, elapsed time: #{real.round(5)} s", 'job_ended') if real
   end
 
-  def read_log
-    ScheduleLog.where(:job_class => self.class).sort(:created_at.desc).all.inject('') {|sum, n| sum << "[ #{n.status.upcase}: #{n.created_at.strftime('%H:%M:%S %d-%m-%Y')} ] #{n.content}\n" }
+  ::ScheduleLog.status.values.each do |status| 
+    define_method(status) do |*args| 
+      message = args[0]
+      entry_type = args[1] || 'entry'
+      ScheduleLog.create(status: status, content: message, job_class: self.class, entry_type: entry_type);
+    end
   end
-
-  def debug(message); ScheduleLog.create(:status => 'debug', :content => message, :job_class => self.class); end
-  def info(message); ScheduleLog.create(:status => 'info', :content => message, :job_class => self.class); end
-  def warn(message);  ScheduleLog.create(:status => 'warn', :content => message, :job_class => self.class); end
-  def error(message); ScheduleLog.create(:status => 'error', :content => message, :job_class => self.class); end
 end
