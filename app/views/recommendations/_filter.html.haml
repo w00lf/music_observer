@@ -1,0 +1,26 @@
+%p.lead
+  %h5
+    = t(".filter")
+  = form_tag '', method: :get, :class => "navbar-form navbar-left filter" do
+    - if params[:year_from] || params[:year_to] || params[:listens_count]
+      = link_to recommendations_path do
+        %i.icon-remove.clear
+        = t(:clear)
+    = hidden_field_tag :sort, params[:sort]
+    = hidden_field_tag :asc, params[:asc]
+    = hidden_field_tag :tag, params[:tag]
+    = t('.listens_count')
+    = number_field_tag 'listens_count', params[:listens_count], step: 50_000
+    = t('.year_from')
+    = select_tag :year_from, options_for_select((Time.now.strftime('%Y').to_i.downto(1950)), selected: params[:year_from]), include_blank: true
+    = t('.year_to')
+    = select_tag :year_to, options_for_select((Time.now.strftime('%Y').to_i.downto(1950)), selected: params[:year_to]), include_blank: true
+    = t(:per_page)
+    = select_tag :per_page, options_for_select((25..200).step(25), selected: params[:per_page])
+    = submit_tag t(:search)
+    %ul{class: "nav nav-pills"} 
+      %li{class: (params[:tag].blank? ? 'active' : '')}
+        = link_to t(:all), recommendations_path
+      = render partial: 'tags/tag', collection: @top_tags
+      %i.icon-arrow-right.more_button{ display: 'none' }
+  

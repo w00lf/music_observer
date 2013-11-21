@@ -1,0 +1,3 @@
+- html = (params[:tag] == tag.id.to_s) ? 'active' : '' 
+%li{class: "#{html}"}
+  = link_to tag.name,  request.parameters.merge({ 'tag' => tag.id })
