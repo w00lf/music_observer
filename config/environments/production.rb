@@ -51,18 +51,18 @@ MusicObserver::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.perform_deliveries = false
+  config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { :host => 'musicobserver.w00lf.lclients.ru' }
-  config.action_mailer.delivery_method = :test
-  # config.action_mailer.smtp_settings = {
-  #   address: "smtp.locum.ru",
-  #   port: 2525,
-  #   domain: 'programmernotes.info',
-  #   authentication: "plain",
-  #   enable_starttls_auto: false,
-  #   user_name: APP_CONFIG['smtp']['login'],
-  #   password: APP_CONFIG['smtp']['password']
-  # }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: "smtp.locum.ru",
+    port: 2525,
+    domain: 'programmernotes.info',
+    authentication: "plain",
+    enable_starttls_auto: false,
+    user_name: APP_CONFIG['smtp']['login'],
+    password: APP_CONFIG['smtp']['password']
+  }
 
 
   # Enable threaded mode
@@ -79,11 +79,11 @@ MusicObserver::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  MONGODB_HOST = '127.0.0.1'
+  MONGODB_HOST = 'mongodb0.locum.ru'
   MONGODB_PORT = 27017
-  MONGODB_BASE = 'music_observer'
-  MONGODB_USER = 'mongodb'
-  MONGODB_PASS = 'mongodb'
+  MONGODB_BASE = 'w00lf_music47'
+  MONGODB_USER = APP_CONFIG['mongo']['login']
+  MONGODB_PASS = APP_CONFIG['mongo']['password']
 
   SCHEDULED_TASKS_PID = "/Users/guest/work/music_observer/tmp/pids/resque.pid"
   SCHEDULER_PID = "/usr/local/www/music_observer/tmp/pids/resque_scheduler.pid"
