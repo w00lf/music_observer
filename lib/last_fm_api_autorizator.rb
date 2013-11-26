@@ -13,7 +13,7 @@ class LastFmApiAutorizator < LastFmApi
         session[:auth] = {}
         session[:auth][:session_key] = @session_key 
         session[:auth][:username] = @lastfm_user
-        session[:auth][:api_sig] = @signature
+        # session[:auth][:api_sig] = @signature 
       end
     end
   end

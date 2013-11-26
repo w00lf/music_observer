@@ -27,6 +27,8 @@
               - get_top_menu_items().each do |title, link|
                 %li= link_to title, link
             - if user_signed_in?
+              %i.icon-arrow-right
+                = current_user.email
               = link_to(destroy_user_session_path, {:method => :delete, :id=> 'log_out'}) do
                 %i.icon-arrow-right
                 = t("log_out")

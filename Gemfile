@@ -24,7 +24,6 @@ end
 
 
 group :production do
-  gem 'unicorn'
   gem "pg"
 end
 
@@ -44,7 +43,7 @@ gem "twitter-bootstrap-rails"
 # gem "resque"
 # gem "resque-scheduler"
 # gem "bluepill"
-
+gem 'delayed_job', "3.0.4"
 gem 'delayed_job_mongoid'
 
 gem 'paperclip'
@@ -69,10 +68,12 @@ gem 'texticle', "2.0", :require => 'texticle/rails'
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano', '2.15.4'
+gem "daemons", '1.0.10'
+# gem "daemons-rails"
 
 # To use debugger
 # gem 'debugger'

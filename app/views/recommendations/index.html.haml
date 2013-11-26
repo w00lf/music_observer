@@ -3,6 +3,9 @@
 %div#response
   = render partial: 'filter'
 
+= form_tag api_parse_recommendations_path(), method: :post do
+  = link_to_or_authorize(@api_authorized, submit_tag(t('.parse_recommendations'), :confirm => t('.parsing_message')))
+
 - if @recommendations.blank?
   .lead
     %h5

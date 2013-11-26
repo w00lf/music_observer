@@ -4,7 +4,11 @@ MusicObserver::Application.routes.draw do
   get "api_session/return_callback"
 
 
-  resources :recommendations, only: [:index, :destroy] 
+  resources :recommendations, only: [:index, :destroy] do
+    collection do
+      post 'api_parse'
+    end
+  end
 
   resources :concerts do
     member do

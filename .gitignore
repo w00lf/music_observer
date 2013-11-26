@@ -23,3 +23,4 @@ initial_release
 restart
 .DS_store
 *.sqlite
+config/unicorn.rb

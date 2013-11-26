@@ -121,7 +121,8 @@ class LastFmApi
 		end
 	end
 
-	def parse_recomendations user, authenticater
+	def parse_recomendations user_id, authenticater
+		user = User.find(user_id)
 		page = 1
 		limit = 50
 		counter = 0

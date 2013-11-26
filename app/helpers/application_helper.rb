@@ -30,7 +30,7 @@ module ApplicationHelper
 
     def link_to_or_authorize api_authorized, target_tag
         return target_tag if api_authorized
-        link_to(t('.add_from_own_library'), api_auth, confirm: t('.authorize_api'))
+        link_to(t('.add_from_own_library'), api_auth, confirm: t(:authorize_api))
     end
 
     def model_page_title(entry_class)

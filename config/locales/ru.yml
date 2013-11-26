@@ -21,6 +21,7 @@ ru:
   check_all: "Выбрать всех"
   none: Нет
   removing: Удаляю...
+  authorize_api: 'Для этого действия необходима авторизация. Перейти на сайт lastfm для авторизации?'
   schedule_logs:
     filter:
       status: Статус
@@ -36,7 +37,6 @@ ru:
       track_none_button: 'Не следить'
       add_from_own_library: 'Спарсить артистов со своего аккаунта'
       parsing_message: 'Процесс перенесет записи из вашей библиотеки на наш сайт, продолжить?'
-      authorize_api: 'Для этого действия необходима авторизация. Перейти на сайт lastfm для авторизации?'
     search:
       search: 'Поиск по артистам'
       filter_from: "Добавленный с"
@@ -49,6 +49,10 @@ ru:
       year_from: "Год создания пойзже:"
       year_to: "Год распада раньше:"
       listens_count: 'Слушателей больше чем: '
+    index:
+      parsing_message: 'Запущен процесс переноса ваших рекомендаций с сайта LastFm'
+      parse_recommendations: 'Пренести рекомендации с lastfm.com'
+      add_from_own_library: 'Пренести рекомендации с lastfm.com'
   errors:
     messages:
       expired: "устарела. Пожалуйста, запросите новую"

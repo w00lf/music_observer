@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(:version => 20131120121848) do
     t.integer  "user_id",                       :null => false
     t.integer  "artist_id",                     :null => false
     t.string   "type"
-    t.boolean  "track",      :default => false, :null => false
-    t.boolean  "show",       :default => true,  :null => false
+    t.boolean  "track",      :default => false
+    t.boolean  "show",       :default => true
     t.integer  "listeners",  :default => 0
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
