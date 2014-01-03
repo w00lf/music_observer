@@ -137,7 +137,7 @@ class LastFmApi
 		session_key = authenticater.get_session_key()
 		logger do
 			until((artists = retrive_recommended_artists(page, limit, api_sig, session_key)).blank?) do
-				debug artists
+				# debug artists
 				artists.each do |art|
 					res = Artist.create_recommended(art, user)
 					(warn "max library parse size reached, user :#{user.id}, lastfm user: #{username_to_parse}"; return) if counter > MAX_LIBRARY

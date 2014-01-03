@@ -19,13 +19,13 @@ class Artist < ActiveRecord::Base
   class << self
     def create_favorite prop, user
       artist = find_or_create(prop)
-      Favorite.find_or_create_by_user_id_and_artist_id(artist_id: artist.id, user_id: user.id, track: prop[:track] || false)
+      Favorite.find_or_create_by_user_id_and_artist_id(user.id, artist.id, track: prop[:track] || false)
       artist
     end
 
     def create_recommended prop, user
       artist = find_or_create(prop)
-      Recommendation.find_or_create_by_user_id_and_artist_id(artist_id: artist.id, user_id: user.id)
+      Recommendation.find_or_create_by_user_id_and_artist_id(user.id, artist.id)
       artist
     end
 
