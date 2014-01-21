@@ -20,6 +20,7 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+  gem 'pnotify-rails'
 end
 
 
@@ -34,6 +35,7 @@ group :development do
   gem 'pry', '0.9.12.2'
   gem 'pry-rails', '0.3.2'
   gem "rack-insight"
+  gem 'debugger'
 end
 
 gem 'haml-rails'

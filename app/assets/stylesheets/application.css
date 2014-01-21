@@ -10,5 +10,7 @@
  *
  *= require_self
  *= require jquery.ui.all
+ *= require jquery.pnotify.default
+ *= require jquery.pnotify.default.icons
  *= require_tree .
  */

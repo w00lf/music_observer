@@ -1,0 +1,9 @@
+= link_to t(:add_from_library), '#', :class => 'btn btn-primary', id: 'add_library_button'
+
+- form_params = { method: :post, id: 'api_library' }
+- form_params.merge!({ remote: true, class: 'simple_remote', 'data-type' => 'json', 'data-loading-text' => t(:in_work) }) if @api_authorized
+= form_tag api_library_favorites_path, form_params  do
+  %h5= t('.remote_user_login')
+  = text_field_tag 'api_id', nil
+  = submit_tag t(:add), :confirm => t('.parsing_message')
+  = link_to_or_authorize(@api_authorized, submit_tag(t('.add_from_own_library'), :confirm => t('.parsing_message'), id: 'add_from_own_library'))

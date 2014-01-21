@@ -20,4 +20,12 @@ class ApplicationController < ActionController::Base
     @api_provider_aut = LastFmApiAutorizator.new(session)
     @api_authorized = !@api_provider_aut.need_auth?()   
   end
+
+  def render_json_error(message)
+    render json: { error: { title: t('errors.title'), message: message } }
+  end
+
+  def server_error_message
+    t('errors.messages.server_error')
+  end
 end

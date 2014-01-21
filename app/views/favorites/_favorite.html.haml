@@ -1,0 +1,22 @@
+%tr
+  %td 
+    - tracked = favorite.favorites.find_by_user_id(current_user.id).track
+    %span{class: "label label-success #{('hidden' unless tracked)}",  }
+      = t('.tracked')
+    %span{class: "label label-default #{('hidden' if tracked)}" }
+      = t('.not_tracked')
+  %td= favorite.name
+  %td
+    = link_to track_favorite_path(favorite.id, :track => true), :method => :put, remote: true do 
+      %button{ type: 'button', class: "btn #{('hidden' if tracked)}", }
+        = t('.track')
+    = link_to track_favorite_path(favorite.id, :track => false), :method => :put, remote: true do 
+      %button{ type: 'button', class: "btn #{('hidden' unless tracked)}" }
+        = t('.untrack')
+  %td= favorite.mbid
+  %td= image_tag favorite.photo.url
+  %td=l favorite.created_at
+  %td
+    = link_to t('.destroy', :default => t("helpers.links.destroy")), favorite_path(favorite), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-mini btn-danger'
+  %td
+    = check_box_tag favorite.id

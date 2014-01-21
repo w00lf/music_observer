@@ -17,7 +17,7 @@ module ApplicationHelper
 
     def get_top_menu_items
     	{
-    		Favorite.model_name.human(:count => 1000) =>  artists_path, 
+    		Favorite.model_name.human(:count => 1000) =>  favorites_path, 
     		Concert.model_name.human(:count => 1000) => concerts_path,
             Recommendation.model_name.human(:count => 1000) => recommendations_path,
             ScheduleLog.model_name.human(:count => 1000) => schedule_logs_path
@@ -35,5 +35,9 @@ module ApplicationHelper
 
     def model_page_title(entry_class)
         t('.title', :default => entry_class.model_name.human(count: 1000).titleize)
+    end
+
+    def render_flash
+       render 'main/notice'
     end
 end

@@ -16,7 +16,7 @@ MusicObserver::Application.routes.draw do
     end
   end
 
-  resources :artists do
+  resources :favorites do
     collection do
       get 'api_search'
       post 'api_library'

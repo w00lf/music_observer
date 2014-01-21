@@ -3,10 +3,10 @@
     = t(".search")
   = form_tag '', method: :get, :class => "navbar-form navbar-left", role: "search" do
     - if params[:search] || params[:date_from] || params[:date_to]
-      = link_to artists_path do
+      = link_to favorites_path do
         %i.icon-remove
         = t(:clear)
-    = text_field_tag 'search', params[:search], placeholder: Artist.human_attribute_name(:name)
+    = text_field_tag 'search', params[:search], placeholder: Favorite.human_attribute_name(:name)
     = text_field_tag 'date_from', params[:date_from], placeholder: t(:date_from)
     = text_field_tag 'date_to',params[:date_to], placeholder: t(:date_to)
     = t(:per_page)

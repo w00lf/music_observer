@@ -1,9 +1,9 @@
-= form_tag artists_path, :remote => true, :class => 'form-horizontal', id: 'artists_form'  do 
+= form_tag favorites_path, :remote => true, :class => 'form-horizontal', id: 'favorites_form'  do 
   .control-group
     = label_tag :name, nil, :class => 'control-label'
     .controls
       = text_field_tag :name, nil, :class => 'text_field'
-      %button#search_artist{'data-loading-text' => 'Загрузка...'}
+      %button#search_favorite{'data-loading-text' => 'Загрузка...'}
         Найти
   = hidden_field_tag :mbid
   = hidden_field_tag :image
@@ -11,8 +11,8 @@
     = label_tag :track, false, :class => 'control-label'
     .controls
       = check_box_tag :track, true, false
-  #submit_artists.form-actions
+  #submit_favorites.form-actions
     = submit_tag 'Отправить', :class => 'btn btn-primary', 'data-loading-text' => 'Отправляю...'
-    = link_to t('.cancel', :default => t("helpers.links.cancel")), artists_path, :class => 'btn'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), favorites_path, :class => 'btn'
   #response
-  #artists_search_results
+  #favorites_search_results

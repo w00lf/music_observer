@@ -1,4 +1,5 @@
 ru:
+  in_work: В пороцессе...
   all: Все
   clear: Очистить
   add_from_library: 'Добавить из библиотеки lastfm'
@@ -21,12 +22,27 @@ ru:
   check_all: "Выбрать всех"
   none: Нет
   removing: Удаляю...
+  update: Обновление статуса
+  update_success: Записи успешно обновлены
   authorize_api: 'Для этого действия необходима авторизация. Перейти на сайт lastfm для авторизации?'
+  success: Успех
+  info: Информация
+  error: Ошибка!
+  notice: Примечание
   schedule_logs:
     filter:
       status: Статус
       date_range: Дата записи
-  artists:
+  favorites:
+    favorite: 
+      tracked: Отслеживается
+      not_tracked: Не отслеживается
+      track: Следить
+      untrack: Не следить
+    parse_remote_account:
+      add_from_own_library: 'Пренести артистов со своего аккаунта'
+      parsing_message: 'Процесс перенесет записи из вашей библиотеки на наш сайт, продолжить?'
+      remote_user_login: Логин lastFm
     index:
       empty: 'Нет созданных артистов в вашей библиотеке'
       track_all_library: "Следить за всеми артистами из библиотеки"
@@ -35,8 +51,6 @@ ru:
       non_track_all_page_title: "Не следить за помеченным исполнителями на этой странице"
       track_confirm: "Вы собираетесь следить за ВСЕМИ исполнителми из вашей библиотеки, продолжить?"
       track_none_button: 'Не следить'
-      add_from_own_library: 'Спарсить артистов со своего аккаунта'
-      parsing_message: 'Процесс перенесет записи из вашей библиотеки на наш сайт, продолжить?'
     search:
       search: 'Поиск по артистам'
       filter_from: "Добавленный с"
@@ -54,7 +68,10 @@ ru:
       parse_recommendations: 'Пренести рекомендации с lastfm.com'
       add_from_own_library: 'Пренести рекомендации с lastfm.com'
   errors:
+    title: Ошибка!
     messages:
+      empty_api_id: Укажите ваш LastFm логин!
+      server_error: 'Произошла ошибка сервера, запись не обновлена'
       expired: "устарела. Пожалуйста, запросите новую"
       not_found: "не найдена"
       already_confirmed: "уже подтверждена. Пожалуйста, попробуйте войти в систему"

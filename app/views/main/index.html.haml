@@ -11,7 +11,7 @@
           %li
             = link_to concert.title, concert.api_link, class: 'external '
             %br
-            = link_to concert.artist.name, artist_path(concert.artist)
+            = link_to concert.artist.name, favorite_path(concert.artist)
           %li
             = concert.country
             %br

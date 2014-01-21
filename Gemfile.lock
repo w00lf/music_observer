@@ -61,9 +61,16 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
+    columnize (0.3.6)
     commonjs (0.2.6)
     daemons (1.0.10)
     debug_inspector (0.0.2)
+    debugger (1.6.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.1)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.2)
     delayed_job (3.0.4)
       activesupport (~> 3.0)
     delayed_job_mongoid (2.0.0)
@@ -139,6 +146,7 @@ GEM
       cocaine (~> 0.5.0)
       mime-types
     pg (0.16.0)
+    pnotify-rails (1.2.2)
     polyglot (0.3.3)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
@@ -237,6 +245,7 @@ DEPENDENCIES
   capistrano (= 2.15.4)
   coffee-rails (~> 3.2.1)
   daemons (= 1.0.10)
+  debugger
   delayed_job (= 3.0.4)
   delayed_job_mongoid
   devise
@@ -251,6 +260,7 @@ DEPENDENCIES
   mongoid
   paperclip
   pg
+  pnotify-rails
   pry (= 0.9.12.2)
   pry-rails (= 0.3.2)
   rack-insight

@@ -22,7 +22,7 @@
         %td= concert.country
         %td= concert.sity
         %td= concert.street
-        %td= link_to concert.artist.name, artist_path(concert.artist)
+        %td= link_to concert.artist.name, favorite_path(concert.artist)
         %td= concert.start_date
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_concert_path(concert), :class => 'btn btn-mini'
