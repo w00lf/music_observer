@@ -95,7 +95,7 @@ class LastFmApi
 		response = get_request(params)
 		debug response.inspect
 		debug "page number is: #{params[:page]}"
-		return if response[root]["@attr"]["totalPages"].to_i < params[:page]
+		return if response[root]["@attr"].nil? || response[root]["@attr"]["totalPages"].to_i < params[:page]
 		debug "making formating for: #{response[root]["artist"]}"
 		format_artists_result(response[root]["artist"])
 	end
@@ -137,7 +137,7 @@ class LastFmApi
 		session_key = authenticater.get_session_key()
 		logger do
 			until((artists = retrive_recommended_artists(page, limit, api_sig, session_key)).blank?) do
-				debug artists
+				# debug artists
 				artists.each do |art|
 					res = Artist.create_recommended(art, user)
 					(warn "max library parse size reached, user :#{user.id}, lastfm user: #{username_to_parse}"; return) if counter > MAX_LIBRARY
