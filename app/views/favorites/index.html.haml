@@ -33,7 +33,7 @@
           %button.btn.select_all{ type: 'button' }
             %i.icon-arrow-down{ title: t(:check_all) }
           %br
-          = form_tag pack_track_favorites_path(), id: 'pack_track_form', :method => :put, 'data-type' => 'json', class: 'simple_remote', remote: true do
+          = form_tag pack_track_favorites_path(), id: 'pack_track_form', :method => :put, 'data-type' => 'json', class: 'simple_remote' do
             = hidden_field_tag :track, true
           %button.btn{ type: 'button', id: 'pack_track', title: t('.track_all_page_title') }
             = t('.track_all_button')

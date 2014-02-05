@@ -7,10 +7,10 @@
       = t('.not_tracked')
   %td= favorite.name
   %td
-    = link_to track_favorite_path(favorite.id, :track => true), :method => :put, remote: true do 
+    = link_to track_favorite_path(favorite.id, :track => true), :method => :put do 
       %button{ type: 'button', class: "btn #{('hidden' if tracked)}", }
         = t('.track')
-    = link_to track_favorite_path(favorite.id, :track => false), :method => :put, remote: true do 
+    = link_to track_favorite_path(favorite.id, :track => false), :method => :put do 
       %button{ type: 'button', class: "btn #{('hidden' unless tracked)}" }
         = t('.untrack')
   %td= favorite.mbid
