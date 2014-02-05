@@ -1,5 +1,4 @@
 class FavoritesController < ApplicationController
-  layout 'no_sidebar'
 
   # caches_action :index, :cache_path => Proc.new { |c| c.params }
 

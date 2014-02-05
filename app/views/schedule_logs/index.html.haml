@@ -1,3 +1,16 @@
+- @delay_jobs_stat.each do |name, val|
+  - if val.try {|n| n.to_s.length > 0 }
+    %b= name
+    - if val.try {|n| n.to_s.length > 200 }
+      %p{ class: 'long truncated' }
+    - else
+      %span
+        = raw val
+= link_to schedule_logs_path, method: :delete, class: 'simple_remote', 'data-type' => 'json', 'data-loading-text' => t(:in_work), remote: true do
+  %i.icon-remove
+  Clear job queue
+%hr
+
 = render partial: 'filter'
 
 %ul{ class: "nav nav-pills" }  
@@ -8,7 +21,7 @@
 - if @items.length > 0
   - @items.each do |item|
     - html = item.status == 'error' ? 'alert alert-error' : ''
-    - html += ' long truncated' if !item.content.nil? && item.content.length > 200
+    - html += ' long truncated' if item.try {|n| n.content.length > 200 }
     %div{ class: "#{html}" }
       = h(raw "[ #{item.status.upcase}: #{item.created_at.strftime('%H:%M:%S %d-%m-%Y')} ] #{item.content}")
   = will_paginate @items

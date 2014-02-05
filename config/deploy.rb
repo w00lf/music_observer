@@ -17,11 +17,12 @@ require 'bundler/capistrano'
 ## следующие строки.
 
 after "deploy:update_code", :copy_database_config
-task :copy_database_config, roles => :app do
+task :copy_database_config_restart_worker, roles => :app do
   db_config = "#{shared_path}/database.yml"
   protected_path = "#{shared_path}/protected.yml"
   run "cp #{db_config} #{release_path}/config/database.yml"
   run "cp #{protected_path} #{release_path}/config/protected.yml"
+  run "kill -9 `cat #{shared_path}/pids/delayed_job.pid` && cd #{release_path} && /usr/local/rvm/bin/rvm use 1.9.3 do bundle exec rake maintainance:worker RAILS_ENV=production"
 end
 
 # В rails 3 по умолчанию включена функция assets pipelining,

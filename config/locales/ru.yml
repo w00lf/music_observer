@@ -1,4 +1,5 @@
 ru:
+  cleared: Очередь очищена
   in_work: В пороцессе...
   all: Все
   clear: Очистить
@@ -33,6 +34,7 @@ ru:
     filter:
       status: Статус
       date_range: Дата записи
+
   favorites:
     favorite: 
       tracked: Отслеживается

@@ -1,5 +1,4 @@
 class RecommendationsController < ApplicationController
-  layout 'no_sidebar'
   def index
     @recommendations = current_user.recommendations.publick
     @recommendations = @recommendations.artists_more_than_listens(params[:listens_count].to_i) unless params[:listens_count].blank?

@@ -34,7 +34,9 @@ MusicObserver::Application.routes.draw do
   get "main/index"
   get "main/api_autenticate"
   
-  resources :schedule_logs, only: [:index]
+  get "schedule_logs" => 'schedule_logs#index'
+  delete "schedule_logs" => 'schedule_logs#destroy'
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

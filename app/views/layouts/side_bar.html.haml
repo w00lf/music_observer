@@ -40,6 +40,9 @@
         .span3
           .well.sidebar-nav
             %h3 Statisitcs
+            - @side_bar.each do |name, mess|
+              %h5= name
+              %p= mess
     
       %footer
         %p &copy; Company 2014
