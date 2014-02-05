@@ -37,7 +37,6 @@ class FavoritesController < ApplicationController
 
   def api_library
     user = ''
-    return failed_action(t('errors.messages.empty_api_id'))
     if !params[:api_id].blank?
       return failed_action(t('errors.messages.empty_api_id')) unless @api_provider.check_user(params[:api_id])
       user = params[:api_id]
@@ -46,7 +45,7 @@ class FavoritesController < ApplicationController
         return api_auth()
       end
     end
-    # @api_provider.delay.parse_library(user, current_user)
+    @api_provider.delay.parse_library(user, current_user)
     respond_to do |format|
       format.html { flash[:success] = t(:started_parsing); redirect_to :back }
       format.json { render json: { title: t(:success), message: t(:started_parsing) } }
