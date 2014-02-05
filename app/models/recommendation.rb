@@ -3,8 +3,6 @@ class Recommendation < ArtistUser
   belongs_to :user
   belongs_to :artist
 
-  
-  
   scope :publick, where(show: true)
   
   scope :artists_date_range, lambda {|year_from, year_to|
