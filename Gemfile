@@ -34,7 +34,7 @@ group :development do
   gem "binding_of_caller"
   gem 'pry', '0.9.12.2'
   gem 'pry-rails', '0.3.2'
-  gem "rack-insight"
+  # gem "rack-insight"
   gem 'debugger'
 end
 
@@ -61,7 +61,6 @@ gem 'bson_ext'
 gem 'enumerize'
 
 gem 'acts-as-taggable-on'
-gem 'texticle', "2.0", :require => 'texticle/rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -79,3 +78,4 @@ gem "daemons", '1.0.10'
 
 # To use debugger
 # gem 'debugger'
+gem "ransack"

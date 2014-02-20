@@ -1,12 +1,11 @@
 class RecommendationsController < ApplicationController
   def index
-    @recommendations = current_user.recommendations.publick
-    @recommendations = @recommendations.artists_more_than_listens(params[:listens_count].to_i) unless params[:listens_count].blank?
-    @recommendations = @recommendations.artists_date_range(params[:year_from], params[:year_to]) unless params[:year_from].blank? && params[:year_to].blank?
-    @recommendations = @recommendations.artists_tagged_with(params[:tag]) unless params[:tag].blank?
-    @recommendations = @recommendations.joins(:artist).order("#{params[:sort]} #{params[:asc].blank? ? 'desc' : 'asc'}") unless params[:sort].blank?
-    @recommendations = @recommendations.paginate(page: params[:page], per_page: (params[:per_page] || 25)) 
+    user_recom = current_user.recommendations.publick
+    @search = user_recom.search(params[:q])
+    @recommendations = @search.result.paginate(page: params[:page], per_page: (params[:per_page] || 25)) 
     @top_tags = Tag.top_recommended(current_user)
+    @selected_tags = params[:q][:artist_tags_id_in] unless params[:q].nil?
+    @selected_tags ||= []
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @artists }

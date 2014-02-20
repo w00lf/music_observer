@@ -10,8 +10,8 @@ class Artist < ActiveRecord::Base
   has_many :recommendations, dependent: :destroy
   # has_many :libraries, :through => :artist_users, :source => :link, :source_type => 'Library'
 
-  has_many :users_favorites,  through: :favorites, source: :user, conditions: { artist_users: { type: "Favorite" } }, :uniq => true
-  has_many :users_recommendations, through: :recommendations, source: :user, conditions: { artist_users: { type: "Recommendation" } }, :uniq => true
+  has_many :users_favorites,  through: :favorites, source: :user, conditions: { artist_users: { type: "Favorite" } }
+  has_many :users_recommendations, through: :recommendations, source: :user, conditions: { artist_users: { type: "Recommendation" } }
   has_and_belongs_to_many :tags
   
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"

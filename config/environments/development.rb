@@ -37,7 +37,6 @@ MusicObserver::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
-  config.middleware.use "Rack::Insight::App"
 
   MONGODB_HOST = '127.0.0.1'
   MONGODB_PORT = 27017

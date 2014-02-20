@@ -1,0 +1,11 @@
+%p.lead
+  %h5
+    = t(".search")
+  = search_form_for @search, :class => "navbar-form navbar-left", role: "search" do |f|
+    = f.text_field :title_cont, placeholder: Favorite.human_attribute_name(:name)
+    = f.text_field :start_date_gt, placeholder: t(:date_from), id: :date_from
+    = f.text_field :start_date_lt, placeholder: t(:date_to), id: :date_to
+    = t(:per_page)
+    = select_tag :per_page, options_for_select((25..200).step(25), selected: params[:per_page])
+    = f.submit t(:search)
+    = f.submit t(:clear), :id => :q_reset

@@ -4,10 +4,10 @@ class Tag < ActiveRecord::Base
 
   class << self
     def top_recommended(user)
-      select('tags.*, count(artists_tags.artist_id) as artist_count')
+      select('tags.*, count(artists_tags.artist_id)')
       .joins(:artists => :recommendations)
       .where(['artist_users.user_id = ?', user.id]).group('tags.id')
-      .order('artist_count DESC')
+      .order('count(artists_tags.artist_id) DESC')
     end
   end
 end

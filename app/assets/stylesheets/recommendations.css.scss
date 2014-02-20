@@ -5,3 +5,9 @@
 .filter input, .filter select {
   width: 10%;
 }
+.more_button {
+  float: left;
+}
+#recommendation_search input[type=number], #q_artist_year_from, #q_artist_year_to{
+  width: 100px !important;
+}

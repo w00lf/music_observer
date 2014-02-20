@@ -147,6 +147,8 @@ GEM
       mime-types
     pg (0.16.0)
     pnotify-rails (1.2.2)
+    polyamorous (0.6.4)
+      activerecord (>= 3.0)
     polyglot (0.3.3)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
@@ -159,10 +161,6 @@ GEM
       rack (>= 0.4)
     rack-contrib (1.1.0)
       rack (>= 0.9.1)
-    rack-insight (0.5.27)
-      rack
-      sqlite3 (>= 1.3.3)
-      uuidtools (>= 2.1.2)
     rack-ssl (1.3.3)
       rack
     rack-test (0.6.2)
@@ -184,6 +182,10 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.12.0)
     rake (10.1.0)
+    ransack (1.1.0)
+      actionpack (>= 3.0)
+      activerecord (>= 3.0)
+      polyamorous (~> 0.6.0)
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.5)
@@ -201,8 +203,6 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     sqlite3 (1.3.8)
-    texticle (2.0)
-      activerecord (>= 3.0.0)
     therubyracer (0.12.0)
       libv8 (~> 3.16.14.0)
       ref
@@ -226,7 +226,6 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    uuidtools (2.1.4)
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.4)
@@ -263,12 +262,11 @@ DEPENDENCIES
   pnotify-rails
   pry (= 0.9.12.2)
   pry-rails (= 0.3.2)
-  rack-insight
   rails (= 3.2.13)
+  ransack
   russian
   sass-rails (~> 3.2.3)
   sqlite3
-  texticle (= 2.0)
   therubyracer
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)

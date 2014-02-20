@@ -3,14 +3,8 @@ class FavoritesController < ApplicationController
   # caches_action :index, :cache_path => Proc.new { |c| c.params }
 
   def index
-    if !params[:search].blank?
-      @favorites = current_user.artists_favorites.search(params[:search])
-    elsif params[:date_from] || params[:date_to]
-      @favorites = current_user.artists_favorites.filter(params[:date_from], params[:date_to])
-    else
-      @favorites = current_user.artists_favorites
-    end
-    @favorites = @favorites.paginate(page: params[:page], per_page: params[:per_page] || 10) 
+    @search = current_user.favorites.search(params[:q])
+    @favorites = @search.result.paginate(page: params[:page], per_page: params[:per_page] || 10) 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @favorites }

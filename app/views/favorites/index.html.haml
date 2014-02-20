@@ -5,16 +5,11 @@
 
 = link_to t('.create', :default => t("helpers.links.new")), new_favorite_path, :class => 'btn btn-primary'
 
-= render 'parse_remote_account'
+= render 'parse_remote_account'  
 
-- if params[:search] || @favorites.count > 1
-  = render partial: 'search'
-
-- if @favorites.blank?
-  .lead
-    %h5
-      = t('.empty')
-- else
+= render partial: 'search'
+  
+- if @favorites.any?
   = link_to pack_track_favorites_path(), :method => :put, confirm: t('.track_confirm') do 
     %button.btn{ type: 'button' }
       = t('.track_all_library')
@@ -22,14 +17,13 @@
     %thead
       %tr
         %th= model_class.human_attribute_name(:status)
-        %th= model_class.human_attribute_name(:name)
-        %th= model_class.human_attribute_name(:track)
+        %th= sort_link @search, :artist_name
+        %th= sort_link @search, :track
         %th= model_class.human_attribute_name(:mbid)
         %th= model_class.human_attribute_name(:photo)
-        %th= model_class.human_attribute_name(:created_at)
+        %th= sort_link @search, :artist_created_at
         %th= t'.actions', :default => t("helpers.actions")
         %th
-          track
           %button.btn.select_all{ type: 'button' }
             %i.icon-arrow-down{ title: t(:check_all) }
           %br
@@ -42,4 +36,5 @@
     %tbody
       = render partial: "favorite", collection: @favorites
   = will_paginate @favorites
-         
+- else
+  = render 'main/empty_resource'         

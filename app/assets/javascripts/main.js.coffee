@@ -67,3 +67,17 @@ $ ->
     message = $(this).data('loadingText')
     $(this).find('input').data('loadingText', message)
 
+  if ((reset_button = $('#q_reset')).length > 0)
+    reset_button.hide()
+    reset_button.each ->
+      current_res_but = $(this)
+      current_res_but.parents('form').find('input:text').each ->
+        if ($(this).val().length > 0)
+          current_res_but.show()
+      current_res_but.click (e)->
+        e.preventDefault()
+        $(this).parents('form').find('input:text').val('').end().submit()
+
+
+
+

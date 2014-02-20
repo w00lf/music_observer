@@ -1,6 +1,7 @@
 - artist = recommendation.artist
 %tr
   %td= image_tag artist.photo.url
+  %td= render partial: 'tags/tag', collection: artist.tags
   %td= artist.name
   %td= artist.year_from.nil? ? t(:none) : artist.year_from.strftime('%Y')
   %td= artist.year_to.nil? ? t(:none) : artist.year_to.strftime('%Y')

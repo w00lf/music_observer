@@ -1,27 +1,27 @@
+- model_class = Artist
 %h1= model_page_title(Recommendation)
 
 %div#response
-  = render partial: 'filter'
+  = render partial: 'search'
 
 = form_tag api_parse_recommendations_path(), method: :post do
   = link_to_or_authorize(@api_authorized, submit_tag(t('.parse_recommendations'), :confirm => t('.parsing_message')))
 
-- if @recommendations.blank?
-  .lead
-    %h5
-      = t(:empty_entries)
-- else
+- if @recommendations.any?
   %table.table.table-striped#artist_table
     %thead
       %tr
-        %th= Artist.human_attribute_name(:photo)
-        %th= Artist.human_attribute_name(:name)
-        %th= Artist.human_attribute_name(:year_from)
-        %th= Artist.human_attribute_name(:year_to)
-        %th= link_to Artist.human_attribute_name(:listeners), request.parameters.merge({:sort => "artists.listeners", asc: "#{params[:asc].blank? ? 'true' : '' }" })
-        %th= Artist.human_attribute_name(:created_at)
+        %th= model_class.human_attribute_name(:photo)
+        %th= model_class.human_attribute_name(:tags)
+        %th= sort_link @search, :artist_name
+        %th= sort_link @search, :artist_year_from
+        %th= sort_link @search, :artist_year_to
+        %th= sort_link @search, :artist_listeners
+        %th= model_class.human_attribute_name(:created_at)
         %th
     %tbody
       = render partial: "recommendation", collection: @recommendations
-  = will_paginate @artists
+  = will_paginate @recommendations
+- else
+  = render 'main/empty_resource'
          

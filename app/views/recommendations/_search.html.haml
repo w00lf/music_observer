@@ -1,0 +1,23 @@
+%p.lead
+  %h5
+    = t(:search)
+  = search_form_for @search, :class => "navbar-form navbar-left", role: "search" do |f|
+    - @selected_tags.each do |tag|
+      = hidden_field_tag 'q[artist_tags_id_in][]', tag, class: 'tag_select'
+    = f.text_field :artist_name_cont, placeholder: Artist.human_attribute_name(:name)
+    = t('.listens_count')
+    = f.number_field :artist_listeners_gt, step: 50_000
+    = t('.year_from')
+    = f.select :artist_year_from, options_for_select((Time.now.strftime('%Y').to_i.downto(1950)), selected: params[:year_from]), include_blank: true
+    = t('.year_to')
+    = f.select :artist_year_to, options_for_select((Time.now.strftime('%Y').to_i.downto(1950)), selected: params[:year_to]), include_blank: true
+    %br
+    = t(:per_page)
+    = select_tag :per_page, options_for_select((25..200).step(25), selected: params[:per_page])
+    = submit_tag t(:search)
+    - if @top_tags.any?
+      %ul{class: "nav nav-pills"} 
+        %li{class: (params[:tag].blank? ? 'active' : '')}
+          = render partial: 'tags/tag', collection: @top_tags
+          %i.icon-arrow-right.more_button{ display: 'none' }
+  

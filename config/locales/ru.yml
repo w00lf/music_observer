@@ -1,4 +1,5 @@
 ru:
+  empty: Не найдено записей
   cleared: Очередь очищена
   in_work: В пороцессе...
   all: Все
@@ -53,14 +54,16 @@ ru:
       non_track_all_page_title: "Не следить за помеченным исполнителями на этой странице"
       track_confirm: "Вы собираетесь следить за ВСЕМИ исполнителми из вашей библиотеки, продолжить?"
       track_none_button: 'Не следить'
+      actions: Действия
     search:
       search: 'Поиск по артистам'
       filter_from: "Добавленный с"
       filter_to: "По"
+      only_tracked: "Отслеживаемые:"
   recommendations:
     recommendation:
       destroy: Отказаться
-    filter:
+    search:
       filter: 'Фильтрация рекомендаций'
       year_from: "Год создания пойзже:"
       year_to: "Год распада раньше:"
@@ -69,6 +72,9 @@ ru:
       parsing_message: 'Запущен процесс переноса ваших рекомендаций с сайта LastFm'
       parse_recommendations: 'Пренести рекомендации с lastfm.com'
       add_from_own_library: 'Пренести рекомендации с lastfm.com'
+  concerts:
+    search:
+      search: Поиск по концертам
   errors:
     title: Ошибка!
     messages:
@@ -102,11 +108,30 @@ ru:
         many: Логи
     attributes:
       artist:
-        name: "Имя/название группы/исполнителя"
+        name: &artist_name "Имя/название группы/исполнителя"
         created_at: Добавден в библиотеку
         year_from: Год образования
         year_to: Год распада
         listeners: Слушатели на LastFm
+        photo: &artist_photo Фотография
+        tags: Теги
+      concert:
+        title: Название
+        description: Описание
+        country: Страна
+        sity: Город
+        street: Улица
+        artist: *artist_name
+        start_date: Дата начала
+
+      favorite:
+        status: Статус
+        track: Следить
+        name: "Название группы, имя артиста"
+        photo: *artist_photo
+  helpers:
+    links:
+      destroy: Удалить
   devise:
     failure:
       already_authenticated: "Вы уже вошли в систему."

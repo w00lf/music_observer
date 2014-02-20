@@ -1,15 +1,13 @@
 %p.lead
   %h5
     = t(".search")
-  = form_tag '', method: :get, :class => "navbar-form navbar-left", role: "search" do
-    - if params[:search] || params[:date_from] || params[:date_to]
-      = link_to favorites_path do
-        %i.icon-remove
-        = t(:clear)
-    = text_field_tag 'search', params[:search], placeholder: Favorite.human_attribute_name(:name)
-    = text_field_tag 'date_from', params[:date_from], placeholder: t(:date_from)
-    = text_field_tag 'date_to',params[:date_to], placeholder: t(:date_to)
+  = search_form_for @search, :class => "navbar-form navbar-left", role: "search" do |f|
+    = f.text_field :artist_name_cont, placeholder: Favorite.human_attribute_name(:name)
+    = f.text_field :artist_created_at_gt, placeholder: t(:date_from), id: :date_from
+    = f.text_field :artist_created_at_lt, placeholder: t(:date_to), id: :date_to
+    = t('.only_tracked')
+    = f.check_box :track_eq
     = t(:per_page)
     = select_tag :per_page, options_for_select((25..200).step(25), selected: params[:per_page])
-    = submit_tag t(:search)
-  
+    = f.submit t(:search)
+    = f.submit t(:clear), :id => :q_reset

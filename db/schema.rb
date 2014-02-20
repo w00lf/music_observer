@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140103124601) do
+ActiveRecord::Schema.define(:version => 20140220083839) do
 
   create_table "artist_users", :force => true do |t|
     t.integer  "user_id",                       :null => false
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(:version => 20140103124601) do
     t.text     "description"
     t.string   "api_link",           :limit => 10000
   end
+
+  add_index "artists", ["name", "created_at"], :name => "index_artists_on_name_and_created_at"
 
   create_table "artists_tags", :id => false, :force => true do |t|
     t.integer "tag_id"
@@ -68,6 +70,8 @@ ActiveRecord::Schema.define(:version => 20140103124601) do
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
   end
+
+  add_index "concerts", ["title", "created_at"], :name => "index_concerts_on_title_and_created_at"
 
   create_table "libraries", :force => true do |t|
     t.boolean  "track",      :default => false, :null => false
