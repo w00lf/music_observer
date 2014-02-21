@@ -1,6 +1,6 @@
 class RecommendationsController < ApplicationController
   def index
-    user_recom = current_user.recommendations.publick
+    user_recom = Recommendation.includes(:artist).where(user_id: current_user.id).publick
     @search = user_recom.search(params[:q])
     @recommendations = @search.result.paginate(page: params[:page], per_page: (params[:per_page] || 25)) 
     @top_tags = Tag.top_recommended(current_user)

@@ -14,24 +14,27 @@
 
 
   %body
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container
-          %a.btn.btn-navbar(data-target=".nav-collapse" data-toggle="collapse")
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-          %a.brand(href="/") MusicObserver
-          .container.nav-collapse
-            %ul.nav
-              - get_top_menu_items().each do |title, link|
-                %li= link_to title, link
-            - if user_signed_in?
-              %i.icon-arrow-right
-                = current_user.email
-              = link_to(destroy_user_session_path, {:method => :delete, :id=> 'log_out'}) do
-                %i.icon-arrow-right
-                = t("log_out")
+    - cache(header_hash) do
+      .navbar.navbar-fixed-top
+        .navbar-inner
+          .container
+            %a.btn.btn-navbar(data-target=".nav-collapse" data-toggle="collapse")
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+            %a.brand(href="/") MusicObserver
+            .container.nav-collapse
+              %ul.nav
+                - get_top_menu_items().each do |title, link|
+                  %li= link_to title, link
+              - if user_signed_in?
+                .login_title
+                  %i.icon-arrow-right
+                    = current_user.email
+                = link_to(destroy_user_session_path, {:method => :delete, :id=> 'log_out'}) do
+                  %i.icon-remove
+                  = t("helpers.links.log_out")
+
 
     #container.container
       .row  

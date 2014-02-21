@@ -12,10 +12,6 @@ class ApplicationController < ActionController::Base
     session[:return_url].blank? ? redirect_to(:root) : redirect_to(session[:return_url])
   end
 
-  def current_user
-    @current_user ||= super && User.includes(:concert_user_entries, :artists_recommendations).find(@current_user.id)
-  end
-
   def check_api_login
     @api_provider = LastFmApi.new
     @api_provider_aut = LastFmApiAutorizator.new(session)

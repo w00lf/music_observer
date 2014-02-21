@@ -3,21 +3,11 @@ class FavoritesController < ApplicationController
   # caches_action :index, :cache_path => Proc.new { |c| c.params }
 
   def index
-    @search = current_user.favorites.search(params[:q])
+    @search = Favorite.includes(:artist).where(user_id: current_user.id).search(params[:q])
     @favorites = @search.result.paginate(page: params[:page], per_page: params[:per_page] || 10) 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @favorites }
-    end
-  end
-
-
-  def show
-    @favorite = current_user.artists_favorites.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @favorite }
     end
   end
 

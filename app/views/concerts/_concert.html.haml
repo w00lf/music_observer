@@ -1,0 +1,10 @@
+- cache(concert) do
+  %tr
+    %td= image_tag concert.photo.url
+    %td= link_to concert.title, concert.api_link, class: 'external '
+    %td= truncate( strip_tags( concert.description ), length: 200, separator: " " )
+    %td= concert.country
+    %td= concert.sity
+    %td= concert.street
+    %td= link_to concert.artist.name, concert.artist.api_link, class: 'external '
+    %td= concert.start_date

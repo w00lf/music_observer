@@ -24,6 +24,11 @@ module ApplicationHelper
     	}
     end
 
+    def header_hash
+        digit = Digest::MD5.hexdigest(current_user.email)
+        "site_header#{digit}"
+    end
+
     def api_auth
        url_for(controller: 'api_session', action: 'outside_request', return_url: request.url ) 
     end

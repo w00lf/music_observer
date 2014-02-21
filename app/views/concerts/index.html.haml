@@ -17,16 +17,7 @@
         %th= sort_link @search, :artist_name
         %th= model_class.human_attribute_name(:start_date)
     %tbody
-      - @concerts.each do |concert|
-        %tr
-          %td= image_tag concert.photo.url
-          %td= link_to concert.title, concert.api_link, class: 'external '
-          %td= truncate( strip_tags( concert.description ), length: 200, separator: " " )
-          %td= concert.country
-          %td= concert.sity
-          %td= concert.street
-          %td= link_to concert.artist.name, favorite_path(concert.artist)
-          %td= concert.start_date
-      = will_paginate @concerts
+      = render partial: "concert", collection: @concerts
+  = will_paginate @concerts
 - else
   = render 'main/empty_resource'

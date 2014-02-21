@@ -16,7 +16,7 @@ require 'bundler/capistrano'
 ## dayabase.yml в shared-каталог проекта на сервере и раскомментируйте
 ## следующие строки.
 
-after "deploy:update_code", :copy_database_config
+after "deploy:update_code", :copy_database_config_restart_worker
 task :copy_database_config_restart_worker, roles => :app do
   db_config = "#{shared_path}/database.yml"
   protected_path = "#{shared_path}/protected.yml"

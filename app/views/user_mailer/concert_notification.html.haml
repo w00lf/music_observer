@@ -19,7 +19,7 @@
         %p
           = link_to concert.title, concert.api_link
         %p
-          = link_to concert.artist.name, artist_url(concert.artist)
+          = link_to concert.artist.name, concert.artist.api_link
       %td
         %p
           = concert.country

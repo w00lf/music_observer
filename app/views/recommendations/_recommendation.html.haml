@@ -1,11 +1,12 @@
-- artist = recommendation.artist
-%tr
-  %td= image_tag artist.photo.url
-  %td= render partial: 'tags/tag', collection: artist.tags
-  %td= artist.name
-  %td= artist.year_from.nil? ? t(:none) : artist.year_from.strftime('%Y')
-  %td= artist.year_to.nil? ? t(:none) : artist.year_to.strftime('%Y')
-  %td= artist.listeners
-  %td= l(artist.created_at)
-  %td
-    = link_to t('.destroy'), recommendation_path(recommendation), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, remote: true, :class => 'refuse btn btn-mini btn-danger', "data-type" => "json", 'data-loading-text' => t(:removing)
+- cache(recommendation.artist) do
+  - artist = recommendation.artist
+  %tr
+    %td= image_tag artist.photo.url
+    %td= render partial: 'tags/tag', collection: artist.tags
+    %td= link_to artist.name, artist.api_link, class: 'external '
+    %td= artist.year_from.nil? ? t(:none) : artist.year_from.strftime('%Y')
+    %td= artist.year_to.nil? ? t(:none) : artist.year_to.strftime('%Y')
+    %td= artist.listeners
+    %td= l(artist.created_at)
+    %td
+      = link_to t('.destroy'), recommendation_path(recommendation), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, remote: true, :class => 'refuse btn btn-mini btn-danger', "data-type" => "json", 'data-loading-text' => t(:removing)

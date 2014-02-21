@@ -1,11 +1,11 @@
 - model_class = Favorite
-.page-header
-  %h1=model_page_title(model_class)
+- cache("favorites_header") do
+  .page-header
+    %h1=model_page_title(model_class)
 
+  = link_to t('.create', :default => t("helpers.links.new")), new_favorite_path, :class => 'btn btn-primary'
 
-= link_to t('.create', :default => t("helpers.links.new")), new_favorite_path, :class => 'btn btn-primary'
-
-= render 'parse_remote_account'  
+  = render 'parse_remote_account'  
 
 = render partial: 'search'
   

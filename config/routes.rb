@@ -10,13 +10,13 @@ MusicObserver::Application.routes.draw do
     end
   end
 
-  resources :concerts do
+  resources :concerts, only: [:index] do
     member do
       put 'hide'
     end
   end
 
-  resources :favorites do
+  resources :favorites, except: [:show] do
     collection do
       get 'api_search'
       post 'api_library'

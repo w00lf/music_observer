@@ -1,29 +1,27 @@
 %h1 Последние актуальные коцерты
-- if @shedule.length > 0
-  - @shedule.each do |date, concert_list|
-    %div
-      %h3
-        = date
-      - concert_list.each do |concert|
-        %ul.concert_entry
-          %li
-            = image_tag concert.photo.url
-          %li
-            = link_to concert.title, concert.api_link, class: 'external '
-            %br
-            = link_to concert.artist.name, favorite_path(concert.artist)
-          %li
-            = concert.country
-            %br
-            = concert.sity
-            %br
-            = concert.street
-          %li
-            = link_to hide_concert_path(concert.id), :method => :put do 
-              %button{ type:  "button", class: "close", :'aria-hidden'=> "true"}
-                &times;
-         
-        .clear
+- if @concerts.any?
+  - cache(main_page_hash) do
+    - make_shedule_hash(@concerts).each do |date, concert_list|
+      %div
+        %h3
+          = date
+        - concert_list.each do |concert|
+          %ul.concert_entry
+            %li
+              = image_tag concert.photo.url
+            %li
+              = link_to concert.title, concert.api_link, class: 'external '
+            %li
+              = concert.country
+              %br
+              = concert.sity
+              %br
+              = concert.street
+            %li
+              = link_to hide_concert_path(concert.id), :method => :put do 
+                %button{ type:  "button", class: "close", :'aria-hidden'=> "true"}
+                  &times;
+          .clear
 - else
   %h3
     Не найдено концертов для ваших артистов

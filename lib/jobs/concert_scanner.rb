@@ -23,7 +23,8 @@ class ConcertScanner
 		    User.find_each do |user|
 		    	new_concerts = []
 		    	result.each do |concert|
-		    		if user.artists_favorites.include?(concert.artist)
+		    		favorite = user.favorites.find_by_artist_id(concert.artist)
+		    		if favorite && favorite.track
 		    			user.concerts << concert
 		    			new_concerts << concert
 		    		end
