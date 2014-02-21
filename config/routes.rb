@@ -1,5 +1,8 @@
 MusicObserver::Application.routes.draw do
 
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
+
   get "api_session/outside_request"
   get "api_session/return_callback"
 

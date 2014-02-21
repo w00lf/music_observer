@@ -79,3 +79,4 @@ gem "daemons", '1.0.10'
 # To use debugger
 # gem 'debugger'
 gem "ransack"
+gem 'activeadmin', github: 'gregbell/active_admin'

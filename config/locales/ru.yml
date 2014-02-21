@@ -342,12 +342,6 @@ ru:
       favorite:
         one: Избранный артист
         many: Избранные артисты
-      artist: 
-        one: Артист
-        many: Артисты
-      concert:
-        one: Концерт
-        many: Концерты 
       recommendation: 
         one: Рекомендация
         many: Рекомендации 

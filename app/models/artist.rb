@@ -34,12 +34,5 @@ class Artist < ActiveRecord::Base
       (artist.photo = photo_from_url(prop[:image]); artist.save()) unless artist.photo.exists?
       artist
     end
-
-    # ERROR wrong filter, need filter by artists_users
-    def filter from, to 
-      to = to.blank? ?  Time.now : Time.parse(to)
-      from = from.blank? ?  minimum(:created_at) : Time.parse(from)
-      where(['artists.created_at BETWEEN ? AND ?', from, to])
-    end
   end
 end
