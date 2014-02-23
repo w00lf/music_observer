@@ -74,8 +74,6 @@ class FavoritesController < ApplicationController
 
     respond_to do |format|
       if @favorite.update_attribute(:track, params[:track])
-
-        toggle_user_concerts()
         format.html { redirect_to :back, notice: t(:entry_updated) }
         format.json { render json: { title: t('update'), message: t('update_success') } }
       else
@@ -91,7 +89,6 @@ class FavoritesController < ApplicationController
     
     respond_to do |format|
       if @favorites.update_all(track: (params[:track] || true))
-        toggle_user_concerts()
         format.html { redirect_to :back, notice: t(:entry_updated) }
         format.json { render json: { title: t('update'), message: t('update_success') } }
       else
@@ -106,23 +103,6 @@ class FavoritesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :back, error: message }
       format.json { render_json_error(message) }
-    end
-  end
-# TODO : move to models
-  def toggle_user_concerts
-    if @favorite.artist.favorites.where(user_id: current_user)[0].track
-      @favorite.artist.concerts.each do |concert|
-        if current_user.concerts.include?(concert)
-          current_user.concert_user_entries.where(concert_id: concert).update_all(is_show: true)
-        else
-          current_user.concert_user_entries.create(concert: concert) 
-        end
-      end
-      current_user.concert_user_entries
-    else
-      @favorite.artist.concerts.each do |concert|
-        current_user.concert_user_entries.where(concert_id: concert).update_all(is_show: false)
-      end
     end
   end
 end
