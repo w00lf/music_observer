@@ -342,12 +342,27 @@ ru:
       favorite:
         one: Избранный артист
         many: Избранные артисты
+        other: Избранные артисты
       recommendation: 
         one: Рекомендация
         many: Рекомендации 
+        other: Рекомендации
       schedule_log:
         one: Лог
         many: Логи
+        other: Логи
+      artist:
+        one: Артист
+        many: Артисты
+        other: Артисты
+      concert:
+        one: Концерт
+        many: Концерты
+        other: Концерты
+      user:
+        one: Пользователь
+        many: Пользователи
+        other: Пользователи
     attributes:
       artist:
         name: &artist_name "Имя/название группы/исполнителя"
