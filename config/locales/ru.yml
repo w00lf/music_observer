@@ -340,27 +340,39 @@ ru:
   activerecord:
     models:
       favorite:
+        zero: Избранных артистов
         one: Избранный артист
+        few: Избранные артисты
         many: Избранные артисты
         other: Избранные артисты
       recommendation: 
+        zero: Рекомендации
         one: Рекомендация
-        many: Рекомендации 
+        few: Рекомендации
+        many: Рекомендации
         other: Рекомендации
       schedule_log:
+        zero: Логов
         one: Лог
+        few: Логи
         many: Логи
         other: Логи
       artist:
-        one: Артист
+        zero: Артисты
+        one: Артисты
+        few: Артисты
         many: Артисты
         other: Артисты
       concert:
+        zero: Концертов
         one: Концерт
+        few: Концертов
         many: Концерты
         other: Концерты
       user:
+        zero: Пользователей
         one: Пользователь
+        few: Пользователей
         many: Пользователи
         other: Пользователи
     attributes:
