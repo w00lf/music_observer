@@ -24,3 +24,6 @@ restart
 .DS_store
 *.sqlite
 config/unicorn.rb
+
+
+db/schema.rb

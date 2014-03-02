@@ -16,6 +16,7 @@ ActiveAdmin.register_page "Dashboard" do
           ul do
             ScheduleLog.limit(20).map do |item|
               li raw "[ #{item.status.upcase}: #{item.created_at.strftime('%H:%M:%S %d-%m-%Y')} ] #{item.content}"
+
             end
           end
         end
