@@ -21,4 +21,8 @@ class ScheduleLog
     query.merge!(date_range) unless date_range[:created_at].blank?
     self.where(query).paginate(page: page, per_page: limit)
   end
+
+  def self.column_names
+    [:job_class, :status, :content, :entry_type]
+  end
 end

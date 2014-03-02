@@ -9,19 +9,18 @@ ActiveAdmin.register_page "Dashboard" do
         small I18n.t("active_admin.dashboard_welcome.call_to_action")
       end
     end
-
-    # Here is an example of a simple dashboard with columns and panels.
-    #
-    # columns do
-    #   column do
-    #     panel "Recent Posts" do
-    #       ul do
-    #         Post.recent(5).map do |post|
-    #           li link_to(post.title, admin_post_path(post))
-    #         end
-    #       end
-    #     end
-    #   end
+    
+    columns do
+      column do
+        panel "Recent Logs" do
+          ul do
+            ScheduleLog.limit(20).map do |item|
+              li raw "[ #{item.status.upcase}: #{item.created_at.strftime('%H:%M:%S %d-%m-%Y')} ] #{item.content}"
+            end
+          end
+        end
+      end
+    end
 
     #   column do
     #     panel "Info" do
