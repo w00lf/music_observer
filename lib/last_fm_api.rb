@@ -115,10 +115,13 @@ class LastFmApi
 						warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{res.errors.full_messages}, when parsing lastfm user: #{name}"
 					end
 					counter += 1
+					sleep(0.34)
 				end
 				page += 1
 			end
 		end
+		# TODO delete after move to hetzner
+		ConcertScanner.new.perform
 	end
 
 	def parse_recomendations user_id, authenticater
@@ -126,7 +129,7 @@ class LastFmApi
 		page = 1
 		limit = 50
 		counter = 0
-		debug "fooo for test"
+
 		api_sig = authenticater.make_signature(	'api_key' => LASTFM_KEY,
 																						'limit' => 50,
 																						'method' => 'user.getRecommendedArtists',
@@ -147,6 +150,7 @@ class LastFmApi
 						warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{res.errors.full_messages}, when parsing recomendations for lastfm user: #{username_to_parse}"
 					end
 					counter += 1
+					sleep(0.34)
 				end
 				page += 1
 				api_sig = authenticater.make_signature(	'api_key' => LASTFM_KEY,
@@ -156,6 +160,7 @@ class LastFmApi
 																						'sk' => authenticater.get_session_key()
 																						)	
 			end
+			ArtistInfoScanner.new.perform
 		end
 	end
 

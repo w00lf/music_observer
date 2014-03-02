@@ -8,7 +8,7 @@ class Concert < ActiveRecord::Base
   
   extend ApplicationHelper
 
-  scope :actual_concerts, lambda {  
+  scope :actual, lambda {  
   	interval = [Time.now, (Time.now + 1.year)]
   	order('start_date').where(['start_date BETWEEN ? AND ?', interval[0], interval[1]])
   }
