@@ -3,10 +3,10 @@ class ScheduleLogsController < ApplicationController
   def index
     @job_classes = ScheduleLog.distinct(:job_class)
     @delay_jobs_stat = delay_jobs_stat
-    if params[:job_class].blank?
+    if params[:job_classes].blank?
       @items = ScheduleLog.paginate(page: params[:page], per_page: params[:per_page])
     else
-      @items = ScheduleLog.get_logs(params[:job_class], params[:status], params[:date_from], params[:date_to], params[:page], params[:per_page] || 30)
+      @items = ScheduleLog.get_logs(params[:job_classes], params[:status], params[:date_from], params[:date_to], params[:page], params[:per_page] || 30)
     end
    end
 

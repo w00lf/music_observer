@@ -23,7 +23,7 @@ class RecommendationsController < ApplicationController
   def destroy
     @recommendation = current_user.recommendations.find(params[:id])
     respond_to do |format|
-      if @recommendation.destroy()
+      if @recommendation.update_attribute(:show, false)
         format.html { redirect_to :back, notice: t(:entry_destroied) }
         format.json { render json: { message: t(:refused, name: @recommendation.artist.name)}  } # TODO finish ajax response
       else

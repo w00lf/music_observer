@@ -32,7 +32,7 @@ class LastFmApi
 	def get_artist_info mbid, lang
 		params = { method: 'artist.getInfo', mbid: mbid, lang: lang }
 		query = get_request(params)
-		(error(query); return) unless query["error"].nil?
+		(error(query); return) unless query.nil? || query["error"].nil?
 		artist = query["artist"]
 		bio = format_bio(artist)
 		{ 

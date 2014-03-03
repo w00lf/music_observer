@@ -12,8 +12,8 @@ class ScheduleLog
   field :entry_type
   enumerize :entry_type, in: [:job_started, :job_ended, :entry], default: :entry
 
-  def self.get_logs task, status, start_date, end_date, page, limit 
-    query = { job_class: task }
+  def self.get_logs tasks, status, start_date, end_date, page, limit 
+    query = { "job_class" => { "$in" => tasks } }
     query.merge!({ status: status }) unless status.blank?
     date_range = { created_at: {}}
     date_range[:created_at].merge!({:$gte => Time.parse(start_date)}) unless start_date.blank?

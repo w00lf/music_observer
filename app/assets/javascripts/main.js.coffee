@@ -78,6 +78,20 @@ $ ->
         e.preventDefault()
         $(this).parents('form').find('input:text').val('').end().submit()
 
+  $('.nav-pills a').click (e)->
+    e.preventDefault()
+    element_id = $(this)[0].id.split('_')[1]
+    parent_li = $(this).parents('li')
+    parent_ul = $(this).parents('ul')
+    if (parent_li.hasClass('active'))
+      parent_li.toggleClass('active')
+      parent_ul.find('input').each ->
+        if($(this).val() == element_id)
+          $(this).remove()
+    else
+      parent_ul.find('input:first').clone().val(element_id).appendTo(parent_ul)
+      parent_li.addClass('active')
+
 
 
 

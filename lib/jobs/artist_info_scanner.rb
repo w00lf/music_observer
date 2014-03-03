@@ -25,7 +25,7 @@ class ArtistInfoScanner
           error("Cannot update attributes for artist: #{artist.id}/#{artist.name}")
         end
         tags_stats.each do |tag|
-          artist.tags << Tag.find_or_create_by_name(tag)
+          artist.tags.find_or_create_by_name(tag)
         end
         sleep(0.34)
       end

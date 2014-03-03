@@ -7,4 +7,14 @@
   = text_field_tag 'date_to', params[:date_to], placeholder: t(:date_to)
   = label_tag :per_page, t(:per_page)
   = select_tag :per_page, options_for_select((50..200).step(50), selected: params[:per_page])
+  - if @job_classes.any?
+    %ul{class: "nav nav-pills"} 
+      = hidden_field_tag 'job_classes[]', '', class: 'tag_select'
+      - if params[:job_classes]
+        - params[:job_classes].select {|n| !n.blank? }.each do |job|
+          = hidden_field_tag 'job_classes[]', job, class: 'tag_select'
+      - @job_classes.each do |job|
+        - html = (params[:job_classes] && params[:job_classes].include?(job.to_s)) ? 'active' : '' 
+        %li{class: "#{html}" }
+          = link_to job, schedule_logs_path(:job_class => job), id: "job_#{job}"
   = submit_tag t(:filter)
