@@ -24,8 +24,9 @@ class ArtistInfoScanner
         else
           error("Cannot update attributes for artist: #{artist.id}/#{artist.name}")
         end
-        tags_stats.each do |tag|
-          artist.tags.find_or_create_by_name(tag)
+        tags_stats.each do |tag_stat|
+          tag = Tag.find_or_create_by_name(tag_stat)
+          artist.tags << tag unless artist.tags.exists?(tag)
         end
         sleep(0.34)
       end
