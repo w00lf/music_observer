@@ -8,18 +8,18 @@ class Concert < ActiveRecord::Base
   
   extend ApplicationHelper
 
-  scope :actual_concerts, lambda {|interval_string|  
-  	interval = get_interval(interval_string)
+  scope :actual, lambda {  
+  	interval = [Time.now, (Time.now + 1.year)]
   	order('start_date').where(['start_date BETWEEN ? AND ?', interval[0], interval[1]])
   }
   scope :is_show, where(['concert_user_entries.is_show = ?', true ])
 
   private 
 
-  def self.get_interval interval_string
-  	if interval_string.blank?
-  		return [Time.now, (Time.now + 1.year)]
-  	end
-  	[Time.parse(interval_string.split('-')[0]), Time.parse(interval_string.split('-')[1])]
-  end
+  # def self.get_interval 
+  # 	if interval_string.blank?
+  		
+  # 	end
+  # 	[Time.parse(interval_string.split('-')[0]), Time.parse(interval_string.split('-')[1])]
+  # end
 end

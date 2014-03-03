@@ -10,7 +10,7 @@ class ArtistInfoScanner
   def do_retrive(force = false)
     logger do
       @api = LastFmApi.new
-      last_time_parsed_obj = ScheduleLog.where(entry_type: "job_started", job_class: self.class).first # if task ended prematurely???
+      last_time_parsed_obj = ScheduleLog.where(entry_type: "job_ended", job_class: self.class).first # if task ended prematurely???
       last_time_parsed = last_time_parsed_obj.nil? || force ? 1000.years.ago : last_time_parsed_obj.created_at
       Artist.find_each(conditions: ['mbid IS NOT ? AND created_at > ?', nil, last_time_parsed], batch_size: 100) do |artist|
         stats = @api.get_artist_info(artist.mbid, 'en')
@@ -27,7 +27,7 @@ class ArtistInfoScanner
         tags_stats.each do |tag|
           artist.tags << Tag.find_or_create_by_name(tag)
         end
-        sleep(0.2)
+        sleep(0.34)
       end
     end
   end

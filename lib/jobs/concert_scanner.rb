@@ -17,7 +17,7 @@ class ConcertScanner
 			    			info "created concert: #{result.last.id}"
 		    			end
 			    	end
-			    	sleep 0.5	
+			    	sleep(0.34)	
 		    	end
 		    end
 		    User.find_each do |user|
