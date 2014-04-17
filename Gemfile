@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.17'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -44,9 +44,10 @@ gem "twitter-bootstrap-rails"
 
 # gem "resque"
 # gem "resque-scheduler"
-# gem "bluepill"
+gem "bluepill"
 gem 'delayed_job', "3.0.4"
 gem 'delayed_job_mongoid'
+gem 'i18n'
 
 gem 'paperclip'
 gem "will_paginate"
