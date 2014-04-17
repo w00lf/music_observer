@@ -18,11 +18,16 @@ class ScheduleLogsController < ApplicationController
     end
    end
 private
+  def del_job_last_error
+    worker = Delayed::Job.where(:last_error.ne => nil, :last_error.exists => true).last
+    return if worker.blank?
+    worker.last_error.split("\n").join("<br>") if worker.last_error
+  end
     def delay_jobs_stat
       {
         'Jobjs in queue: ' => Delayed::Job.all.count,  
         'Failed jobs in queue' => Delayed::Job.where(:last_error.ne => nil, :last_error.exists => true).count,
-        'Job last_error' => Delayed::Job.where(:last_error.ne => nil, :last_error.exists => true).last.try { |n| last_error.split("\n").join("<br>") }
+        'Job last_error' => del_job_last_error
       }
     end
 end
