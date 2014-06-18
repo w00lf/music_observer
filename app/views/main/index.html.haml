@@ -4,7 +4,7 @@
     - make_shedule_hash(@concerts).each do |date, concert_list|
       %div
         %h3
-          = date
+          = l(date, format: :long)
         - concert_list.each do |concert|
           %ul.concert_entry
             %li

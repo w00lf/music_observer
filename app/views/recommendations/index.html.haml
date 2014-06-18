@@ -17,7 +17,7 @@
         %th= sort_link @search, :artist_year_from
         %th= sort_link @search, :artist_year_to
         %th= sort_link @search, :artist_listeners
-        %th= model_class.human_attribute_name(:created_at)
+        %th= sort_link @search, :created_at
         %th
     %tbody
       = render partial: "recommendation", collection: @recommendations

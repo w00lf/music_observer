@@ -22,7 +22,8 @@ task :copy_database_config_restart_worker, roles => :app do
   protected_path = "#{shared_path}/protected.yml"
   run "cp #{db_config} #{release_path}/config/database.yml"
   run "cp #{protected_path} #{release_path}/config/protected.yml"
-  run "kill -9 `cat #{shared_path}/pids/delayed_job.pid` && cd #{release_path} && /usr/local/rvm/bin/rvm use 1.9.3 do bundle exec rake maintainance:worker RAILS_ENV=production"
+  run "kill -9 `cat #{shared_path}/pids/delayed_job.pid` && cd #{release_path} && /usr/local/rvm/bin/rvm use #{rvm_ruby_string} do bundle exec rake maintainance:worker RAILS_ENV=production"
+  run "echo '#{rvm_ruby_string}' > #{release_path}/.ruby-version"
 end
 
 # В rails 3 по умолчанию включена функция assets pipelining,
@@ -64,7 +65,7 @@ role :app,            deploy_server
 role :db,             deploy_server, :primary => true
 
 # Следующие строки необходимы, т.к. ваш проект использует rvm.
-set :rvm_ruby_string, "1.9.3"
+set :rvm_ruby_string, "2.1.0"
 set :rake,            "rvm use #{rvm_ruby_string} do bundle exec rake" 
 set :bundle_cmd,      "rvm use #{rvm_ruby_string} do bundle"
 
@@ -87,7 +88,7 @@ task :set_current_release, :roles => :app do
     set :current_release, latest_release
 end
 
-  set :unicorn_start_cmd, "(cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do bundle exec unicorn_rails -Dc #{unicorn_conf})"
+set :unicorn_start_cmd, "(cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do bundle exec unicorn_rails -Dc #{unicorn_conf})"
 
 
 # - for unicorn - #
@@ -108,9 +109,4 @@ namespace :deploy do
   end
 end
 
-namespace :processes do
-  desc "Start application"
-  task :start, :roles => :app do
-    run 'ls'
-  end
-end
+

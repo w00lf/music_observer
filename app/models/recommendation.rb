@@ -23,4 +23,21 @@ class Recommendation < ArtistUser
   scope :artists_tagged_with, lambda {|tag_id|
     joins(:artist => :tags ).where(['tags.id = ?', tag_id])
   }
+
+  class << self
+    def user_search(query, user)
+      user_recom = select('DISTINCT "artist_users".*, "artists".*').includes(:artist).where(user_id: user.id).publick
+      user_recom = user_recom.order('artist_users.created_at desc') unless query.try(:[], :s).present?
+      tags = []
+      query ||= {}
+      search_attributes = {}
+      if query.present? && query[:tagged_with].present?
+        tags = query[:tagged_with].reject {|n| n.blank? }
+        artist_ids = Artist.joins(:tags).select('artists.id, count(*) as taging').where(['tags.id in(?)', tags]).group('artists.id').having(['count(*) > ?', (tags.length - 1)]).map(&:id)
+        artist_ids = [0] if artist_ids.blank?
+        search_attributes.merge!(artist_id_in: artist_ids)
+      end
+      user_recom.search(query.merge(search_attributes))
+    end
+  end
 end

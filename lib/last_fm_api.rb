@@ -107,12 +107,13 @@ class LastFmApi
 		logger do
 			until((artists = retrive_artists(name, page, limit)).blank?) do
 				artists.each do |art|
-					res = Artist.create_favorite(art, user)
-					(warn "max library parse size reached, user :#{user.id}, lastfm user: #{name}"; return) if counter > MAX_LIBRARY
-					if res.errors.blank?
+					begin
+						res = Artist.create_favorite(art, user)
+						(warn "max library parse size reached, user :#{user.id}, lastfm user: #{name}"; return) if counter > MAX_LIBRARY
 						info "created entry: #{res.name}, for user: #{user.id}, lastfm user: #{name}"
-					else
-						warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{res.errors.full_messages}, when parsing lastfm user: #{name}"
+					rescue ActiveRecord::RecordInvalid => e
+						warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{e.message}, when parsing lastfm user: #{name}"
+						next
 					end
 					counter += 1
 					sleep(0.34)
@@ -142,13 +143,14 @@ class LastFmApi
 			until((artists = retrive_recommended_artists(page, limit, api_sig, session_key)).blank?) do
 				# debug artists
 				artists.each do |art|
-					res = Artist.create_recommended(art, user)
-					(warn "max library parse size reached, user :#{user.id}, lastfm user: #{username_to_parse}"; return) if counter > MAX_LIBRARY
-					if res.errors.blank?
-						info "created entry: #{res.name}, for user: #{user.id}, lastfm user: #{username_to_parse}"
-					else
-						warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{res.errors.full_messages}, when parsing recomendations for lastfm user: #{username_to_parse}"
+					begin
+						res = Artist.create_recommended(art, user)
+					rescue ActiveRecord::RecordInvalid => e
+						warn "cannot create artist: #{art[:name]}/#{art[:mbid]}, reason: #{e.message}, when parsing recomendations for lastfm user: #{username_to_parse}"
+						next
 					end
+					(warn "max library parse size reached, user :#{user.id}, lastfm user: #{username_to_parse}"; return) if counter > MAX_LIBRARY
+					info "created entry: #{res.name}, for user: #{user.id}, lastfm user: #{username_to_parse}"
 					counter += 1
 					sleep(0.34)
 				end

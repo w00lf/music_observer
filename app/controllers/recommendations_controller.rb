@@ -1,11 +1,11 @@
 class RecommendationsController < ApplicationController
   def index
-    user_recom = Recommendation.includes(:artist).where(user_id: current_user.id).publick
-    @search = user_recom.search(params[:q])
-    @recommendations = @search.result.paginate(page: params[:page], per_page: (params[:per_page] || 25)) 
-    @top_tags = Tag.top_recommended(current_user)
-    @selected_tags = params[:q][:artist_tags_id_in] unless params[:q].nil?
     @selected_tags ||= []
+    @selected_tags = Tag.find_all_by_id(params[:q][:tagged_with]) if params[:q].present?
+    @top_tags = Tag.top_recommended(current_user)
+    @search = Recommendation.user_search(params[:q], current_user)
+    @recommendations = @search.result.paginate(page: params[:page], per_page: (params[:per_page] || 25)) 
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @artists }

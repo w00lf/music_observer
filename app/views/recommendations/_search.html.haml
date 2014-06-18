@@ -16,8 +16,8 @@
     - if @top_tags.any?
       %ul{class: "nav nav-pills"} 
         - @selected_tags.each do |tag|
-          = hidden_field_tag 'q[artist_tags_id_in][]', tag, class: 'tag_select'
-        = hidden_field_tag 'q[artist_tags_id_in][]', '', class: 'tag_select'
-        = render partial: 'tags/tag', collection: @top_tags
+          = hidden_field_tag 'q[tagged_with][]', tag.id, class: 'tag_select'
+        = hidden_field_tag 'q[tagged_with][]', '', class: 'tag_select'
+        = render partial: 'tags/tag', collection: (@selected_tags + (@top_tags - @selected_tags))
         %i.icon-arrow-right.more_button{ display: 'none' }
   

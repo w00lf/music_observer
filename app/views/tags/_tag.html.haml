@@ -1,3 +1,3 @@
-- html = (@selected_tags.include?(tag.id.to_s)) ? 'active' : '' 
+- html = (@selected_tags.include?(tag)) ? 'active' : '' 
 %li{class: "#{html}"}
   = link_to tag.name, '', id: "tag_#{tag.id}"

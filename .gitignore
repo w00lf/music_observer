@@ -25,3 +25,4 @@ restart
 .DS_store
 *.sqlite
 config/unicorn.rb
+/.ruby-version

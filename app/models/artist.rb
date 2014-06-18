@@ -15,22 +15,23 @@ class Artist < ActiveRecord::Base
   has_and_belongs_to_many :tags, after_add: :update_entry
   
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
+  validates_attachment_content_type :photo, :content_type => %w(image/jpeg image/jpg image/png image/gif)
 
   class << self
     def create_favorite prop, user
       artist = find_or_create(prop)
-      Favorite.find_or_create_by_user_id_and_artist_id(user.id, artist.id, track: prop[:track] || false)
+      Favorite.find_or_create_by_user_id_and_artist_id!(user.id, artist.id, track: prop[:track] || false)
       artist
     end
 
     def create_recommended prop, user
       artist = find_or_create(prop)
-      Recommendation.find_or_create_by_user_id_and_artist_id(user.id, artist.id)
+      Recommendation.find_or_create_by_user_id_and_artist_id!(user.id, artist.id) 
       artist
     end
 
     def find_or_create prop
-      artist = find_or_create_by_mbid(prop[:mbid], name: prop[:name], mbid: prop[:mbid],listeners: prop[:listeners] || 0)
+      artist = find_or_create_by_mbid!(prop[:mbid], name: prop[:name], mbid: prop[:mbid],listeners: prop[:listeners] || 0)
       (artist.photo = photo_from_url(prop[:image]); artist.save()) unless artist.photo.exists?
       artist
     end

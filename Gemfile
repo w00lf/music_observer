@@ -35,7 +35,7 @@ group :development do
   gem 'pry', '0.9.12.2'
   gem 'pry-rails', '0.3.2'
   # gem "rack-insight"
-  gem 'debugger'
+  gem 'byebug'
 end
 
 gem 'haml-rails'
@@ -44,7 +44,7 @@ gem "twitter-bootstrap-rails"
 
 # gem "resque"
 # gem "resque-scheduler"
-gem "bluepill"
+# gem "bluepill"
 gem 'delayed_job', "3.0.4"
 gem 'delayed_job_mongoid'
 gem 'i18n'

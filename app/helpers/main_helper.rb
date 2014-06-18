@@ -1,16 +1,6 @@
 module MainHelper
   def make_shedule_hash(concerts)
-    prev = ''
-    shedule = {}
-    concerts.each do |con|
-      if prev == get_formated_date(con.start_date)
-        shedule[prev].push(con)
-      else
-        shedule[get_formated_date(con.start_date)] = [con]
-      end
-      prev = get_formated_date(con.start_date)
-    end
-    shedule
+    concerts.group_by{ |item| item.start_date.localtime.to_date }
   end
 
   def main_page_hash
