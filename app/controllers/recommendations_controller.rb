@@ -13,9 +13,7 @@ class RecommendationsController < ApplicationController
   end
 
   def api_parse
-    # return api_auth() if (user = @api_provider_aut.get_username()).nil?
-    # Delayed::Job.enqueue(current_user, @)
-    @api_provider.delay.parse_recomendations(current_user.id, @api_provider_aut)
+    UserRecomendationsParser.new.delay.perform(@api_provider_aut.username, @api_provider_aut.session_key, current_user.id)
     flash[:notice] = t(:started_parsing) 
     redirect_to(:back)
   end

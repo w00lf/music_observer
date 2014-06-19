@@ -8,7 +8,7 @@ class Favorite < ArtistUser
   private 
   def toggle_user_concerts
   	if track
-	    artist.concerts.actual_concerts.each do |concert|
+	    artist.concerts.actual.each do |concert|
 				if user.concerts.include?(concert)
 					user.concert_user_entries.where(concert_id: concert).update_all(is_show: true)
 				else

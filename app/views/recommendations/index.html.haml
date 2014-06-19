@@ -20,7 +20,7 @@
         %th= sort_link @search, :created_at
         %th
     %tbody
-      = render partial: "recommendation", collection: @recommendations
+      = render @recommendations
   = will_paginate @recommendations
 - else
   = render 'main/empty_resource'
