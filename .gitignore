@@ -26,3 +26,5 @@ restart
 *.sqlite
 config/unicorn.rb
 /.ruby-version
+
+.zeus.sock

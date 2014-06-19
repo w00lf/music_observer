@@ -1,6 +1,6 @@
 class FavoritesController < ApplicationController
   def index
-    @search = Favorite.includes(:artist).where(user_id: current_user.id).search(params[:q])
+    @search = Favorite.order('created_at desc').includes(:artist).where(user_id: current_user.id).search(params[:q])
     @favorites = @search.result.paginate(page: params[:page], per_page: params[:per_page] || 10) 
     respond_to do |format|
       format.html # index.html.erb

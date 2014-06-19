@@ -22,7 +22,7 @@ task :copy_database_config_restart_worker, roles => :app do
   protected_path = "#{shared_path}/protected.yml"
   run "cp #{db_config} #{release_path}/config/database.yml"
   run "cp #{protected_path} #{release_path}/config/protected.yml"
-  run "kill -9 `cat #{shared_path}/pids/delayed_job.pid` && cd #{release_path} && /usr/local/rvm/bin/rvm use #{rvm_ruby_string} do bundle exec rake maintainance:worker RAILS_ENV=production"
+  run "kill -QUIT `cat #{shared_path}/pids/delayed_job.pid` 2> /dev/null; sleep 5; cd #{release_path} && /usr/local/rvm/bin/rvm use #{rvm_ruby_string} do bundle exec rake maintainance:worker RAILS_ENV=production"
   run "echo '#{rvm_ruby_string}' > #{release_path}/.ruby-version"
 end
 

@@ -3,7 +3,7 @@ class RecommendationsController < ApplicationController
     @selected_tags ||= []
     @selected_tags = Tag.find_all_by_id(params[:q][:tagged_with]) if params[:q].present?
     @top_tags = Tag.top_recommended(current_user)
-    @search = Recommendation.user_search(params[:q], current_user)
+    @search = Recommendation.filter(params[:q], current_user)
     @recommendations = @search.result.paginate(page: params[:page], per_page: (params[:per_page] || 25)) 
     
     respond_to do |format|
