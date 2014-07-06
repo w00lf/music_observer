@@ -1,7 +1,7 @@
 = form_tag schedule_logs_path, id: 'logs_form', method: :get do
   = hidden_field_tag :job_class, params[:job_class] 
   = label_tag :status, t('.status')
-  = select_tag :status, options_for_select(ScheduleLog.status.values, selected: params[:status] || 'info')
+  = select_tag :status, options_for_select([ScheduleLog.status.values, ''].flatten, selected: params[:status] || '')
   = label_tag :status, t('.date_range')
   = text_field_tag 'date_from', params[:date_from], placeholder: t(:date_from)
   = text_field_tag 'date_to', params[:date_to], placeholder: t(:date_to)

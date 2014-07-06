@@ -3,7 +3,11 @@
   %tr
     %td= image_tag artist.photo.url
     %td= render partial: 'tags/tag', collection: artist.tags
-    %td= link_to artist.name, artist.api_link, class: 'external '
+    %td
+      = link_to artist.name, artist.api_link, class: 'external', target: '_blank'
+      %p
+        = link_to "http://vk.com/search?c[performer]=1&c[q]=#{artist.name}&c[section]=audio", target: '_blank' do
+          = image_tag "vk_logo.png", alt: "Прослушать на vk", width: '50px'
     %td= artist.year_from.nil? ? t(:none) : artist.year_from.strftime('%Y')
     %td= artist.year_to.nil? ? t(:none) : artist.year_to.strftime('%Y')
     %td= artist.listeners

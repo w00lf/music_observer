@@ -3,7 +3,7 @@ class RecommendationsController < ApplicationController
     @selected_tags ||= []
     @selected_tags = Tag.find_all_by_id(params[:q][:tagged_with]) if params[:q].present?
     @top_tags = Tag.top_recommended(current_user)
-    @search = Recommendation.user_search(params[:q], current_user)
+    @search = Recommendation.filter(params[:q], current_user)
     @recommendations = @search.result.paginate(page: params[:page], per_page: (params[:per_page] || 25)) 
     
     respond_to do |format|
@@ -13,9 +13,7 @@ class RecommendationsController < ApplicationController
   end
 
   def api_parse
-    # return api_auth() if (user = @api_provider_aut.get_username()).nil?
-    # Delayed::Job.enqueue(current_user, @)
-    @api_provider.delay.parse_recomendations(current_user.id, @api_provider_aut)
+    UserRecomendationsParser.new.delay.perform(@api_provider_aut.username, @api_provider_aut.session_key, current_user.id)
     flash[:notice] = t(:started_parsing) 
     redirect_to(:back)
   end

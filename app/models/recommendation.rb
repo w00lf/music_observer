@@ -25,7 +25,7 @@ class Recommendation < ArtistUser
   }
 
   class << self
-    def user_search(query, user)
+    def filter(query, user)
       user_recom = select('DISTINCT "artist_users".*, "artists".*').includes(:artist).where(user_id: user.id).publick
       user_recom = user_recom.order('artist_users.created_at desc') unless query.try(:[], :s).present?
       tags = []

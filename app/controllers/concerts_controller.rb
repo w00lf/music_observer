@@ -3,7 +3,7 @@ class ConcertsController < ApplicationController
   # GET /concerts
   # GET /concerts.json
   def index
-    @search = Concert.order('start_date').search(params[:q])
+    @search = Concert.order('start_date DESC').search(params[:q])
     @concerts = @search.result.paginate(page: params[:page], per_page: params[:per_page] || 10)
 
     respond_to do |format|

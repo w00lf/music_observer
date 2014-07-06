@@ -24,6 +24,7 @@ task :copy_database_config_restart_worker, roles => :app do
   run "cp #{protected_path} #{release_path}/config/protected.yml"
   ## run "kill -9 `cat #{shared_path}/pids/delayed_job.pid` && cd #{release_path} && /usr/local/rvm/bin/rvm use #{rvm_ruby_string} do bundle exec rake maintainance:worker RAILS_ENV=production"
   #run "echo '#{rvm_ruby_string}' > #{release_path}/.ruby-version"
+
 end
 
 # В rails 3 по умолчанию включена функция assets pipelining,

@@ -18,18 +18,6 @@ class Artist < ActiveRecord::Base
   validates_attachment_content_type :photo, :content_type => %w(image/jpeg image/jpg image/png image/gif)
 
   class << self
-    def create_favorite prop, user
-      artist = find_or_create(prop)
-      Favorite.find_or_create_by_user_id_and_artist_id!(user.id, artist.id, track: prop[:track] || false)
-      artist
-    end
-
-    def create_recommended prop, user
-      artist = find_or_create(prop)
-      Recommendation.find_or_create_by_user_id_and_artist_id!(user.id, artist.id) 
-      artist
-    end
-
     def find_or_create prop
       artist = find_or_create_by_mbid!(prop[:mbid], name: prop[:name], mbid: prop[:mbid],listeners: prop[:listeners] || 0)
       (artist.photo = photo_from_url(prop[:image]); artist.save()) unless artist.photo.exists?

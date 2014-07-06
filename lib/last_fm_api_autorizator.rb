@@ -1,9 +1,10 @@
 class LastFmApiAutorizator < LastFmApi
+  attr_accessor :session_key, :username, :signature
 
-  def initialize session
-    @session = session[:auth]
-    @session_key = ''
-    @lastfm_user = ''
+  def initialize session = {}
+    @session = session[:auth] || {}
+    @session_key = session[:auth].try(:[], :session_key)
+    @username = session[:auth].try(:[], :username)
     @signature = ''
   end
 
@@ -12,7 +13,7 @@ class LastFmApiAutorizator < LastFmApi
       if fetch_session(token)
         session[:auth] = {}
         session[:auth][:session_key] = @session_key 
-        session[:auth][:username] = @lastfm_user
+        session[:auth][:username] = @username
         # session[:auth][:api_sig] = @signature 
       end
     end
@@ -30,7 +31,7 @@ class LastFmApiAutorizator < LastFmApi
       unless responce.blank? || !responce['error'].blank?
         @session_key = responce['session']['key']
         debug "session key: #{@session_key}"
-        @lastfm_user = responce['session']['name']
+        @username = responce['session']['name']
       else
         debug responce.inspect
       end
@@ -41,14 +42,6 @@ class LastFmApiAutorizator < LastFmApi
   def make_signature args
     debug "what we get: *#{args.sort.flatten.join}#{LASTFM_SECRET}*"
     @signature = Digest::MD5.hexdigest("#{args.sort.flatten.join}#{LASTFM_SECRET}")
-  end
-
-  def get_username
-    @session[:username] unless @session.blank?
-  end
-
-  def get_session_key
-    @session[:session_key] unless @session.blank?
   end
 
   def need_auth?
