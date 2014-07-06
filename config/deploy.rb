@@ -22,8 +22,8 @@ task :copy_database_config_restart_worker, roles => :app do
   protected_path = "#{shared_path}/protected.yml"
   run "cp #{db_config} #{release_path}/config/database.yml"
   run "cp #{protected_path} #{release_path}/config/protected.yml"
-  run "kill -9 `cat #{shared_path}/pids/delayed_job.pid` && cd #{release_path} && /usr/local/rvm/bin/rvm use #{rvm_ruby_string} do bundle exec rake maintainance:worker RAILS_ENV=production"
-  run "echo '#{rvm_ruby_string}' > #{release_path}/.ruby-version"
+  ## run "kill -9 `cat #{shared_path}/pids/delayed_job.pid` && cd #{release_path} && /usr/local/rvm/bin/rvm use #{rvm_ruby_string} do bundle exec rake maintainance:worker RAILS_ENV=production"
+  #run "echo '#{rvm_ruby_string}' > #{release_path}/.ruby-version"
 end
 
 # В rails 3 по умолчанию включена функция assets pipelining,
@@ -48,26 +48,28 @@ ssh_options[:forward_agent] = true
 set :application,     "musicobserver"
 
 # Сервер размещения проекта.
-set :deploy_server,   "neon.locum.ru"
+set :deploy_server,   "78.47.216.218"
 
 # Не включать в поставку разработческие инструменты и пакеты тестирования.
 set :bundle_without,  [:development, :test]
+set :bundle_env_variables, { cc: 'gcc46', cxx: 'g++46', cpp: 'cpp46' } 
 
-set :user,            "hosting_w00lf"
+set :user,            "hostingservice"
 set :login,           "w00lf"
 set :use_sudo,        false
-set :deploy_to,       "/home/#{user}/projects/#{application}"
-set :unicorn_conf,    "/etc/unicorn/#{application}.#{login}.rb"
-set :unicorn_pid,     "/var/run/unicorn/#{application}.#{login}.pid"
-set :bundle_dir,      File.join(fetch(:shared_path), 'gems')
+set :deploy_to,       "/usr/local/www/projects/#{application}"
+set :unicorn_conf,    File.join(fetch(:shared_path), 'unicorn.rb')
+set :unicorn_pid,     File.join(fetch(:shared_path), 'unicorn.pid')
+set :bundle_dir,      File.join("/usr/local/www/projects/shared", 'gems')
+set :rails_env,       "production"
 role :web,            deploy_server
 role :app,            deploy_server
 role :db,             deploy_server, :primary => true
 
 # Следующие строки необходимы, т.к. ваш проект использует rvm.
-set :rvm_ruby_string, "2.1.0"
-set :rake,            "rvm use #{rvm_ruby_string} do bundle exec rake" 
-set :bundle_cmd,      "rvm use #{rvm_ruby_string} do bundle"
+# set :rvm_ruby_string, "2.1.0"
+set :rake,            "bundle exec rake" 
+# set :bundle_cmd,      "bundle"
 
 # Настройка системы контроля версий и репозитария,
 # по умолчанию - git, если используется иная система версий,
@@ -88,7 +90,7 @@ task :set_current_release, :roles => :app do
     set :current_release, latest_release
 end
 
-set :unicorn_start_cmd, "(cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do bundle exec unicorn_rails -Dc #{unicorn_conf})"
+set :unicorn_start_cmd, "(cd #{deploy_to}/current; bundle exec unicorn_rails -Dc #{unicorn_conf})"
 
 
 # - for unicorn - #
